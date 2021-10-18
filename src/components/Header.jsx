@@ -1,7 +1,8 @@
+import classes from './Header.module.css'
 
 const Header = () => {
-  return <header className='header'>
-    <img src='https://image.pngaaa.com/539/12539-middle.png' width='40' height='40' alt='logo' />
+  return <header className={classes.header}>
+    <img src='https://freepngimg.com/thumb/logo/69613-litecoin-bitcoin-cryptocurrency-london-bull-logo.png' width='40' height='40' alt='logo' />
     </header>
 }
 

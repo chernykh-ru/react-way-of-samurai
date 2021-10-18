@@ -1,0 +1,15 @@
+.nav {
+  grid-area: nav;
+  border: 2px solid red;
+  background-color: rosybrown;
+}
+
+.item {
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.active {
+  color: gold;
+}

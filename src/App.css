@@ -11,18 +11,3 @@
   grid-template-columns: 2fr 10fr;
   grid-gap: 10px;
 }
-
-.header {
-  grid-area: header;
-  border: 2px solid red;
-}
-
-.nav {
-  grid-area: nav;
-  border: 2px solid red;
-}
-
-.content {
-  grid-area: content;
-  border: 2px solid red;
-}
