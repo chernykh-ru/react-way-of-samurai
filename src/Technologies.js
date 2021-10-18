@@ -5,6 +5,8 @@ const Technologies = () => {
         <li>html</li>
         <li>css</li>
         <li>jsx</li>
+        <li>jsx</li>
+        <li>jsx</li>
       </ul>
     </div>
   );
