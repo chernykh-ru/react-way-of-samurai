@@ -1,6 +1,8 @@
 .header {
   grid-area: header;
   border: 2px solid red;
+  /* background: linear-gradient(blue, rosybrown); */
+
   background-color: rosybrown;
 
 }

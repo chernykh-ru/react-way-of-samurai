@@ -2,8 +2,8 @@ import classes from './Navbar.module.css'
 
 // console.log(classes);
 
-const Navbar = () => {
-  return <nav className={classes.nav}>
+const Navbar = () => (
+  <nav className={classes.nav}>
     <div className={`${classes.item} ${classes.active}`}>
       <a>Profile</a>
     </div>
@@ -20,6 +20,6 @@ const Navbar = () => {
       <a>Settings</a>
     </div>
   </nav>
-}
+)
 
 export default Navbar
