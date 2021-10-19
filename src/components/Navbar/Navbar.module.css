@@ -2,14 +2,19 @@
   grid-area: nav;
   border: 2px solid red;
   background-color: rosybrown;
+  padding: 20px;
 }
 
 .item {
+  padding: 10px;
+}
+
+.item a{
   color: #fff;
   text-decoration: none;
   cursor: pointer;
 }
 
-.active {
+.item a.activeLink {
   color: gold;
 }
