@@ -19,15 +19,30 @@ const App = () => {
         <Header />
         <Navbar />
         <div className='app-wrapper-content'>
-          <Route path='/profile' render={() => <Profile />} />
-          <Route path='/dialogs' render={() => <Dialogs />} />
+          <Route path='/profile'>
+            <Profile />
+          </Route>
+          <Route path='/dialogs'>
+            <Dialogs />
+          </Route>
+          <Route path='/news'>
+            <News />
+          </Route>
+          <Route path='/music'>
+            <Music />
+          </Route>
+          <Route path='/setings'>
+            <Setings />
+          </Route>
 
+          {/* <Route path='/profile' render={() => <Profile />} />
+          <Route path='/dialogs' render={() => <Dialogs />} /> */}
 
           {/* <Route path='/profile' component={Profile}/>
           <Route path='/dialogs' component={Dialogs}/> */}
-          <Route path='/news' component={News}/>
+          {/* <Route path='/news' component={News}/>
           <Route path='/music' component={Music}/>
-          <Route path='/setings' component={Setings}/>
+          <Route path='/setings' component={Setings}/> */}
         </div>
       </div>
     </Router>
