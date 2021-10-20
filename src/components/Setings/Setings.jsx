@@ -1,13 +1,13 @@
-import classes from './Setings.module.css'
+import styles from './Setings.module.css'
 
 const Setings = () => (
   <div>
     <p>Setings</p>
-    <div className={classes.wrapper}>
-      <div className={classes.wrapper__item}>
+    <div className={styles.wrapper}>
+      <div className={styles.wrapper__item}>
         User setings block #1
       </div>
-      <div className={classes.wrapper__item}>
+      <div className={styles.wrapper__item}>
         User setings block #2
       </div>
     </div>

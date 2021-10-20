@@ -1,13 +1,13 @@
-import classes from './News.module.css'
+import styles from './News.module.css'
 
 const News = () => (
   <div>
     <p>News</p>
-    <div className={classes.wrapper}>
-      <div className={classes.wrapper__item}>
+    <div className={styles.wrapper}>
+      <div className={styles.wrapper__item}>
         News #1
       </div>
-      <div className={classes.wrapper__item}>
+      <div className={styles.wrapper__item}>
         News #2
       </div>
     </div>

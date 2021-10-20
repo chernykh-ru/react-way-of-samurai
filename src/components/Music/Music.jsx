@@ -1,13 +1,13 @@
-import classes from './Music.module.css'
+import styles from './Music.module.css'
 
 const Music = () => (
   <div>
     <p>Music</p>
-    <div className={classes.wrapper}>
-      <div className={classes.wrapper__item}>
+    <div className={styles.wrapper}>
+      <div className={styles.wrapper__item}>
         Albums #1
       </div>
-      <div className={classes.wrapper__item}>
+      <div className={styles.wrapper__item}>
       Albums #2
       </div>
     </div>
