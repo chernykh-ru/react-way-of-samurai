@@ -3,12 +3,38 @@
   border: 2px solid red;
 } */
 
-.wrapper {
-  display: flex;
-  flex-direction: row;
+.dialogs {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  background-color: rosybrown;
+
   gap: 40px;
 }
 
-.wrapper__item {
+.dialogsItems {
+  padding: 10px;
   border: 2px solid green;
+}
+
+.dialog {
+  padding: 10px;
+  border: 2px solid red;
+}
+
+.dialog a{
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.dialog a.activeLink {
+  color: gold;
+}
+
+.messages {
+  border: 2px solid red;
+}
+
+.message {
+
 }

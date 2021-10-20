@@ -3,12 +3,11 @@ import classes from './MyPosts.module.css'
 
 
 const MyPosts = () => (
-  <div>
-    My posts
-    <div>
-      <textarea></textarea>
-      <button>Add post</button>
-      <button>Remove post</button>
+  <div className={classes.postsBlock}>
+    <h3>My posts</h3>
+    <div className={classes.postBlock}>
+      <div><textarea></textarea></div>
+      <div><button>Add post</button></div>
     </div>
     <div className={classes.posts}>
     <Post message='Hi, how are you?' likeCounter='15' />
