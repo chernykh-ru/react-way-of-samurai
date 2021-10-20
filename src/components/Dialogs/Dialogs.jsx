@@ -20,30 +20,42 @@ const dialogsData = [
   {id: 6, name: 'Viktor'}
 ]
 
-const messagesData = [
+const messages = [
   {id: 1, message: 'Hi'},
   {id: 2, message: 'How is your it?'},
   {id: 3, message: 'Yo'},
-  {id: 4, message: 'Yo'},
-  {id: 5, message: 'Yo'},
+  {id: 4, message: 'Yo-yo-yo'},
+  {id: 5, message: 'Yo-yo'},
   {id: 6, message: 'Yo'}
 ]
+
+const dialogsElements = dialogsData
+  .map((dialog, i) => <DialogItem key={i} name={dialog.name} id={dialog.id} />)
+
+// const dialogsElements = dialogsData.map(dialog => {
+//   return (<DialogItem name={dialog.name} id={dialog.id} />)
+// })
+
+// [
+//   <DialogItem name={dialogsData[0].name} id={dialogsData[0].id} />,
+//   <DialogItem name={dialogsData[1].name} id={dialogsData[1].id} />,
+//   <DialogItem name={dialogsData[2].name} id={dialogsData[2].id} />
+// ]
+
+const messagesElements = messages.map((m, i) => <Message key={i} message={m.message} id={m.id} />)
 
 const Dialogs = () => (
   <div className={classes.dialogs}>
     <div className={classes.dialogsItems}>
-      <DialogItem name={dialogsData[0].name} id={dialogsData[0].id} />
-      <DialogItem name={dialogsData[1].name} id={dialogsData[1].id} />
-      {/* <DialogItem name='Sasha' id='3' />
-      <DialogItem name='Sveta' id='4' />
-      <DialogItem name='Valera' id='5' />
-      <DialogItem name='Viktor' id='6' /> */}
+      { dialogsElements }
+      {/* <DialogItem name={dialogsData[0].name} id={dialogsData[0].id} />
+      <DialogItem name={dialogsData[1].name} id={dialogsData[1].id} /> */}
     </div>
     <div className={classes.messages}>
-      <Message message={messagesData[0].message} id={messagesData[0].id} />
-      <Message message={messagesData[1].message} id={messagesData[1].id} />
-      {/* <Message message='How is your it?' />
-      <Message message='Yo' /> */}
+      { messagesElements }
+      {/* <Message message={messagesData[0].message} id={messagesData[0].id} />
+      <Message message={messagesData[1].message} id={messagesData[1].id} /> */}
+
     </div>
   </div>
 );
