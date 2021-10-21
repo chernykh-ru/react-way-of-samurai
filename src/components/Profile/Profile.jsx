@@ -5,7 +5,6 @@ import MyPosts from './MyPosts/MyPosts'
 
 
 const Profile = (props) => {
-
   // const posts = [
   //   {id: 1, message: 'Hi, how are you?', likeCounter: 15},
   //   {id: 2, message: 'My first react post', likeCounter: 25},
@@ -17,7 +16,7 @@ const Profile = (props) => {
   return (
     <div>
       <ProfileInfo />
-      <MyPosts posts={props.posts} />
+      <MyPosts posts={props.state.posts} />
     </div>
 )}
 

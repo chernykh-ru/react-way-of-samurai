@@ -23,10 +23,10 @@ import Message from './Message/Message';
 
 
 const Dialogs = (props) => {
+// debugger
+  const dialogsElements = props.state.dialogsData.map((dialog, i) => <DialogItem key={i} name={dialog.name} id={dialog.id} />)
 
-  const dialogsElements = props.dialogsData.map((dialog, i) => <DialogItem key={i} name={dialog.name} id={dialog.id} />)
-
-  const messagesElements = props.messages.map((m, i) => <Message key={i} message={m.message} id={m.id} />)
+  const messagesElements = props.state.messages.map((m, i) => <Message key={i} message={m.message} id={m.id} />)
 
   return (
   <div className={styles.dialogs}>
