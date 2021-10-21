@@ -35,6 +35,34 @@
   border: 2px solid red;
 }
 
-.message {
+.avatarWrapper{
+  padding: 10px;
+}
 
+.avatar {
+  width: 40px;
+  height: auto;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.messages {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: rosybrown;
+
+  gap: 40px;
+}
+
+.messagesUser {
+  padding: 20px;
+}
+
+.messagesFriend {
+  padding: 20px;
+
+}
+
+.message {
+  padding: 20px;
 }

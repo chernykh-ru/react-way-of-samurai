@@ -2,6 +2,8 @@
 import styles from './Dialogs.module.css';
 import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
+// import Avatar from './Avatar/Avatar';
+
 
 // const dialogsData = [
 //   {id: 1, name: 'Andrew'},
@@ -23,18 +25,29 @@ import Message from './Message/Message';
 
 
 const Dialogs = (props) => {
-// debugger
-  const dialogsElements = props.state.dialogsData.map((dialog, i) => <DialogItem key={i} name={dialog.name} id={dialog.id} />)
+
+  // debugger
+
+  // const avatarElements = props.state.avatar.map((avatar, i) => <Avatar key={i} avatar={avatar.avatar} id={avatar.id}/>)
+
+  const dialogsElements = props.state.dialogsData.map((dialog, i) => <DialogItem key={i} name={dialog.name} id={dialog.id} avatar={dialog.avatar}/>)
 
   const messagesElements = props.state.messages.map((m, i) => <Message key={i} message={m.message} id={m.id} />)
+  const messagesElementsFriend = props.state.messagesFriend.map((m, i) => <Message key={i} message={m.message} id={m.id} />)
 
   return (
   <div className={styles.dialogs}>
     <div className={styles.dialogsItems}>
+      {/* { avatarElements } */}
       { dialogsElements }
     </div>
     <div className={styles.messages}>
-      { messagesElements }
+      <div className={styles.messagesUser}>
+        { messagesElements }
+      </div>
+      <div className={styles.messagesFriend}>
+        { messagesElementsFriend }
+      </div>
     </div>
   </div>
 )};

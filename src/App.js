@@ -7,6 +7,7 @@ import Dialogs from './components/Dialogs/Dialogs';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Setings from './components/Setings/Setings';
+import Friends from './components/Friends/Friends';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 // import { Route } from 'react-router';
 // import { BrowserRouter } from 'react-router-dom';
@@ -46,7 +47,9 @@ const App = (props) => {
     <Router>
       <div className='app-wrapper'>
         <Header />
-        <Navbar />
+        <Route path='/friends'>
+          <Navbar state={props.state.dialogsPage} />
+        </Route>
         <div className='app-wrapper-content'>
           <Route path='/profile'>
             <Profile state={props.state.profilePage} />
@@ -64,6 +67,9 @@ const App = (props) => {
           </Route>
           <Route path='/setings'>
             <Setings />
+          </Route>
+          <Route path='/friends'>
+            <Friends state={props.state.dialogsPage} />
           </Route>
 
           {/* <Route path='/profile' render={() => <Profile posts={props.posts} />} /> */}
