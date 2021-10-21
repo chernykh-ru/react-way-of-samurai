@@ -7,17 +7,20 @@ import styles from './MyPosts.module.css'
 //   // {id: 3, message: 'Yo', likeCounter: 5},
 // ]
 
-// const postsElements = posts.map((p, i) => <Post key={i} message={p.message} likeCounter={p.likeCounter} />)
 
-const postsElements = function PostEl({data, i}) {
-  return data.map(item => (
-    <Post key={i} message={item.message} likeCounter={item.likeCounter} />
-  ))
-}
+// const postsElements = function PostEl({data, i}) {
+//   return data.map(item => (
+//     <Post key={i} message={item.message} likeCounter={item.likeCounter} />
+//   ))
+// }
 
 // const postsElements = ({ data, i }) => data.map(<Post key={i} message={data.message} likeCounter={data.likeCounter} />)
 
-const MyPosts = () => (
+const MyPosts = (props) => {
+
+  const postsElements = props.posts.map((p, i) => <Post key={i} message={p.message} likeCounter={p.likeCounter} />)
+
+  return (
   <div className={styles.postsBlock}>
     <h3>My posts</h3>
     <div className={styles.postBlock}>
@@ -28,6 +31,6 @@ const MyPosts = () => (
       { postsElements }
     </div>
   </div>
-)
+)}
 
 export default MyPosts
