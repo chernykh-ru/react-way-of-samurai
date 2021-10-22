@@ -47,12 +47,20 @@
 }
 
 .messages {
+  display: flex;
+  flex-direction: column;
+  background-color: rosybrown;
+
+  gap: 40px;
+}
+
+/* .messages {
   display: grid;
   grid-template-columns: 1fr 1fr;
   background-color: rosybrown;
 
   gap: 40px;
-}
+} */
 
 .messagesUser {
   padding: 20px;

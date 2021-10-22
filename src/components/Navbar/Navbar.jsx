@@ -1,13 +1,13 @@
 import { NavLink } from 'react-router-dom'
 import styles from './Navbar.module.css'
-import DialogItem from './../Dialogs/DialogItem/DialogItem';
+// import DialogItem from './../Dialogs/DialogItem/DialogItem';
 
 
-const Navbar = (props) => {
+const Navbar = () => {
 
   // debugger
 
-  const dialogsElements = props.state.dialogsData.map((dialog, i) => <DialogItem key={i} name={dialog.name} id={dialog.id} avatar={dialog.avatar}/>)
+  // const dialogsElements = props.state.dialogsData.map((dialog, i) => <DialogItem key={i} name={dialog.name} id={dialog.id} avatar={dialog.avatar}/>)
 
 
   return (
@@ -29,7 +29,7 @@ const Navbar = (props) => {
     </div>
     <div className={styles.item}>
       <NavLink to='/friends' activeClassName={styles.activeLink}>Friends</NavLink>
-      { dialogsElements }
+      {/* { dialogsElements } */}
     </div>
   </nav>
 )}

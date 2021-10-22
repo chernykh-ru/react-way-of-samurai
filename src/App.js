@@ -44,47 +44,43 @@ const App = (props) => {
   // const messages = props.messages
 
   return (
-    <Router>
-      <div className='app-wrapper'>
-        <Header />
-        <Route path='/friends'>
-          <Navbar state={props.state.dialogsPage} />
+    <div className='app-wrapper'>
+      <Header />
+      <Navbar />
+      <div className='app-wrapper-content'>
+        <Route path='/profile'>
+          <Profile state={props.state.profilePage} />
+          {/* <Profile posts={props.state.profilePage.posts} /> */}
         </Route>
-        <div className='app-wrapper-content'>
-          <Route path='/profile'>
-            <Profile state={props.state.profilePage} />
-            {/* <Profile posts={props.state.profilePage.posts} /> */}
-          </Route>
-          <Route path='/dialogs'>
-            <Dialogs state={props.state.dialogsPage} />
-            {/* <Dialogs dialogsData={props.state.dialogsPage.dialogsData} messages={props.state.dialogsPage.messages} /> */}
-          </Route>
-          <Route path='/news'>
-            <News />
-          </Route>
-          <Route path='/music'>
-            <Music />
-          </Route>
-          <Route path='/setings'>
-            <Setings />
-          </Route>
-          <Route path='/friends'>
-            <Friends state={props.state.dialogsPage} />
-          </Route>
+        <Route path='/dialogs'>
+          <Dialogs state={props.state.dialogsPage} />
+          {/* <Dialogs dialogsData={props.state.dialogsPage.dialogsData} messages={props.state.dialogsPage.messages} /> */}
+        </Route>
+        <Route path='/news'>
+          <News />
+        </Route>
+        <Route path='/music'>
+          <Music />
+        </Route>
+        <Route path='/setings'>
+          <Setings />
+        </Route>
+        <Route path='/friends'>
+          <Friends />
+        </Route>
 
-          {/* <Route path='/profile' render={() => <Profile posts={props.posts} />} /> */}
+        {/* <Route path='/profile' render={() => <Profile posts={props.posts} />} /> */}
 
-          {/* <Route path='/profile' render={() => <Profile />} />
-          <Route path='/dialogs' render={() => <Dialogs />} /> */}
+        {/* <Route path='/profile' render={() => <Profile />} />
+        <Route path='/dialogs' render={() => <Dialogs />} /> */}
 
-          {/* <Route path='/profile' component={Profile}/>
-          <Route path='/dialogs' component={Dialogs}/> */}
-          {/* <Route path='/news' component={News}/>
-          <Route path='/music' component={Music}/>
-          <Route path='/setings' component={Setings}/> */}
-        </div>
+        {/* <Route path='/profile' component={Profile}/>
+        <Route path='/dialogs' component={Dialogs}/> */}
+        {/* <Route path='/news' component={News}/>
+        <Route path='/music' component={Music}/>
+        <Route path='/setings' component={Setings}/> */}
       </div>
-    </Router>
+    </div>
   );
 };
 
