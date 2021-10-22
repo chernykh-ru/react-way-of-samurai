@@ -20,12 +20,13 @@ import React from 'react'
 const MyPosts = (props) => {
   const postsElements = props.posts.map((p, i) => <Post key={i} message={p.message} likeCounter={p.likeCounter} />)
 
-  let newPostElement = React.createRef()
+  let newPostElement = React.createRef();
 
-    const addPost = () => {
-    let text = newPostElement.current.value
-    alert(text)
-  }
+  const addPost = () => {
+    debugger
+    let text = newPostElement.current.value;
+    props.addPost(text)
+  };
 
   // const addPost = () => {
   //   let text = document.getElementById('new-post').value

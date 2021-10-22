@@ -5,26 +5,6 @@ import Message from './Message/Message';
 import React from 'react';
 // import Avatar from './Avatar/Avatar';
 
-
-// const dialogsData = [
-//   {id: 1, name: 'Andrew'},
-//   {id: 2, name: 'Dmitry'},
-//   {id: 3, name: 'Sasha'},
-//   {id: 4, name: 'Sveta'},
-//   {id: 5, name: 'Valera'},
-//   {id: 6, name: 'Viktor'}
-// ]
-
-// const messages = [
-//   {id: 1, message: 'Hi'},
-//   {id: 2, message: 'How is your it?'},
-//   {id: 3, message: 'Yo'},
-//   {id: 4, message: 'Yo-yo-yo'},
-//   {id: 5, message: 'Yo-yo'},
-//   {id: 6, message: 'Yo'}
-// ]
-
-
 const Dialogs = (props) => {
 
   // debugger

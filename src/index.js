@@ -4,14 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import state from './redux/state';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import { addPost } from './redux/state';
+import {BrowserRouter as Router} from 'react-router-dom';
+// import {BrowserRouter as Router, Route} from 'react-router-dom';
 
+// addPost('sche')
 
 ReactDOM.render(
   <Router>
     <React.StrictMode>
-      <App state={state} />
-      {/* <App posts={posts} dialogsData={dialogsData} messages={messages} /> */}
+      <App state={state} addPost={addPost}/>
     </React.StrictMode>
   </Router>,
   document.getElementById('root')
