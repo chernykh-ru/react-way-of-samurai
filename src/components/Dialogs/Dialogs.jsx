@@ -6,22 +6,32 @@ import React from 'react';
 // import Avatar from './Avatar/Avatar';
 
 const Dialogs = (props) => {
-
   // debugger
 
   // const avatarElements = props.state.avatar.map((avatar, i) => <Avatar key={i} avatar={avatar.avatar} id={avatar.id}/>)
 
-  const dialogsElements = props.state.dialogsData.map((dialog, i) => <DialogItem key={i} name={dialog.name} id={dialog.id} avatar={dialog.avatar}/>)
+  const dialogsElements = props.dialogsPage.dialogsData.map((dialog, i) => (
+    <DialogItem key={i} name={dialog.name} id={dialog.id} avatar={dialog.avatar} />
+  ));
 
-  const messagesElements = props.state.messages.map((m, i) => <Message key={i} message={m.message} id={m.id} />)
+  const messagesElements = props.dialogsPage.messages.map((m, i) => (
+    <Message key={i} message={m.message} id={m.id} />
+  ));
   // const messagesElementsFriend = props.state.messagesFriend.map((m, i) => <Message key={i} message={m.message} id={m.id} />)
 
-  let newPostEl = React.createRef()
+  let newMessageElement = React.createRef();
 
-  let addPost = () => {
-    let textPost = newPostEl.current.value
-    alert(textPost)
-  }
+  let addMessage = () => {
+    props.addMessage();
+    // props.updateNewMessageText('');
+    // let text = newMessageElement.current.value;
+    // alert(text);
+  };
+
+  let onMessageChange = () => {
+    let text = newMessageElement.current.value; //значение поста берем в textarea value from ref
+    props.updateNewMessageText(text); //обновляем поле ввода из стейта по пропсам
+  };
 
   return (
     <div className={styles.dialogs}>
@@ -33,15 +43,20 @@ const Dialogs = (props) => {
         <div className={styles.messagesUser}>{messagesElements}</div>
         <div>
           <div>
-            <textarea ref={newPostEl}></textarea>
+            <textarea
+              onChange={onMessageChange}
+              ref={newMessageElement}
+              value={props.newMessageText}
+            />
           </div>
           <div>
-            <button onClick={ addPost }>Add post</button>
+            <button onClick={addMessage}>Add message</button>
           </div>
         </div>
         {/* <div className={styles.messagesFriend}>{messagesElementsFriend}</div> */}
       </div>
     </div>
-  );};
+  );
+};
 
 export default Dialogs;

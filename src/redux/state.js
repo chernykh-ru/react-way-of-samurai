@@ -43,15 +43,17 @@ const state = {
       { id: 2, message: 'How is your it?' },
       { id: 3, message: 'I am fine' },
     ],
-    messagesFriend: [
-      { id: 1, message: 'Yo-yo-yo' },
-      { id: 2, message: 'Yo-yo' },
-      { id: 3, message: 'Yo' },
-    ],
+    newMessageText: '',
+    // messagesFriend: [
+    //   { id: 1, message: 'Yo-yo-yo' },
+    //   { id: 2, message: 'Yo-yo' },
+    //   { id: 3, message: 'Yo' },
+    // ],
   },
   sidebar: {},
 };
 
+//функции постов
 export let addPost = () => {
   // debugger;
   let newPost = {
@@ -64,19 +66,24 @@ export let addPost = () => {
   rerenderEntireTrie(state);
 };
 
-// export let addPost = (postMessage) => {
-//   // debugger;
-//   let newPost = {
-//     id: 4,
-//     message: postMessage,
-//     likeCounter: 0,
-//   };
-//   state.profilePage.posts.push(newPost);
-//   rerenderEntireTrie(state);
-// };
-
 export let updateNewPostText = (newText) => {
   state.profilePage.newPostText = newText;
+  rerenderEntireTrie(state);
+};
+
+//функции сообщений
+export let addMessage = () => {
+  let newMessage = {
+    id: 4,
+    message: state.dialogsPage.newMessageText, //берем значение из стейта
+  };
+  state.dialogsPage.messages.push(newMessage);
+  state.dialogsPage.newMessageText = ''; //переносим логику зануление из тупого компонента в функцию стейта
+  rerenderEntireTrie(state);
+};
+
+export let updateNewMessageText = (newText) => {
+  state.dialogsPage.newMessageText = newText;
   rerenderEntireTrie(state);
 };
 
