@@ -13,14 +13,16 @@ const MyPosts = (props) => {
   let addPost = () => {
     // debugger;
     // let text = newPostElement.current.value; //значение поста берем в textarea value from ref//значение уже есть в стейте возьмем его от туда
-    props.addPost(); //добавляем пост функцией в стейте
+    props.dispatch({ type: 'ADD-POST' }); //добавляем пост функцией через dispatch в стейте
+    // props.addPost(); //добавляем пост функцией в стейте
     // props.updateNewPostText(''); //зануляем поле ввода после публикации поста//переносим логику в функцию в стейт
     // newPostElement.current.value = '';зануление поля ввода
   };
 
   let onPostChange = () => {
     let text = newPostElement.current.value; //значение поста берем в textarea value from ref
-    props.updateNewPostText(text); //обновляем поле ввода из стейта по пропсам
+    props.dispatch({ type: 'UPDATE-NEW-POST-TEXT', newText: text }); //обновляем поле ввода из стейта по пропсам
+    // props.updateNewPostText(text); //обновляем поле ввода из стейта по пропсам
   };
 
   // const addPost = () => {

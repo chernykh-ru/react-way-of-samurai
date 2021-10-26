@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 // import state, { subscribe } from './redux/state';
-import store from './redux/store';
+import store from './redux/state';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import { rerenderEntireTrie } from './render';
 // import { addPost, updateNewPostText, addMessage, updateNewMessageText } from './redux/state';
@@ -16,8 +16,8 @@ function rerenderEntireTree(state) {
         state={state}
         // state={store.getState()}
         // state={state}
-        addPost={store.addPost.bind(store)}
-        updateNewPostText={store.updateNewPostText.bind(store)}
+        dispatch={store.dispatch.bind(store)}
+        // updateNewPostText={store.updateNewPostText.bind(store)}
         addMessage={store.addMessage.bind(store)}
         updateNewMessageText={store.updateNewMessageText.bind(store)}
       />
