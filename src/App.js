@@ -45,17 +45,6 @@ const App = (props) => {
           <Route path='/friends'>
             <Friends />
           </Route>
-
-          {/* <Route path='/profile' render={() => <Profile posts={props.posts} />} /> */}
-
-          {/* <Route path='/profile' render={() => <Profile />} />
-        <Route path='/dialogs' render={() => <Dialogs />} /> */}
-
-          {/* <Route path='/profile' component={Profile}/>
-        <Route path='/dialogs' component={Dialogs}/> */}
-          {/* <Route path='/news' component={News}/>
-        <Route path='/music' component={Music}/>
-        <Route path='/setings' component={Setings}/> */}
         </div>
       </div>
     </Router>

@@ -1,4 +1,9 @@
-import { rerenderEntireTrie } from './../render';
+// import { rerenderEntireTrie } from './../render';
+// let getRerender = () => {
+//   console.log('State changed');
+// };
+
+let getRerender; //после присваивания в функции subscriber становится функцией переисовки rerenderEntireTree
 
 const state = {
   profilePage: {
@@ -54,7 +59,7 @@ const state = {
 };
 
 //функции постов
-export let addPost = () => {
+export const addPost = () => {
   // debugger;
   let newPost = {
     id: 4,
@@ -63,28 +68,34 @@ export let addPost = () => {
   };
   state.profilePage.posts.push(newPost);
   state.profilePage.newPostText = ''; //переносим логику зануление из тупого компонента в функцию стейта
-  rerenderEntireTrie(state);
+  getRerender(state);
 };
 
-export let updateNewPostText = (newText) => {
+export const updateNewPostText = (newText) => {
   state.profilePage.newPostText = newText;
-  rerenderEntireTrie(state);
+  getRerender(state);
+};
+
+//функция подписчик которая принимает как callback observer из index функцию перерисовки rerenderEntireTree
+export const subscribe = (observer) => {
+  getRerender = observer;
 };
 
 //функции сообщений
 export let addMessage = () => {
+  // debugger;
   let newMessage = {
     id: 4,
     message: state.dialogsPage.newMessageText, //берем значение из стейта
   };
   state.dialogsPage.messages.push(newMessage);
   state.dialogsPage.newMessageText = ''; //переносим логику зануление из тупого компонента в функцию стейта
-  rerenderEntireTrie(state);
+  getRerender(state);
 };
 
 export let updateNewMessageText = (newText) => {
   state.dialogsPage.newMessageText = newText;
-  rerenderEntireTrie(state);
+  getRerender(state);
 };
 
 export default state;

@@ -2,20 +2,6 @@ import Post from './Post/Post';
 import styles from './MyPosts.module.css';
 import React from 'react';
 
-// const posts = [
-//   {id: 1, message: 'Hi, how are you?', likeCounter: 15},
-//   {id: 2, message: 'My first react post', likeCounter: 25},
-//   // {id: 3, message: 'Yo', likeCounter: 5},
-// ]
-
-// const postsElements = function PostEl({data, i}) {
-//   return data.map(item => (
-//     <Post key={i} message={item.message} likeCounter={item.likeCounter} />
-//   ))
-// }
-
-// const postsElements = ({ data, i }) => data.map(<Post key={i} message={data.message} likeCounter={data.likeCounter} />)
-
 const MyPosts = (props) => {
   const postsElements = props.posts.map((p, i) => (
     <Post key={i} message={p.message} likeCounter={p.likeCounter} />
