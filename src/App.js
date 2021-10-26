@@ -23,7 +23,6 @@ const App = (props) => {
               addPost={props.addPost}
               updateNewPostText={props.updateNewPostText}
             />
-            {/* <Profile posts={props.state.profilePage.posts} /> */}
           </Route>
           <Route path='/dialogs'>
             <Dialogs
@@ -31,7 +30,6 @@ const App = (props) => {
               addMessage={props.addMessage}
               updateNewMessageText={props.updateNewMessageText}
             />
-            {/* <Dialogs dialogsData={props.state.dialogsPage.dialogsData} messages={props.state.dialogsPage.messages} /> */}
           </Route>
           <Route path='/news'>
             <News />

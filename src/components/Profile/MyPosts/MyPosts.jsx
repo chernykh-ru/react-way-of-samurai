@@ -3,6 +3,7 @@ import styles from './MyPosts.module.css';
 import React from 'react';
 
 const MyPosts = (props) => {
+  // debugger;
   const postsElements = props.posts.map((p, i) => (
     <Post key={i} message={p.message} likeCounter={p.likeCounter} />
   ));
