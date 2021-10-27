@@ -4,12 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 // import state, { subscribe } from './redux/state';
-import store from './redux/state';
+import store from './redux/redux-store';
+// import store from './redux/store';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import { rerenderEntireTrie } from './render';
 // import { addPost, updateNewPostText, addMessage, updateNewMessageText } from './redux/state';
 
 function rerenderEntireTree(state) {
+  debugger;
   ReactDOM.render(
     <React.StrictMode>
       <Router>
@@ -28,8 +30,14 @@ function rerenderEntireTree(state) {
   );
 }
 
+//отдаем стейт подписчикам из редакс стора
+store.subscribe(() => {
+  let state = store.getState();
+  rerenderEntireTree(state);
+});
+
 //Передаем через callback(через внутренность функции subscribe) функцию перерисовки rerenderEntireTree в index
-store.subscribe(rerenderEntireTree);
+// store.subscribe(rerenderEntireTree);
 
 rerenderEntireTree(store.getState()); //запускает первичный рендер страницы
 
