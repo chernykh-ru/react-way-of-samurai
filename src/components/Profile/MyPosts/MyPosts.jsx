@@ -1,6 +1,19 @@
 import Post from './Post/Post';
 import styles from './MyPosts.module.css';
 import React from 'react';
+import { addPostActionCreator, updateNewPostTextActionCreator } from '../../../redux/state';
+
+// //создаем функцию action creator, которая возвращает объект {action}, после чего переносим их в стейт
+// let addPostActionCreator = () => {
+//   return { type: 'ADD-POST' };
+// };
+
+// let updateNewPostTextActionCreator = (text) => {
+//   return {
+//     type: 'UPDATE-NEW-POST-TEXT',
+//     newText: text,
+//   };
+// };
 
 const MyPosts = (props) => {
   // debugger;
@@ -13,7 +26,7 @@ const MyPosts = (props) => {
   let addPost = () => {
     // debugger;
     // let text = newPostElement.current.value; //значение поста берем в textarea value from ref//значение уже есть в стейте возьмем его от туда
-    props.dispatch({ type: 'ADD-POST' }); //добавляем пост функцией через dispatch в стейте
+    props.dispatch(addPostActionCreator()); //добавляем пост функцией через dispatch в стейте
     // props.addPost(); //добавляем пост функцией в стейте
     // props.updateNewPostText(''); //зануляем поле ввода после публикации поста//переносим логику в функцию в стейт
     // newPostElement.current.value = '';зануление поля ввода
@@ -21,7 +34,9 @@ const MyPosts = (props) => {
 
   let onPostChange = () => {
     let text = newPostElement.current.value; //значение поста берем в textarea value from ref
-    props.dispatch({ type: 'UPDATE-NEW-POST-TEXT', newText: text }); //обновляем поле ввода из стейта по пропсам
+    let action = updateNewPostTextActionCreator(text);
+    // let action = { type: 'UPDATE-NEW-POST-TEXT', newText: text };
+    props.dispatch(action); //обновляем поле ввода из стейта по пропсам
     // props.updateNewPostText(text); //обновляем поле ввода из стейта по пропсам
   };
 

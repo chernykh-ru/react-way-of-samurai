@@ -3,6 +3,8 @@ import styles from './Dialogs.module.css';
 import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
 import React from 'react';
+import { addMessageActionCreator, updateNewMessageTextActionCreator } from './../../redux/state';
+
 // import Avatar from './Avatar/Avatar';
 
 const Dialogs = (props) => {
@@ -22,7 +24,8 @@ const Dialogs = (props) => {
   let newMessageElement = React.createRef();
 
   let addMessage = () => {
-    props.addMessage();
+    props.dispatch(addMessageActionCreator());
+    // props.addMessage();
     // props.updateNewMessageText('');
     // let text = newMessageElement.current.value;
     // alert(text);
@@ -30,7 +33,8 @@ const Dialogs = (props) => {
 
   let onMessageChange = () => {
     let text = newMessageElement.current.value; //значение поста берем в textarea value from ref
-    props.updateNewMessageText(text); //обновляем поле ввода из стейта по пропсам
+    let action = updateNewMessageTextActionCreator(text);
+    props.dispatch(action); //обновляем поле ввода из стейта по пропсам
   };
 
   return (

@@ -27,8 +27,9 @@ const App = (props) => {
           <Route path='/dialogs'>
             <Dialogs
               dialogsPage={props.state.dialogsPage}
-              addMessage={props.addMessage}
-              updateNewMessageText={props.updateNewMessageText}
+              dispatch={props.dispatch}
+              // addMessage={props.addMessage}
+              // updateNewMessageText={props.updateNewMessageText}
             />
           </Route>
           <Route path='/news'>

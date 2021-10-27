@@ -18,8 +18,8 @@ function rerenderEntireTree(state) {
         // state={state}
         dispatch={store.dispatch.bind(store)}
         // updateNewPostText={store.updateNewPostText.bind(store)}
-        addMessage={store.addMessage.bind(store)}
-        updateNewMessageText={store.updateNewMessageText.bind(store)}
+        // addMessage={store.addMessage.bind(store)}
+        // updateNewMessageText={store.updateNewMessageText.bind(store)}
       />
     </React.StrictMode>,
     document.getElementById('root'),

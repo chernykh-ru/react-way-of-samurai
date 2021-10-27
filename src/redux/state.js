@@ -1,3 +1,9 @@
+//выносим константы в глобальную область видимости
+const ADD_POST = 'ADD-POST';
+const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
+const ADD_MESSAGE = 'ADD-MESSAGE';
+const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
+
 let store = {
   _state: {
     profilePage: {
@@ -75,7 +81,7 @@ let store = {
   //   this._callSubscriber(this._state);
   // },
   dispatch(action) {
-    if (action.type === 'ADD-POST') {
+    if (action.type === ADD_POST) {
       let newPost = {
         id: 4,
         message: this._state.profilePage.newPostText, //берем значение из стейта
@@ -84,8 +90,19 @@ let store = {
       this._state.profilePage.posts.push(newPost);
       this._state.profilePage.newPostText = ''; //переносим логику зануление из тупого компонента в функцию стейта
       this._callSubscriber(this._state);
-    } else if (action.type === 'UPDATE-NEW-POST-TEXT') {
+    } else if (action.type === UPDATE_NEW_POST_TEXT) {
       this._state.profilePage.newPostText = action.newText;
+      this._callSubscriber(this._state);
+    } else if (action.type === ADD_MESSAGE) {
+      let newMessage = {
+        id: 4,
+        message: this._state.dialogsPage.newMessageText, //берем значение из стейта
+      };
+      this._state.dialogsPage.messages.push(newMessage);
+      this._state.dialogsPage.newMessageText = ''; //переносим логику зануление из тупого компонента в функцию стейта
+      this._callSubscriber(this._state);
+    } else if (action.type === UPDATE_NEW_MESSAGE_TEXT) {
+      this._state.dialogsPage.newMessageText = action.newText;
       this._callSubscriber(this._state);
     }
   },
@@ -97,19 +114,43 @@ let store = {
   //   }
   // },
 
-  addMessage() {
-    let newMessage = {
-      id: 4,
-      message: this._state.dialogsPage.newMessageText, //берем значение из стейта
-    };
-    this._state.dialogsPage.messages.push(newMessage);
-    this._state.dialogsPage.newMessageText = ''; //переносим логику зануление из тупого компонента в функцию стейта
-    this._callSubscriber(this._state);
-  },
-  updateNewMessageText(newText) {
-    this._state.dialogsPage.newMessageText = newText;
-    this._callSubscriber(this._state);
-  },
+  // addMessage() {
+  //   let newMessage = {
+  //     id: 4,
+  //     message: this._state.dialogsPage.newMessageText, //берем значение из стейта
+  //   };
+  //   this._state.dialogsPage.messages.push(newMessage);
+  //   this._state.dialogsPage.newMessageText = ''; //переносим логику зануление из тупого компонента в функцию стейта
+  //   this._callSubscriber(this._state);
+  // },
+  // updateNewMessageText(newText) {
+  //   this._state.dialogsPage.newMessageText = newText;
+  //   this._callSubscriber(this._state);
+  // },
 };
+
+//создаем функции action creator, которая возвращает объект {action}, после чего переносим их в стейт
+
+export const addPostActionCreator = () => ({ type: ADD_POST }); //выносим константу в клобальную область видимости
+
+// export const addPostActionCreator = () => {
+//   return { type: ADD_POST }; //выносим константу в клобальную область видимости
+//   // return { type: 'ADD-POST' };
+// };
+
+export const updateNewPostTextActionCreator = (text) => {
+  return {
+    type: UPDATE_NEW_POST_TEXT,
+    newText: text,
+  };
+};
+
+//создаем функции action creator для message, которая возвращает объект {action}
+export const addMessageActionCreator = () => ({ type: ADD_MESSAGE });
+
+export const updateNewMessageTextActionCreator = (text) => ({
+  type: UPDATE_NEW_MESSAGE_TEXT,
+  newText: text,
+});
 
 export default store;
