@@ -1,8 +1,13 @@
 //выносим константы в глобальную область видимости
-const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
-const ADD_MESSAGE = 'ADD-MESSAGE';
-const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
+import profileReducer from './profile-reducer';
+import dialogsReducer from './dialog-reducer';
+import sidebarReducer from './sidebar-reducer';
+
+//переносим константы к редьюсерам
+// const ADD_POST = 'ADD-POST';
+// const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
+// const ADD_MESSAGE = 'ADD-MESSAGE';
+// const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
 
 let store = {
   _state: {
@@ -68,52 +73,58 @@ let store = {
   },
 
   dispatch(action) {
-    if (action.type === ADD_POST) {
-      let newPost = {
-        id: 4,
-        message: this._state.profilePage.newPostText, //берем значение из стейта
-        likeCounter: 0,
-      };
-      this._state.profilePage.posts.push(newPost);
-      this._state.profilePage.newPostText = ''; //переносим логику зануление из тупого компонента в функцию стейта
-      this._callSubscriber(this._state);
-    } else if (action.type === UPDATE_NEW_POST_TEXT) {
-      this._state.profilePage.newPostText = action.newText;
-      this._callSubscriber(this._state);
-    } else if (action.type === ADD_MESSAGE) {
-      let newMessage = this._state.dialogsPage.newMessageText; //берем значение из стейта
-      this._state.dialogsPage.messages.push({ id: 4, message: newMessage });
-      this._state.dialogsPage.newMessageText = ''; //переносим логику зануление из тупого компонента в функцию стейта
-      this._callSubscriber(this._state);
-    } else if (action.type === UPDATE_NEW_MESSAGE_TEXT) {
-      this._state.dialogsPage.newMessageText = action.newText;
-      this._callSubscriber(this._state);
-    }
+    this._state.profilePage = profileReducer(this._state.profilePage, action); //отдаем редьюсеру нужный стейт и экшн
+    this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
+    this._state.sidebar = sidebarReducer(this._state.sidebar, action);
+
+    this._callSubscriber(this._state); //уведопляем всех подписчиков
+
+    // if (action.type === ADD_POST) {
+    //   let newPost = {
+    //     id: 4,
+    //     message: this._state.profilePage.newPostText, //берем значение из стейта
+    //     likeCounter: 0,
+    //   };
+    //   this._state.profilePage.posts.push(newPost);
+    //   this._state.profilePage.newPostText = ''; //переносим логику зануление из тупого компонента в функцию стейта
+    //   this._callSubscriber(this._state);
+    // } else if (action.type === UPDATE_NEW_POST_TEXT) {
+    //   this._state.profilePage.newPostText = action.newText;
+    //   this._callSubscriber(this._state);
+    // } else if (action.type === ADD_MESSAGE) {
+    //   let newMessage = this._state.dialogsPage.newMessageText; //берем значение из стейта
+    //   this._state.dialogsPage.messages.push({ id: 4, message: newMessage });
+    //   this._state.dialogsPage.newMessageText = ''; //переносим логику зануление из тупого компонента в функцию стейта
+    //   this._callSubscriber(this._state);
+    // } else if (action.type === UPDATE_NEW_MESSAGE_TEXT) {
+    //   this._state.dialogsPage.newMessageText = action.newText;
+    //   this._callSubscriber(this._state);
+    // }
   },
 };
 
-//создаем функции action creator, которая возвращает объект {action}, после чего переносим их в стейт
+// //создаем функции action creator, которая возвращает объект {action}, после чего переносим их в стейт
 
-export const addPostActionCreator = () => ({ type: ADD_POST }); //выносим константу в клобальную область видимости
+// export const addPostActionCreator = () => ({ type: ADD_POST }); //выносим константу в клобальную область видимости
 
-// export const addPostActionCreator = () => {
-//   return { type: ADD_POST }; //выносим константу в клобальную область видимости
-//   // return { type: 'ADD-POST' };
+// // export const addPostActionCreator = () => {
+// //   return { type: ADD_POST }; //выносим константу в клобальную область видимости
+// //   // return { type: 'ADD-POST' };
+// // };
+
+// export const updateNewPostTextActionCreator = (text) => {
+//   return {
+//     type: UPDATE_NEW_POST_TEXT,
+//     newText: text,
+//   };
 // };
 
-export const updateNewPostTextActionCreator = (text) => {
-  return {
-    type: UPDATE_NEW_POST_TEXT,
-    newText: text,
-  };
-};
+// //создаем функции action creator для message, которая возвращает объект {action}
+// export const addMessageActionCreator = () => ({ type: ADD_MESSAGE });
 
-//создаем функции action creator для message, которая возвращает объект {action}
-export const addMessageActionCreator = () => ({ type: ADD_MESSAGE });
-
-export const updateNewMessageTextActionCreator = (text) => ({
-  type: UPDATE_NEW_MESSAGE_TEXT,
-  newText: text,
-});
+// export const updateNewMessageTextActionCreator = (text) => ({
+//   type: UPDATE_NEW_MESSAGE_TEXT,
+//   newText: text,
+// });
 
 export default store;

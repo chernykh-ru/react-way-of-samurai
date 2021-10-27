@@ -1,7 +1,10 @@
 import Post from './Post/Post';
 import styles from './MyPosts.module.css';
 import React from 'react';
-import { addPostActionCreator, updateNewPostTextActionCreator } from '../../../redux/state';
+import {
+  addPostActionCreator,
+  updateNewPostTextActionCreator,
+} from '../../../redux/profile-reducer';
 
 // //создаем функцию action creator, которая возвращает объект {action}, после чего переносим их в стейт
 // let addPostActionCreator = () => {
