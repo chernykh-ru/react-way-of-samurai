@@ -23,7 +23,7 @@ let store = {
       //   // {id: 5, name: 'Valera'},
       //   // {id: 6, name: 'Viktor'}
       // ],
-      dialogsData: [
+      dialogs: [
         {
           id: 1,
           name: 'Andrew',
@@ -66,20 +66,7 @@ let store = {
   subscribe(observer) {
     this._callSubscriber = observer;
   },
-  // addPost() {
-  //   let newPost = {
-  //     id: 4,
-  //     message: this._state.profilePage.newPostText, //берем значение из стейта
-  //     likeCounter: 0,
-  //   };
-  //   this._state.profilePage.posts.push(newPost);
-  //   this._state.profilePage.newPostText = ''; //переносим логику зануление из тупого компонента в функцию стейта
-  //   this._callSubscriber(this._state);
-  // },
-  // updateNewPostText(newText) {
-  //   this._state.profilePage.newPostText = newText;
-  //   this._callSubscriber(this._state);
-  // },
+
   dispatch(action) {
     if (action.type === ADD_POST) {
       let newPost = {
@@ -94,11 +81,8 @@ let store = {
       this._state.profilePage.newPostText = action.newText;
       this._callSubscriber(this._state);
     } else if (action.type === ADD_MESSAGE) {
-      let newMessage = {
-        id: 4,
-        message: this._state.dialogsPage.newMessageText, //берем значение из стейта
-      };
-      this._state.dialogsPage.messages.push(newMessage);
+      let newMessage = this._state.dialogsPage.newMessageText; //берем значение из стейта
+      this._state.dialogsPage.messages.push({ id: 4, message: newMessage });
       this._state.dialogsPage.newMessageText = ''; //переносим логику зануление из тупого компонента в функцию стейта
       this._callSubscriber(this._state);
     } else if (action.type === UPDATE_NEW_MESSAGE_TEXT) {
@@ -106,27 +90,6 @@ let store = {
       this._callSubscriber(this._state);
     }
   },
-  // dispatch(action) {
-  //   if (action.type === 'ADD-POST') {
-  //     this._addPost();
-  //   } else if (action.type === 'UPDATE-NEW-POST-TEXT') {
-  //     this._updateNewPostText(action.newText);
-  //   }
-  // },
-
-  // addMessage() {
-  //   let newMessage = {
-  //     id: 4,
-  //     message: this._state.dialogsPage.newMessageText, //берем значение из стейта
-  //   };
-  //   this._state.dialogsPage.messages.push(newMessage);
-  //   this._state.dialogsPage.newMessageText = ''; //переносим логику зануление из тупого компонента в функцию стейта
-  //   this._callSubscriber(this._state);
-  // },
-  // updateNewMessageText(newText) {
-  //   this._state.dialogsPage.newMessageText = newText;
-  //   this._callSubscriber(this._state);
-  // },
 };
 
 //создаем функции action creator, которая возвращает объект {action}, после чего переносим их в стейт

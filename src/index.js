@@ -5,22 +5,24 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 // import state, { subscribe } from './redux/state';
 import store from './redux/state';
-// import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import { rerenderEntireTrie } from './render';
 // import { addPost, updateNewPostText, addMessage, updateNewMessageText } from './redux/state';
 
 function rerenderEntireTree(state) {
   ReactDOM.render(
     <React.StrictMode>
-      <App
-        state={state}
-        // state={store.getState()}
-        // state={state}
-        dispatch={store.dispatch.bind(store)}
-        // updateNewPostText={store.updateNewPostText.bind(store)}
-        // addMessage={store.addMessage.bind(store)}
-        // updateNewMessageText={store.updateNewMessageText.bind(store)}
-      />
+      <Router>
+        <App
+          state={state}
+          // state={store.getState()}
+          // state={state}
+          dispatch={store.dispatch.bind(store)}
+          // updateNewPostText={store.updateNewPostText.bind(store)}
+          // addMessage={store.addMessage.bind(store)}
+          // updateNewMessageText={store.updateNewMessageText.bind(store)}
+        />
+      </Router>
     </React.StrictMode>,
     document.getElementById('root'),
   );
