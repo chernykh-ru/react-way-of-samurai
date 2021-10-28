@@ -1,10 +1,10 @@
 import Post from './Post/Post';
 import styles from './MyPosts.module.css';
 import React from 'react';
-import {
-  addPostActionCreator,
-  updateNewPostTextActionCreator,
-} from '../../../redux/profile-reducer';
+// import {
+//   addPostActionCreator,
+//   updateNewPostTextActionCreator,
+// } from '../../../redux/profile-reducer';
 
 // //создаем функцию action creator, которая возвращает объект {action}, после чего переносим их в стейт
 // let addPostActionCreator = () => {
@@ -26,21 +26,21 @@ const MyPosts = (props) => {
 
   let newPostElement = React.createRef();
 
-  let addPost = () => {
+  let onAddPost = () => {
     // debugger;
+    props.addPost(); //добавляем пост функцией callback в стейте
     // let text = newPostElement.current.value; //значение поста берем в textarea value from ref//значение уже есть в стейте возьмем его от туда
-    props.dispatch(addPostActionCreator()); //добавляем пост функцией через dispatch в стейте
-    // props.addPost(); //добавляем пост функцией в стейте
+    // props.dispatch(addPostActionCreator()); //добавляем пост функцией через dispatch в стейте//зачищаем презентационную компоненту
     // props.updateNewPostText(''); //зануляем поле ввода после публикации поста//переносим логику в функцию в стейт
     // newPostElement.current.value = '';зануление поля ввода
   };
 
   let onPostChange = () => {
     let text = newPostElement.current.value; //значение поста берем в textarea value from ref
-    let action = updateNewPostTextActionCreator(text);
+    props.updateNewPostText(text); //обновляем поле ввода функцией callback из стейта по пропсам
+    // let action = updateNewPostTextActionCreator(text);//зачищаем презентационную компоненту
     // let action = { type: 'UPDATE-NEW-POST-TEXT', newText: text };
-    props.dispatch(action); //обновляем поле ввода из стейта по пропсам
-    // props.updateNewPostText(text); //обновляем поле ввода из стейта по пропсам
+    // props.dispatch(action); //обновляем поле ввода из стейта по пропсам//зачищаем презентационную компоненту
   };
 
   // const addPost = () => {
@@ -57,7 +57,7 @@ const MyPosts = (props) => {
           {/* <textarea id='new-post'></textarea> */}
         </div>
         <div>
-          <button onClick={addPost}>Add post</button>
+          <button onClick={onAddPost}>Add post</button>
         </div>
       </div>
       <div className={styles.posts}>{postsElements}</div>

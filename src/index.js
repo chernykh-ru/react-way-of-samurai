@@ -11,12 +11,13 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import { addPost, updateNewPostText, addMessage, updateNewMessageText } from './redux/state';
 
 function rerenderEntireTree(state) {
-  debugger;
+  // debugger;
   ReactDOM.render(
     <React.StrictMode>
       <Router>
         <App
-          state={state}
+          // state={state}
+          store={store}
           // state={store.getState()}
           // state={state}
           dispatch={store.dispatch.bind(store)}
@@ -39,7 +40,7 @@ store.subscribe(() => {
 //Передаем через callback(через внутренность функции subscribe) функцию перерисовки rerenderEntireTree в index
 // store.subscribe(rerenderEntireTree);
 
-rerenderEntireTree(store.getState()); //запускает первичный рендер страницы
+rerenderEntireTree(store.getState()); //запускает первичный рендер страницы и передает свежий стейт
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
