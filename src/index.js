@@ -9,22 +9,29 @@ import store from './redux/redux-store';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import { rerenderEntireTrie } from './render';
 // import { addPost, updateNewPostText, addMessage, updateNewMessageText } from './redux/state';
+import { Provider } from './StoreContext';
 
 function rerenderEntireTree(state) {
   // debugger;
   ReactDOM.render(
     <React.StrictMode>
       <Router>
-        <App
+        <Provider store={store}>
+          <App
+          // store={store}
+          // dispatch={store.dispatch.bind(store)}
           // state={state}
-          store={store}
           // state={store.getState()}
           // state={state}
-          dispatch={store.dispatch.bind(store)}
           // updateNewPostText={store.updateNewPostText.bind(store)}
           // addMessage={store.addMessage.bind(store)}
           // updateNewMessageText={store.updateNewMessageText.bind(store)}
-        />
+          />
+        </Provider>
+        {/* <StoreContext.Provider value={store}>
+          <App
+          />
+        </StoreContext.Provider> */}
       </Router>
     </React.StrictMode>,
     document.getElementById('root'),

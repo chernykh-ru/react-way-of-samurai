@@ -21,19 +21,19 @@ const App = (props) => {
       <div className='app-wrapper-content'>
         <Route path='/profile'>
           <Profile
-            store={props.store}
-            // profilePage={props.state.profilePage}
-            // dispatch={props.dispatch}
-            // updateNewPostText={props.updateNewPostText}
+          // store={props.store}
+          // profilePage={props.state.profilePage}
+          // dispatch={props.dispatch}
+          // updateNewPostText={props.updateNewPostText}
           />
         </Route>
         <Route path='/dialogs'>
           <DialogsContainer
-            store={props.store}
-            // dialogsPage={props.state.dialogsPage}
-            // dispatch={props.dispatch}
-            // addMessage={props.addMessage}
-            // updateNewMessageText={props.updateNewMessageText}
+          // store={props.store}
+          // dialogsPage={props.state.dialogsPage}
+          // dispatch={props.dispatch}
+          // addMessage={props.addMessage}
+          // updateNewMessageText={props.updateNewMessageText}
           />
         </Route>
         <Route path='/news'>
