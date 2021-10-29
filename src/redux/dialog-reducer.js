@@ -31,26 +31,26 @@ let initialState = {
 };
 
 const dialogsReducer = (state = initialState, action) => {
+  // let stateCopy; //объявляем переменную копиистейта
   switch (action.type) {
-    case ADD_MESSAGE: {
-      let newMessage = {
-        id: 4,
-        message: state.newMessageText,
-      }; //создаем копию стейта и далее берем значения из копии стейта
-      let stateCopy = { ...state };
-      stateCopy.messages = [...state.messages]; //внимательно со знаками массива [] а не объекта {}!
-      stateCopy.messages.push(newMessage);
-      stateCopy.newMessageText = '';
-      return stateCopy;
-      // state.messages.push(newMessage);
-      // state.newMessageText = '';
-      // return state;
-    }
-    case UPDATE_NEW_MESSAGE_TEXT: {
-      let stateCopy = { ...state };
-      stateCopy.newMessageText = action.newText;
-      return stateCopy;
-    }
+    case ADD_MESSAGE:
+      let newMessage = state.newMessageText;
+      // stateCopy = {
+      //   ...state,
+      //   newMessageText: '', //зануляем поле ввода
+      //   messages: [...state.messages, { id: 4, message: newMessage }], //спрэдим стейт на нужную глубину и добавляем в конец(пушим) новый элемент массива
+      // };
+      return {
+        ...state,
+        newMessageText: '', //зануляем поле ввода
+        messages: [...state.messages, { id: 4, message: newMessage }],
+      };
+    case UPDATE_NEW_MESSAGE_TEXT:
+      // stateCopy = {
+      //   ...state,
+      //   newMessageText: action.newText,
+      // };
+      return { ...state, newMessageText: action.newText };
     default:
       return state;
   }

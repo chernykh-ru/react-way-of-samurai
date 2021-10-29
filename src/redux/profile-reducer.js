@@ -11,35 +11,54 @@ let initialState = {
 };
 
 const profileReducer = (state = initialState, action) => {
-  // debugger;
   switch (action.type) {
-    case ADD_POST: {
-      let newPost = {
-        id: 4,
-        message: state.newPostText, //берем значение из стейта
-        likeCounter: 0,
+    case ADD_POST:
+      let newPost = state.newPostText;
+      return {
+        ...state,
+        newPostText: '',
+        posts: [...state.posts, { id: 4, message: newPost }],
       };
-      let stateCopy = { ...state };
-      stateCopy.posts = [...state.posts]; //из за поверхностной копии стейта отдельно копируем массив постов []
-      stateCopy.posts.push(newPost); //в новую копию стейта будем пушить новые посты
-      // state.posts.push(newPost); //this._state.profilePage = state из пропсов
-      // stateCopy.newPostText = [...state.newPostText];//не нужно потому что newPostText примитив строка
-      stateCopy.newPostText = '';
-      // state.newPostText = '';
-      return stateCopy;
-    }
-    case UPDATE_NEW_POST_TEXT: {
-      let stateCopy = { ...state };
-      stateCopy.newPostText = action.newText;
-      // state.newPostText = action.newText;
-      return stateCopy;
-    }
+    case UPDATE_NEW_POST_TEXT:
+      return {
+        ...state,
+        newPostText: action.newText,
+      };
     default:
-      // let stateCopy = { ...state };
-      // return stateCopy;
       return state;
   }
 };
+
+// const profileReducer = (state = initialState, action) => {
+//   // debugger;
+//   switch (action.type) {
+//     case ADD_POST: {
+//       let newPost = {
+//         id: 4,
+//         message: state.newPostText, //берем значение из стейта
+//         likeCounter: 0,
+//       };
+//       let stateCopy = { ...state };
+//       stateCopy.posts = [...state.posts]; //из за поверхностной копии стейта отдельно копируем массив постов []
+//       stateCopy.posts.push(newPost); //в новую копию стейта будем пушить новые посты
+//       // state.posts.push(newPost); //this._state.profilePage = state из пропсов
+//       // stateCopy.newPostText = [...state.newPostText];//не нужно потому что newPostText примитив строка
+//       stateCopy.newPostText = '';
+//       // state.newPostText = '';
+//       return stateCopy;
+//     }
+//     case UPDATE_NEW_POST_TEXT: {
+//       let stateCopy = { ...state };
+//       stateCopy.newPostText = action.newText;
+//       // state.newPostText = action.newText;
+//       return stateCopy;
+//     }
+//     default:
+//       // let stateCopy = { ...state };
+//       // return stateCopy;
+//       return state;
+//   }
+// };
 
 //создаем функции action creator, которая возвращает объект {action}, после чего переносим их в стейт
 
