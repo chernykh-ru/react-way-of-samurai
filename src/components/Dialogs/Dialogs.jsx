@@ -60,7 +60,7 @@ const Dialogs = (props) => {
               onChange={onMessageChange}
               // ref={newMessageElement}//уходим от исользования ref
               value={props.newMessageText}
-              placeholder='Enter your message'
+              // placeholder='Enter your message'
             />
           </div>
           <div>

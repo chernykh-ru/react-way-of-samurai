@@ -9,7 +9,8 @@ import store from './redux/redux-store';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import { rerenderEntireTrie } from './render';
 // import { addPost, updateNewPostText, addMessage, updateNewMessageText } from './redux/state';
-import { Provider } from './StoreContext';
+// import { Provider } from './StoreContext';
+import { Provider } from 'react-redux';
 
 function rerenderEntireTree(state) {
   // debugger;
