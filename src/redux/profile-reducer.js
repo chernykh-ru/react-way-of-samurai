@@ -13,20 +13,31 @@ let initialState = {
 const profileReducer = (state = initialState, action) => {
   // debugger;
   switch (action.type) {
-    case ADD_POST:
+    case ADD_POST: {
       let newPost = {
         id: 4,
         message: state.newPostText, //берем значение из стейта
         likeCounter: 0,
       };
-      state.posts.push(newPost); //this._state.profilePage = state из пропсов
-      state.newPostText = '';
-      return { ...state };
-    case UPDATE_NEW_POST_TEXT:
-      state.newPostText = action.newText;
-      return { ...state };
+      let stateCopy = { ...state };
+      stateCopy.posts = [...state.posts]; //из за поверхностной копии стейта отдельно копируем массив постов []
+      stateCopy.posts.push(newPost); //в новую копию стейта будем пушить новые посты
+      // state.posts.push(newPost); //this._state.profilePage = state из пропсов
+      // stateCopy.newPostText = [...state.newPostText];//не нужно потому что newPostText примитив строка
+      stateCopy.newPostText = '';
+      // state.newPostText = '';
+      return stateCopy;
+    }
+    case UPDATE_NEW_POST_TEXT: {
+      let stateCopy = { ...state };
+      stateCopy.newPostText = action.newText;
+      // state.newPostText = action.newText;
+      return stateCopy;
+    }
     default:
-      return { ...state };
+      // let stateCopy = { ...state };
+      // return stateCopy;
+      return state;
   }
 };
 
