@@ -17,7 +17,7 @@ const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         newPostText: '',
-        posts: [...state.posts, { id: 4, message: newPost }],
+        posts: [...state.posts, { id: 4, message: newPost }], //добавляем новый элемент в массив
       };
     case UPDATE_NEW_POST_TEXT:
       return {

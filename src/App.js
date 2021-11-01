@@ -3,14 +3,13 @@ import './App.css';
 import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 import Profile from './components/Profile/Profile';
-// import Dialogs from './components/Dialogs/Dialogs';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Setings from './components/Setings/Setings';
-import Friends from './components/Friends/Friends';
+import UsersContainer from './components/Users/UsersContainer';
+import DialogsContainer from './components/Dialogs/DialogsContainer';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import store from './redux/store';
-import DialogsContainer from './components/Dialogs/DialogsContainer';
 
 const App = (props) => {
   // debugger;
@@ -28,13 +27,10 @@ const App = (props) => {
           />
         </Route>
         <Route path='/dialogs'>
-          <DialogsContainer
-          // store={props.store}
-          // dialogsPage={props.state.dialogsPage}
-          // dispatch={props.dispatch}
-          // addMessage={props.addMessage}
-          // updateNewMessageText={props.updateNewMessageText}
-          />
+          <DialogsContainer />
+        </Route>
+        <Route path='/users'>
+          <UsersContainer />
         </Route>
         <Route path='/news'>
           <News />
@@ -44,9 +40,6 @@ const App = (props) => {
         </Route>
         <Route path='/setings'>
           <Setings />
-        </Route>
-        <Route path='/friends'>
-          <Friends />
         </Route>
       </div>
     </div>

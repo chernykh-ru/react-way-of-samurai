@@ -1,0 +1,26 @@
+/* .content {
+  grid-area: content;
+  border: 2px solid red;
+} */
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 2px solid red;
+  margin-bottom: 20px;
+}
+
+.wrapper__item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  min-width: 600px;
+  /* border: 2px solid green; */
+}
+
+.userPhoto {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
