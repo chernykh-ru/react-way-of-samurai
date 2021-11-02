@@ -5,17 +5,24 @@ import React from 'react';
 
 //переписали компоненту с функциональной на классовую
 class Users extends React.Component {
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
+  // }//если кроме конструктора(супер) ничего нет, можно не писать
+  // axios.get('https://social-network.samuraijs.com/api/1.0/users').then((res) => {
+  //   this.props.setUsers(res.data.items); //получаем user из response(ответ) data(данные) items(объект с юзерами)
+  // }); //bug по отрисовке одних и тех же пользователей при смене страницы
+  // if (this.props.users.length === 0) {
+  //   axios.get('https://social-network.samuraijs.com/api/1.0/users').then((res) => {
+  //     this.props.setUsers(res.data.items); //получаем user из response(ответ) data(данные) items(объект с юзерами)
+  //   });
+  // }
+  //при создании копонента сразу загуржаем пользователей
+
+  componentDidMount() {
     axios.get('https://social-network.samuraijs.com/api/1.0/users').then((res) => {
       this.props.setUsers(res.data.items); //получаем user из response(ответ) data(данные) items(объект с юзерами)
-    }); //bug по отрисовке одних и тех же пользователей при смене страницы
-    // if (this.props.users.length === 0) {
-    //   axios.get('https://social-network.samuraijs.com/api/1.0/users').then((res) => {
-    //     this.props.setUsers(res.data.items); //получаем user из response(ответ) data(данные) items(объект с юзерами)
-    //   });
-    // }
-  } //при создании копонента сразу загуржаем пользователей
+    });
+  }
 
   render() {
     return (
