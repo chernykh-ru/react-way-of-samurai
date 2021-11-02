@@ -1,33 +1,12 @@
+import axios from 'axios';
 import styles from './Users.module.css';
+import avataaars from './../../../src/assets/images/avataaars.png';
 
 const Users = (props) => {
   if (props.users.length === 0) {
-    props.setUsers([
-      {
-        id: 1,
-        photoUrl: 'https://author.today/content/2020/02/29/5f7d802fc35d4cbdacea7161f5f45212.jpg',
-        followed: false,
-        fullName: 'Dmitry',
-        status: 'i am teacher',
-        location: { city: 'Minsk', country: 'Belarus' },
-      },
-      {
-        id: 2,
-        photoUrl: 'https://i.pinimg.com/originals/9c/77/46/9c7746225873e02d83b9315501b8dd2f.jpg',
-        followed: true,
-        fullName: 'Vasiliy',
-        status: 'i am student',
-        location: { city: 'Moscow', country: 'Russia' },
-      },
-      {
-        id: 3,
-        photoUrl: 'https://i.pinimg.com/originals/5a/f1/dd/5af1ddcde07255e8a999abcc061dd201.png',
-        followed: false,
-        fullName: 'Petro',
-        status: 'i am student from ua',
-        location: { city: 'Dnepr', country: 'Ukraine' },
-      },
-    ]);
+    axios.get('https://social-network.samuraijs.com/api/1.0/users').then((res) => {
+      props.setUsers(res.data.items); //получаем user из response(ответ) data(данные) items(объект с юзерами)
+    });
   }
 
   return (
@@ -36,7 +15,11 @@ const Users = (props) => {
         <div className={styles.wrapper} key={user.id}>
           <div>
             <div>
-              <img className={styles.userPhoto} src={user.photoUrl} alt='avatar' />
+              <img
+                className={styles.userPhoto}
+                src={user.photos.small != null ? user.photos.small : avataaars} //добавляем проверку, если с сервера не пришла аватарка, поставить заглушку
+                alt='avatar'
+              />
             </div>
             <div>
               {user.followed ? (
@@ -58,12 +41,12 @@ const Users = (props) => {
           </div>
           <div className={styles.wrapper__item}>
             <div>
-              <div>{user.fullName}</div>
+              <div>{user.name}</div>
               <div>{user.status}</div>
             </div>
             <div>
-              <div>{user.location.country}</div>
-              <div>{user.location.city}</div>
+              {/* <div>{user.location.country}</div>
+              <div>{user.location.city}</div> */}
             </div>
           </div>
         </div>
