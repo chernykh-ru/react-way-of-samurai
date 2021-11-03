@@ -6,9 +6,12 @@ import {
   setUsersAC,
   setCurrentPageAC,
   setTotalUsersCountAC,
+  toggleIsFetchingAC,
 } from '../../redux/users-reducer';
 import axios from 'axios';
 import Users from './Users';
+import Preloader from '../common/preloader/Preloader';
+
 // import UsersAPIComponent from './UsersAPIComponent';
 
 class UsersContainer extends React.Component {
@@ -18,38 +21,47 @@ class UsersContainer extends React.Component {
   // } //если кроме конструктора(супер) ничего нет, можно не писать
 
   componentDidMount() {
+    this.props.toggleIsFetching(true); //запрос ушел preloader виден
     axios
       .get(
         `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`,
       )
       .then((res) => {
         this.props.setUsers(res.data.items); //получаем user из response(ответ) data(данные) items(объект с юзерами) и диспачим setUsers
+        this.props.toggleIsFetching(false); //запрос пришел preloader скрывается
         this.props.setTotalUsersCount(res.data.totalCount);
       });
   }
 
   onPageChanged = (currentPage) => {
     this.props.setCurrentPage(currentPage);
+    this.props.toggleIsFetching(true); //запрос ушел preloader виден
     axios
       .get(
         `https://social-network.samuraijs.com/api/1.0/users?page=${currentPage}&count=${this.props.pageSize}`,
       )
       .then((res) => {
+        this.props.toggleIsFetching(false); //запрос пришел preloader скрывается
         this.props.setUsers(res.data.items);
       });
   };
 
   render() {
     return (
-      <Users
-        totalUsersCount={this.props.totalUsersCount}
-        pageSize={this.props.pageSize}
-        currentPage={this.props.currentPage}
-        users={this.props.users}
-        onPageChanged={this.onPageChanged}
-        follow={this.props.follow}
-        unfollow={this.props.unfollow}
-      />
+      <>
+        {this.props.isFetching ? (
+          <Preloader /> //вынесли компоненту в common/preloader
+        ) : null}
+        <Users
+          totalUsersCount={this.props.totalUsersCount}
+          pageSize={this.props.pageSize}
+          currentPage={this.props.currentPage}
+          users={this.props.users}
+          onPageChanged={this.onPageChanged}
+          follow={this.props.follow}
+          unfollow={this.props.unfollow}
+        />
+      </>
     );
   }
 }
@@ -62,6 +74,7 @@ let mapStateToProps = (state) => {
     pageSize: state.usersPage.pageSize,
     totalUsersCount: state.usersPage.totalUsersCount,
     currentPage: state.usersPage.currentPage,
+    isFetching: state.usersPage.isFetching,
   };
 };
 
@@ -82,6 +95,9 @@ let mapDispatchToProps = (dispatch) => {
     },
     setTotalUsersCount: (totalCount) => {
       dispatch(setTotalUsersCountAC(totalCount));
+    },
+    toggleIsFetching: (isFetching) => {
+      dispatch(toggleIsFetchingAC(isFetching));
     },
   };
 };
