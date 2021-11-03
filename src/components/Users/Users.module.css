@@ -24,3 +24,11 @@
   height: 60px;
   border-radius: 50%;
 }
+
+.pagination {
+  cursor: pointer;
+}
+
+.selectedPage {
+  font-weight: 700;
+}

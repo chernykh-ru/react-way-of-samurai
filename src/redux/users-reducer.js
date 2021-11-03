@@ -1,34 +1,14 @@
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
+const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
+const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
 
 let initialState = {
-  users: [
-    // {
-    //   id: 1,
-    //   photoUrl: 'https://author.today/content/2020/02/29/5f7d802fc35d4cbdacea7161f5f45212.jpg',
-    //   followed: false,
-    //   fullName: 'Dmitry',
-    //   status: 'i am teacher',
-    //   location: { city: 'Minsk', country: 'Belarus' },
-    // },
-    // {
-    //   id: 2,
-    //   photoUrl: 'https://i.pinimg.com/originals/9c/77/46/9c7746225873e02d83b9315501b8dd2f.jpg',
-    //   followed: true,
-    //   fullName: 'Vasiliy',
-    //   status: 'i am student',
-    //   location: { city: 'Moscow', country: 'Russia' },
-    // },
-    // {
-    //   id: 3,
-    //   photoUrl: 'https://i.pinimg.com/originals/5a/f1/dd/5af1ddcde07255e8a999abcc061dd201.png',
-    //   followed: false,
-    //   fullName: 'Petro',
-    //   status: 'i am student from ua',
-    //   location: { city: 'Dnepr', country: 'Ukraine' },
-    // },
-  ],
+  users: [],
+  pageSize: 10,
+  totalUsersCount: 0,
+  currentPage: 4,
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -56,9 +36,21 @@ const usersReducer = (state = initialState, action) => {
     case SET_USERS: {
       return {
         ...state,
-        users: [...action.users], //bug с дублированием user
+        users: action.users, //перезатираем массив юзеров
         // users: [...state.users, ...action.users],
       }; //с сервера придут пользователи, мы должны взять старый стейт(сделать копию) и дополнить его новыми пользователями пришедшими из экшна (склеить два массива спред оператором)
+    }
+    case SET_CURRENT_PAGE: {
+      return {
+        ...state,
+        currentPage: action.currentPage,
+      };
+    }
+    case SET_TOTAL_USERS_COUNT: {
+      return {
+        ...state,
+        totalUsersCount: action.count,
+      };
     }
     default:
       return state;
@@ -69,5 +61,10 @@ const usersReducer = (state = initialState, action) => {
 export const followAC = (userId) => ({ type: FOLLOW, userId });
 export const unfollowAC = (userId) => ({ type: UNFOLLOW, userId });
 export const setUsersAC = (users) => ({ type: SET_USERS, users }); //возьмем данные о юзерах с сервера и поместим их потом в стейт
+export const setCurrentPageAC = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage });
+export const setTotalUsersCountAC = (totalUsersCount) => ({
+  type: SET_TOTAL_USERS_COUNT,
+  count: totalUsersCount, //когда ключ и значение не одинаковы(специально)
+});
 
 export default usersReducer;

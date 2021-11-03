@@ -3,30 +3,60 @@ import styles from './Users.module.css';
 import avataaars from './../../../src/assets/images/avataaars.png';
 import React from 'react';
 
-//переписали компоненту с функциональной на классовую
 class Users extends React.Component {
+  // debugger;
   // constructor(props) {
   //   super(props);
-  // }//если кроме конструктора(супер) ничего нет, можно не писать
-  // axios.get('https://social-network.samuraijs.com/api/1.0/users').then((res) => {
-  //   this.props.setUsers(res.data.items); //получаем user из response(ответ) data(данные) items(объект с юзерами)
-  // }); //bug по отрисовке одних и тех же пользователей при смене страницы
-  // if (this.props.users.length === 0) {
-  //   axios.get('https://social-network.samuraijs.com/api/1.0/users').then((res) => {
-  //     this.props.setUsers(res.data.items); //получаем user из response(ответ) data(данные) items(объект с юзерами)
-  //   });
-  // }
-  //при создании копонента сразу загуржаем пользователей
+  // } //если кроме конструктора(супер) ничего нет, можно не писать
 
   componentDidMount() {
-    axios.get('https://social-network.samuraijs.com/api/1.0/users').then((res) => {
-      this.props.setUsers(res.data.items); //получаем user из response(ответ) data(данные) items(объект с юзерами)
-    });
+    axios
+      .get(
+        `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`,
+      )
+      .then((res) => {
+        this.props.setUsers(res.data.items); //получаем user из response(ответ) data(данные) items(объект с юзерами) и диспачим setUsers
+        this.props.setTotalUsersCount(res.data.totalCount);
+      });
   }
 
+  onPageChanged = (currentPage) => {
+    this.props.setCurrentPage(currentPage);
+    axios
+      .get(
+        `https://social-network.samuraijs.com/api/1.0/users?page=${currentPage}&count=${this.props.pageSize}`,
+      )
+      .then((res) => {
+        this.props.setUsers(res.data.items);
+      });
+  };
+
   render() {
+    let pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
+    // let pagesCount = 200; //hardcode
+    let pages = [];
+    for (let i = 1; i <= pagesCount; i++)
+      if (pages.length < 20) {
+        pages.push(i); //хардкодно ограничили длину пагинации
+      }
+
     return (
       <div>
+        <div>
+          {pages.map((page) => {
+            return (
+              <span
+                onClick={(event) => {
+                  this.onPageChanged(page);
+                }}
+                className={`${styles.pagination} ${
+                  this.props.currentPage === page ? styles.selectedPage : ''
+                }`}>
+                {page}
+              </span>
+            );
+          })}
+        </div>
         {/* <button onClick={this.getUsers}>Get Users</button> */}
         {this.props.users.map((user) => (
           <div className={styles.wrapper} key={user.id}>
