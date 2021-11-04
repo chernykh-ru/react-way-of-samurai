@@ -1,6 +1,7 @@
 import styles from './Users.module.css';
 import avataaars from './../../../src/assets/images/avataaars.png';
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const Users = (props) => {
   let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -32,11 +33,13 @@ const Users = (props) => {
         <div className={styles.wrapper} key={user.id}>
           <div>
             <div>
-              <img
-                className={styles.userPhoto}
-                src={user.photos.small != null ? user.photos.small : avataaars} //добавляем проверку, если с сервера не пришла аватарка, поставить заглушку
-                alt='avatar'
-              />
+              <NavLink to={'/profile/' + user.id}>
+                <img
+                  className={styles.userPhoto}
+                  src={user.photos.small != null ? user.photos.small : avataaars} //добавляем проверку, если с сервера не пришла аватарка, поставить заглушку
+                  alt='avatar'
+                />
+              </NavLink>
             </div>
             <div>
               {user.followed ? (

@@ -2,12 +2,13 @@ import React from 'react';
 import './App.css';
 import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
-import Profile from './components/Profile/Profile';
+// import Profile from './components/Profile/Profile';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Setings from './components/Setings/Setings';
 import UsersContainer from './components/Users/UsersContainer';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
+import ProfileContainer from './components/Profile/ProfileContainer';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import store from './redux/store';
 
@@ -19,7 +20,7 @@ const App = (props) => {
       <Navbar />
       <div className='app-wrapper-content'>
         <Route path='/profile'>
-          <Profile
+          <ProfileContainer
           // store={props.store}
           // profilePage={props.state.profilePage}
           // dispatch={props.dispatch}
