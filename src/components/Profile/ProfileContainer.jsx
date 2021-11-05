@@ -15,9 +15,10 @@ class ProfileContainer extends React.Component {
   componentDidMount() {
     // debugger;
     let userId = this.props.match.params.userId;
+    // let userId = this.props.match.params.userId || 2;
     if (!userId) {
       userId = 2;
-    }
+    } //проверка что userId не null или undefined
     axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId).then((response) => {
       this.props.setUserProfile(response.data); //получаем response data из response(ответ) data(данные) и диспачим setUserProfile(хардкодим второго пользователя)
     });

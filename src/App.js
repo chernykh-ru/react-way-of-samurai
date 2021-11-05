@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Header from './components/Header/Header';
+// import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 // import Profile from './components/Profile/Profile';
 import News from './components/News/News';
@@ -9,6 +9,7 @@ import Setings from './components/Setings/Setings';
 import UsersContainer from './components/Users/UsersContainer';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
+import HeaderContainer from './components/Header/HeaderContainer';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import store from './redux/store';
 
@@ -16,7 +17,7 @@ const App = (props) => {
   // debugger;
   return (
     <div className='app-wrapper'>
-      <Header />
+      <HeaderContainer />
       <Navbar />
       <div className='app-wrapper-content'>
         <Route path='/profile/:userId?'>

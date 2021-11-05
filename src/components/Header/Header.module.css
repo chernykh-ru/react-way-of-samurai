@@ -4,8 +4,17 @@
   /* background: linear-gradient(blue, rosybrown); */
 
   background-color: rosybrown;
-
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+.login {
+  margin: 10px;
+  color: white;
+}
 
-
+.login a {
+  text-decoration: none;
+  color: white;
+}
