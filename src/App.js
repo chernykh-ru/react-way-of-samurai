@@ -19,7 +19,7 @@ const App = (props) => {
       <Header />
       <Navbar />
       <div className='app-wrapper-content'>
-        <Route path='/profile'>
+        <Route path='/profile/:userId?'>
           <ProfileContainer
           // store={props.store}
           // profilePage={props.state.profilePage}

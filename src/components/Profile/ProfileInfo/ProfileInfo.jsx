@@ -1,5 +1,6 @@
 import Preloader from '../../common/preloader/Preloader';
 import styles from './ProfileInfo.module.css';
+import avataaars from '../../../assets/images/avataaars.png';
 
 const ProfileInfo = (props) => {
   // if (props.profile === null || props.profile === undefined)
@@ -18,12 +19,19 @@ const ProfileInfo = (props) => {
         />
       </div>
       <div>
-        <img src={props.profile.photos.large} alt='user avatar' />
+        <img
+          className={styles.userPhoto}
+          src={props.profile.photos.large != null ? props.profile.photos.large : avataaars}
+          alt='user avatar'
+        />
         <div>
           <span>{props.profile.fullName}</span>
         </div>
         <div>
           <span>{props.profile.aboutMe}</span>
+        </div>
+        <div>
+          <span>idUser: {props.profile.userId}</span>
         </div>
       </div>
       <div className={styles.descriptionBlock}>ava+description</div>
