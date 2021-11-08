@@ -8,9 +8,10 @@ import {
   setTotalUsersCount,
   toggleIsFetching,
 } from '../../redux/users-reducer';
-import axios from 'axios';
+// import axios from 'axios';
 import Users from './Users';
 import Preloader from '../common/preloader/Preloader';
+import { usersAPI } from '../../api/api';
 
 // import UsersAPIComponent from './UsersAPIComponent';
 
@@ -22,34 +23,20 @@ class UsersContainer extends React.Component {
 
   componentDidMount() {
     this.props.toggleIsFetching(true); //запрос ушел preloader виден
-    axios
-      .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`,
-        {
-          withCredentials: true,
-        }, //так же проверяем что пользователь залогинен и цепляем куки
-      )
-      .then((response) => {
-        this.props.setUsers(response.data.items); //получаем user из response(ответ) data(данные) items(объект с юзерами) и диспачим setUsers
-        this.props.toggleIsFetching(false); //запрос пришел preloader скрывается
-        this.props.setTotalUsersCount(response.data.totalCount);
-      });
+    usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then((data) => {
+      this.props.setUsers(data.items); // у usersAPI дергаем метод getUsers//получаем user из data(данные) items(объект с юзерами) и диспачим setUsers
+      this.props.toggleIsFetching(false); //запрос пришел preloader скрывается
+      this.props.setTotalUsersCount(data.totalCount);
+    });
   }
 
   onPageChanged = (currentPage) => {
     this.props.setCurrentPage(currentPage);
     this.props.toggleIsFetching(true); //запрос ушел preloader виден
-    axios
-      .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${currentPage}&count=${this.props.pageSize}`,
-        {
-          withCredentials: true,
-        },
-      )
-      .then((res) => {
-        this.props.toggleIsFetching(false); //запрос пришел preloader скрывается
-        this.props.setUsers(res.data.items);
-      });
+    usersAPI.getUsers(currentPage, this.props.pageSize).then((data) => {
+      this.props.toggleIsFetching(false); //запрос пришел preloader скрывается
+      this.props.setUsers(data.items);
+    });
   };
 
   render() {
