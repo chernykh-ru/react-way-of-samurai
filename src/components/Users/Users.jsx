@@ -2,7 +2,8 @@ import styles from './Users.module.css';
 import avataaars from './../../../src/assets/images/avataaars.png';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
+import { usersAPI } from '../../api/api';
 
 const Users = (props) => {
   let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -46,36 +47,22 @@ const Users = (props) => {
               {user.followed ? (
                 <button
                   onClick={() => {
-                    axios
-                      .delete(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`, {
-                        withCredentials: true,
-                        headers: { 'API-KEY': '6e65516f-e614-437d-93bf-9e85e40713b5' }, //DELETE(GET) second params options withCred(true) and headers{api-key}
-                      })
-                      .then((response) => {
-                        if (response.data.resultCode === 0) {
-                          props.unfollow(user.id);
-                        } //если отписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
-                      });
+                    usersAPI.delStatus(user.id).then((data) => {
+                      if (data.resultCode === 0) {
+                        props.unfollow(user.id);
+                      } //если отписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
+                    });
                   }}>
                   Unfollow
                 </button>
               ) : (
                 <button
                   onClick={() => {
-                    axios
-                      .post(
-                        `https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
-                        {}, //POST second params null or empty obj
-                        {
-                          withCredentials: true,
-                          headers: { 'API-KEY': '6e65516f-e614-437d-93bf-9e85e40713b5' },
-                        }, //POST(PUT) third params options withCred(true) and headers{api-key}
-                      )
-                      .then((response) => {
-                        if (response.data.resultCode === 0) {
-                          props.follow(user.id);
-                        } //если подписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
-                      });
+                    usersAPI.postStatus(user.id).then((data) => {
+                      if (data.resultCode === 0) {
+                        props.follow(user.id);
+                      } //если подписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
+                    });
                   }}>
                   Follow
                 </button>
