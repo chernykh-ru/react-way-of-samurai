@@ -46,22 +46,28 @@ const Users = (props) => {
             <div>
               {user.followed ? (
                 <button
+                  disabled={props.followingInProgress.some((id) => id === user.id)}
                   onClick={() => {
+                    props.toggleFollowingProgress(true, user.id);
                     usersAPI.delStatus(user.id).then((data) => {
                       if (data.resultCode === 0) {
                         props.unfollow(user.id);
                       } //если отписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
+                      props.toggleFollowingProgress(false, user.id);
                     });
                   }}>
                   Unfollow
                 </button>
               ) : (
                 <button
+                  disabled={props.followingInProgress.some((id) => id === user.id)}
                   onClick={() => {
+                    props.toggleFollowingProgress(true, user.id);
                     usersAPI.postStatus(user.id).then((data) => {
                       if (data.resultCode === 0) {
                         props.follow(user.id);
                       } //если подписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
+                      props.toggleFollowingProgress(false, user.id);
                     });
                   }}>
                   Follow
