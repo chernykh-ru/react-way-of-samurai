@@ -12,11 +12,11 @@ export const usersAPI = {
       .get(`users?page=${currentPage}&count=${pageSize}`)
       .then((response) => response.data); //промисом вернем не весь ответ а нужную часть data
   },
-  async delStatus(userId) {
+  async unfollow(userId) {
     const response = await instance.delete(`follow/${userId}`);
     return response.data;
   },
-  async postStatus(userId) {
+  async follow(userId) {
     const response = await instance.post(`follow/${userId}`);
     return response.data;
   },

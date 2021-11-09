@@ -3,16 +3,17 @@ import { connect } from 'react-redux';
 import {
   follow,
   unfollow,
-  setUsers,
+  // setUsers,
   setCurrentPage,
-  setTotalUsersCount,
-  toggleIsFetching,
+  // setTotalUsersCount,
+  // toggleIsFetching,
   toggleFollowingProgress,
+  getUsers,
 } from '../../redux/users-reducer';
 // import axios from 'axios';
 import Users from './Users';
 import Preloader from '../common/preloader/Preloader';
-import { usersAPI } from '../../api/api';
+// import { usersAPI } from '../../api/api';
 
 // import UsersAPIComponent from './UsersAPIComponent';
 
@@ -23,21 +24,26 @@ class UsersContainer extends React.Component {
   // } //если кроме конструктора(супер) ничего нет, можно не писать
 
   componentDidMount() {
-    this.props.toggleIsFetching(true); //запрос ушел preloader виден
-    usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then((data) => {
-      this.props.setUsers(data.items); // у usersAPI дергаем метод getUsers//получаем user из data(данные) items(объект с юзерами) и диспачим setUsers
-      this.props.toggleIsFetching(false); //запрос пришел preloader скрывается
-      this.props.setTotalUsersCount(data.totalCount);
-    });
+    this.props.getUsers(this.props.currentPage, this.props.pageSize);
+    //выносим запросы в thunk mw
+
+    // this.props.toggleIsFetching(true); //запрос ушел preloader виден
+    // usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then((data) => {
+    //   this.props.setUsers(data.items); // у usersAPI дергаем метод getUsers//получаем user из data(данные) items(объект с юзерами) и диспачим setUsers
+    //   this.props.toggleIsFetching(false); //запрос пришел preloader скрывается
+    //   this.props.setTotalUsersCount(data.totalCount);
+    // });
   }
 
   onPageChanged = (currentPage) => {
-    this.props.setCurrentPage(currentPage);
-    this.props.toggleIsFetching(true); //запрос ушел preloader виден
-    usersAPI.getUsers(currentPage, this.props.pageSize).then((data) => {
-      this.props.toggleIsFetching(false); //запрос пришел preloader скрывается
-      this.props.setUsers(data.items);
-    });
+    this.props.getUsers(currentPage, this.props.pageSize);
+    //выносим запросы в thunk mw
+    // this.props.setCurrentPage(currentPage);
+    // this.props.toggleIsFetching(true); //запрос ушел preloader виден
+    // usersAPI.getUsers(currentPage, this.props.pageSize).then((data) => {
+    //   this.props.toggleIsFetching(false); //запрос пришел preloader скрывается
+    //   this.props.setUsers(data.items);
+    // });
   };
 
   render() {
@@ -55,7 +61,7 @@ class UsersContainer extends React.Component {
           follow={this.props.follow}
           unfollow={this.props.unfollow}
           followingInProgress={this.props.followingInProgress}
-          toggleFollowingProgress={this.props.toggleFollowingProgress}
+          // toggleFollowingProgress={this.props.toggleFollowingProgress}
         />
       </>
     );
@@ -106,11 +112,12 @@ let mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   follow,
   unfollow,
-  setUsers,
   setCurrentPage,
-  setTotalUsersCount,
-  toggleIsFetching,
   toggleFollowingProgress,
+  getUsers,
+  // setUsers,
+  // setTotalUsersCount,
+  // toggleIsFetching,
 })(UsersContainer);
 // export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
 

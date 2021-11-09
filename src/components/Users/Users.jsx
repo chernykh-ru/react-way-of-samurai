@@ -3,7 +3,7 @@ import avataaars from './../../../src/assets/images/avataaars.png';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 // import axios from 'axios';
-import { usersAPI } from '../../api/api';
+// import { usersAPI } from '../../api/api';
 
 const Users = (props) => {
   let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -47,29 +47,35 @@ const Users = (props) => {
               {user.followed ? (
                 <button
                   disabled={props.followingInProgress.some((id) => id === user.id)}
-                  onClick={() => {
-                    props.toggleFollowingProgress(true, user.id);
-                    usersAPI.delStatus(user.id).then((data) => {
-                      if (data.resultCode === 0) {
-                        props.unfollow(user.id);
-                      } //если отписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
-                      props.toggleFollowingProgress(false, user.id);
-                    });
-                  }}>
+                  onClick={
+                    () => {
+                      props.unfollow(user.id);
+                    }
+                    // props.toggleFollowingProgress(true, user.id);
+                    // usersAPI.unfollow(user.id).then((data) => {
+                    //   if (data.resultCode === 0) {
+                    //     props.unfollow(user.id);
+                    //   } //если отписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
+                    //   props.toggleFollowingProgress(false, user.id);
+                    // });
+                  }>
                   Unfollow
                 </button>
               ) : (
                 <button
                   disabled={props.followingInProgress.some((id) => id === user.id)}
-                  onClick={() => {
-                    props.toggleFollowingProgress(true, user.id);
-                    usersAPI.postStatus(user.id).then((data) => {
-                      if (data.resultCode === 0) {
-                        props.follow(user.id);
-                      } //если подписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
-                      props.toggleFollowingProgress(false, user.id);
-                    });
-                  }}>
+                  onClick={
+                    () => {
+                      props.follow(user.id);
+                    }
+                    // props.toggleFollowingProgress(true, user.id);
+                    // usersAPI.follow(user.id).then((data) => {
+                    //   if (data.resultCode === 0) {
+                    //     props.follow(user.id);
+                    //   } //если подписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
+                    //   props.toggleFollowingProgress(false, user.id);
+                    // });
+                  }>
                   Follow
                 </button>
               )}
