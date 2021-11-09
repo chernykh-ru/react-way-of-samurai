@@ -8,7 +8,7 @@ import React from 'react';
 import Profile from './Profile';
 import { connect } from 'react-redux';
 import { getUserProfile } from '../../redux/profile-reducer';
-import { withRouter } from 'react-router';
+import { Redirect, withRouter } from 'react-router';
 // import { usersAPI } from '../../api/api';
 
 class ProfileContainer extends React.Component {
@@ -30,13 +30,15 @@ class ProfileContainer extends React.Component {
   }
 
   render() {
+    if (!this.props.isAuth) return <Redirect to={'/login'} />;
     return <Profile {...this.props} profile={this.props.profile} />;
   }
 }
 //profile={this.props.profile} выше передавать не обязательно, мы уже передаем все пропсы целиком через {...this.props}, сделано для наглядности
 
 let mapStateToProps = (state) => ({
-  profile: state.profilePage.profile,
+  profile: state.profilePage.profile, //если пользователь не залогинен(пришедший в пропсах isAuth === false) то закрываем ему доступ к ProfileContainer и перенаправляем на страницу логина
+  isAuth: state.auth.isAuth, //вытаскиваем из стейта инфу залогинен или нет
 });
 //profile: state.profilePage.profile
 export default connect(mapStateToProps, { getUserProfile })(withRouter(ProfileContainer));

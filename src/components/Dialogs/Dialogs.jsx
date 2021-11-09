@@ -3,6 +3,7 @@ import styles from './Dialogs.module.css';
 import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
 import React from 'react';
+import { Redirect } from 'react-router';
 // import {
 //   addMessageActionCreator,
 //   updateNewMessageTextActionCreator,
@@ -42,9 +43,7 @@ const Dialogs = (props) => {
     // props.dispatch(action); //обновляем поле ввода из стейта по пропсам
   };
 
-  // let onAddMessageClick = () => {
-
-  // }
+  if (!props.isAuth) return <Redirect to={'/login'} />; //если пользователь не залогинен(пришедший в пропсах isAuth === false) то закрываем ему доступ к dialogs и перенаправляем на страницу логина
 
   return (
     <div className={styles.dialogs}>

@@ -10,6 +10,7 @@ import UsersContainer from './components/Users/UsersContainer';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
+import Login from './components/Login/Login';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import store from './redux/store';
 
@@ -33,6 +34,9 @@ const App = (props) => {
         </Route>
         <Route path='/users'>
           <UsersContainer />
+        </Route>
+        <Route path='/login'>
+          <Login />
         </Route>
         <Route path='/news'>
           <News />
