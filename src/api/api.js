@@ -20,6 +20,17 @@ export const usersAPI = {
     const response = await instance.post(`follow/${userId}`);
     return response.data;
   },
+  async getProfile(userId) {
+    const response = await instance.get(`profile/${userId}`);
+    return response.data;
+  },
+};
+
+export const authAPI = {
+  async me() {
+    const response = await instance.get(`auth/me`);
+    return response.data;
+  },
 };
 
 // export const getUsers = (currentPage, pageSize) => {

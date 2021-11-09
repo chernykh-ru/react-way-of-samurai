@@ -1,3 +1,4 @@
+import { usersAPI } from '../api/api';
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USERS_PROFILE = 'SET_USERS_PROFILE';
@@ -36,45 +37,8 @@ const profileReducer = (state = initialState, action) => {
   }
 };
 
-// const profileReducer = (state = initialState, action) => {
-//   // debugger;
-//   switch (action.type) {
-//     case ADD_POST: {
-//       let newPost = {
-//         id: 4,
-//         message: state.newPostText, //берем значение из стейта
-//         likeCounter: 0,
-//       };
-//       let stateCopy = { ...state };
-//       stateCopy.posts = [...state.posts]; //из за поверхностной копии стейта отдельно копируем массив постов []
-//       stateCopy.posts.push(newPost); //в новую копию стейта будем пушить новые посты
-//       // state.posts.push(newPost); //this._state.profilePage = state из пропсов
-//       // stateCopy.newPostText = [...state.newPostText];//не нужно потому что newPostText примитив строка
-//       stateCopy.newPostText = '';
-//       // state.newPostText = '';
-//       return stateCopy;
-//     }
-//     case UPDATE_NEW_POST_TEXT: {
-//       let stateCopy = { ...state };
-//       stateCopy.newPostText = action.newText;
-//       // state.newPostText = action.newText;
-//       return stateCopy;
-//     }
-//     default:
-//       // let stateCopy = { ...state };
-//       // return stateCopy;
-//       return state;
-//   }
-// };
-
 //создаем функции action creator, которая возвращает объект {action}, после чего переносим их в стейт
-
-export const addPostActionCreator = () => ({ type: ADD_POST }); //выносим константу в клобальную область видимости
-
-// export const addPostActionCreator = () => {
-//   return { type: ADD_POST }; //выносим константу в клобальную область видимости
-//   // return { type: 'ADD-POST' };
-// };
+export const addPostActionCreator = () => ({ type: ADD_POST });
 
 export const updateNewPostTextActionCreator = (text) => {
   return {
@@ -85,21 +49,13 @@ export const updateNewPostTextActionCreator = (text) => {
 
 export const setUserProfile = (profile) => ({ type: SET_USERS_PROFILE, profile });
 
-// const profileReducer = (state, action) => {
-//   if (action.type === ADD_POST) {
-//     let newPost = {
-//       id: 4,
-//       message: state.newPostText, //берем значение из стейта
-//       likeCounter: 0,
-//     };
-//     state.posts.push(newPost); //this._state.profilePage = state из пропсов
-//     state.newPostText = ''; //переносим логику зануление из тупого компонента в функцию стейта
-//     // this._callSubscriber(this._state);//не его зона ответственности
-//   } else if (action.type === UPDATE_NEW_POST_TEXT) {
-//     state.newPostText = action.newText;
-//     // this._callSubscriber(this._state);
-//   }
-//   return state;
-// };
+//TC
+export const getUserProfile = (userId) => {
+  return (dispatch) => {
+    usersAPI.getProfile(userId).then((data) => {
+      dispatch(setUserProfile(data));
+    });
+  };
+};
 
 export default profileReducer;

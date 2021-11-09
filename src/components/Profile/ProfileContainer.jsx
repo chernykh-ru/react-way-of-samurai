@@ -2,13 +2,14 @@
 // import MyPosts from './MyPosts/MyPosts';
 // import classes from './Profile.module.css'
 // import MyPostsContainer from './MyPosts/MyPostsContainer';
-import store from '../../redux/store';
+// import store from '../../redux/store';
 import React from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import Profile from './Profile';
 import { connect } from 'react-redux';
-import { setUserProfile } from '../../redux/profile-reducer';
+import { getUserProfile } from '../../redux/profile-reducer';
 import { withRouter } from 'react-router';
+// import { usersAPI } from '../../api/api';
 
 class ProfileContainer extends React.Component {
   // debugger;
@@ -19,9 +20,13 @@ class ProfileContainer extends React.Component {
     if (!userId) {
       userId = 2;
     } //проверка что userId не null или undefined
-    axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId).then((response) => {
-      this.props.setUserProfile(response.data); //получаем response data из response(ответ) data(данные) и диспачим setUserProfile(хардкодим второго пользователя)
-    });
+    this.props.getUserProfile(userId);
+    // usersAPI.getProfile(userId).then((data) => {
+    //   this.props.setUserProfile(data); //получаем response data из response(ответ) data(данные) и диспачим setUserProfile(хардкодим второго пользователя)
+    // });
+    // axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId).then((response) => {
+    //   this.props.setUserProfile(response.data); //получаем response data из response(ответ) data(данные) и диспачим setUserProfile(хардкодим второго пользователя)
+    // });
   }
 
   render() {
@@ -34,4 +39,4 @@ let mapStateToProps = (state) => ({
   profile: state.profilePage.profile,
 });
 //profile: state.profilePage.profile
-export default connect(mapStateToProps, { setUserProfile })(withRouter(ProfileContainer));
+export default connect(mapStateToProps, { getUserProfile })(withRouter(ProfileContainer));
