@@ -10,6 +10,8 @@ import {
 } from '../../redux/dialog-reducer';
 // import StoreContext from '../../StoreContext';
 import Dialogs from './Dialogs';
+import { Redirect } from 'react-router';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 //данные стейта(замапить стейт на пропсы - превратить нужную часть стейта в пропсы)
 //connect в mstp засунет стейт
@@ -18,7 +20,7 @@ let mapStateToProps = (state) => {
     dialogs: state.dialogsPage.dialogs,
     messages: state.dialogsPage.messages,
     newMessageText: state.dialogsPage.newMessageText,
-    isAuth: state.auth.isAuth, //вытаскиваем из стейта инфу залогинен или нет
+    // isAuth: state.auth.isAuth, //вытаскиваем из стейта инфу залогинен или нет
   };
 };
 
@@ -35,8 +37,17 @@ let mapDispatchToProps = (dispatch) => {
   };
 };
 
+//вызываем HOC с нужным параметром(передаем ему нужную целевую компоненту)
+let AuthRedirectComponent = withAuthRedirect(Dialogs);
+// (props) => {
+//   if (!this.props.isAuth) return <Redirect to={'/login'} />;
+//   return <Dialogs {...props} />; //прокидываем все пропсы в целевую компоненту
+// };
+
 //connect from react-redux
 //двойной вызов ()() -  вызываем функцию connect, она возвращает другую функцию и мы вызываем другую функцию, которую нам вернул предыдущий вызов
-const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
+const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent);
+// const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
 
+//
 export default DialogsContainer;
