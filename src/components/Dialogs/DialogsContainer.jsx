@@ -10,8 +10,9 @@ import {
 } from '../../redux/dialog-reducer';
 // import StoreContext from '../../StoreContext';
 import Dialogs from './Dialogs';
-import { Redirect } from 'react-router';
+// import { Redirect } from 'react-router';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
+import { compose } from 'redux';
 
 //данные стейта(замапить стейт на пропсы - превратить нужную часть стейта в пропсы)
 //connect в mstp засунет стейт
@@ -37,8 +38,8 @@ let mapDispatchToProps = (dispatch) => {
   };
 };
 
-//вызываем HOC с нужным параметром(передаем ему нужную целевую компоненту)
-let AuthRedirectComponent = withAuthRedirect(Dialogs);
+//вызываем HOC с нужным параметром(передаем ему нужную целевую компоненту) получаем ответ AuthRedirectComponent и этот ответ мы закидываем целевой компонентой в коннект
+// let AuthRedirectComponent = withAuthRedirect(Dialogs);//add compose
 // (props) => {
 //   if (!this.props.isAuth) return <Redirect to={'/login'} />;
 //   return <Dialogs {...props} />; //прокидываем все пропсы в целевую компоненту
@@ -46,8 +47,11 @@ let AuthRedirectComponent = withAuthRedirect(Dialogs);
 
 //connect from react-redux
 //двойной вызов ()() -  вызываем функцию connect, она возвращает другую функцию и мы вызываем другую функцию, которую нам вернул предыдущий вызов
-const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent);
+// const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent);//add compose
 // const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
 
 //
-export default DialogsContainer;
+// export default DialogsContainer;//compose
+
+//оборачиваем compose (каждая функция примет один параметр, его возвращенное взначение будет передано вышестоящей(слева) функции как аргумент), выполнение идет справа налево(снизу вверх)
+export default compose(connect(mapStateToProps, mapDispatchToProps), withAuthRedirect)(Dialogs);

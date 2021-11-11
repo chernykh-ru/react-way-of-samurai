@@ -14,6 +14,8 @@ import {
 import Users from './Users';
 import Preloader from '../common/preloader/Preloader';
 // import { usersAPI } from '../../api/api';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
+import { compose } from 'redux';
 
 // import UsersAPIComponent from './UsersAPIComponent';
 
@@ -106,19 +108,39 @@ let mapStateToProps = (state) => {
 //   };
 // };
 
+//оборачиваем ХОКом редирект целевую компоненту ЮК
+// let AuthRedirectComponent = withAuthRedirect(UsersContainer);
+
 //передаем напряую в mdtp объект с AC (connect подставляет нужные параметры в колбэки которые сам и создает за кадром, после происходит диспатч экшена)
 //переименовываем AC без окончания AC, правим импорты, и при совпадении имен ключ: значение, оставляем одно имя в объекте
 //mdtp больше не используем, а передаем {объект} вторым параметром в connect
-export default connect(mapStateToProps, {
-  follow,
-  unfollow,
-  setCurrentPage,
-  toggleFollowingProgress,
-  getUsers,
-  // setUsers,
-  // setTotalUsersCount,
-  // toggleIsFetching,
-})(UsersContainer);
+
+//оборачиваем ХОКом редирект целевую компоненту ЮК
+// export default withAuthRedirect(
+//   connect(mapStateToProps, {
+//     follow,
+//     unfollow,
+//     setCurrentPage,
+//     toggleFollowingProgress,
+//     getUsers,
+//     // setUsers,
+//     // setTotalUsersCount,
+//     // toggleIsFetching,
+//   })(UsersContainer),
+// );
+
+//add compose
+export default compose(
+  withAuthRedirect,
+  connect(mapStateToProps, {
+    follow,
+    unfollow,
+    setCurrentPage,
+    toggleFollowingProgress,
+    getUsers,
+  }),
+)(UsersContainer);
+
 // export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
 
 // const UsersContainer = connect(mstp, mdtp)(Users);
