@@ -1,7 +1,7 @@
 import Preloader from '../../common/preloader/Preloader';
 import styles from './ProfileInfo.module.css';
 import avataaars from '../../../assets/images/avataaars.png';
-import ProfileStatus from './ProfileStatus';
+import ProfileStatus from './ProfileStatus'; //следить за переименованием из FC в CC
 
 const ProfileInfo = (props) => {
   // if (props.profile === null || props.profile === undefined)
