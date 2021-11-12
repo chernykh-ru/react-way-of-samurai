@@ -22,8 +22,8 @@ class ProfileContainer extends React.Component {
     if (!userId) {
       userId = 20627;
     } //проверка что userId не null или undefined
-    this.props.getUserProfile(userId); //TC
-    this.props.getStatus(userId); //TC
+    this.props.getUserProfile(userId); //TC получения профиля
+    this.props.getStatus(userId); //TC получения статуса
   }
 
   render() {
