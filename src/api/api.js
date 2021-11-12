@@ -21,7 +21,22 @@ export const usersAPI = {
     return response.data;
   },
   async getProfile(userId) {
+    console.warn('Obsolete method. Please use profileAPI object');
+    return profileAPI.getProfile(userId); //перенаправялем на новый метод с предупреждением
+  },
+};
+
+export const profileAPI = {
+  async getProfile(userId) {
     const response = await instance.get(`profile/${userId}`);
+    return response.data;
+  },
+  async getStatus(userId) {
+    const response = await instance.get(`profile/status/${userId}`);
+    return response.data;
+  },
+  async updateStatus(status) {
+    const response = await instance.put(`profile/status`, { status: status }); //вторым параметром передаем объект json
     return response.data;
   },
 };
@@ -32,20 +47,3 @@ export const authAPI = {
     return response.data;
   },
 };
-
-// export const getUsers = (currentPage, pageSize) => {
-//   return instance //обращаемся уже к инстансу запроса
-//     .get(`users?page=${currentPage}&count=${pageSize}`)
-//     .then((response) => response.data); //промисом вернем не весь ответ а нужную часть data
-// };
-
-// export const getUsers = (currentPage, pageSize) => {
-//   return axios
-//     .get(
-//       `https://social-network.samuraijs.com/api/1.0/users?page=${currentPage}&count=${pageSize}`,
-//       {
-//         withCredentials: true,
-//       }, //так же проверяем что пользователь залогинен и цепляем куки
-//     )
-//     .then((response) => response.data);//промисом вернем не весь ответ а нужную часть data
-// };

@@ -34,8 +34,8 @@ const ProfileInfo = (props) => {
         <div>
           <span>idUser: {props.profile.userId}</span>
         </div>
-        <div className={styles.descriptionBlock}>
-          <ProfileStatus status={'learn react'} />
+        <div className={styles.statusBlock}>
+          <ProfileStatus status={props.status} updateStatus={props.updateStatus} />
         </div>
       </div>
     </div>
