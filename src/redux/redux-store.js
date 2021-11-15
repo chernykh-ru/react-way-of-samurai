@@ -1,4 +1,5 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import profileReducer from './profile-reducer';
 import dialogsReducer from './dialog-reducer';
 import sidebarReducer from './sidebar-reducer';
@@ -19,6 +20,6 @@ let reducers = combineReducers({
 
 //создаем редаксовский стор с помощью функции createStore(cS мы отдаем закомбайненые редьюсеры)
 //добавляем промежуточный слой middleware thunk
-let store = createStore(reducers, applyMiddleware(thunk));
+let store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
 
 export default store;
