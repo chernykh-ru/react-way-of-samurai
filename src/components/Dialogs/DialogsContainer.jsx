@@ -6,7 +6,7 @@
 import { connect } from 'react-redux';
 import {
   addMessageActionCreator,
-  updateNewMessageTextActionCreator,
+  // updateNewMessageTextActionCreator,//add redux-form
 } from '../../redux/dialog-reducer';
 // import StoreContext from '../../StoreContext';
 import Dialogs from './Dialogs';
@@ -29,12 +29,12 @@ let mapStateToProps = (state) => {
 //connect в mdtp засунет store.dispatch.bind(store)
 let mapDispatchToProps = (dispatch) => {
   return {
-    addMessage: () => {
-      dispatch(addMessageActionCreator());
-    }, //мы диспатчем не экшнкриэйтор, ЭК мы запускаем, он возвращает нам экшн(это объект у которого есть минимум тип) и мы диспатчем это вернувшийся экшн
-    messageChange: (text) => {
-      dispatch(updateNewMessageTextActionCreator(text));
-    },
+    addMessage: (message) => {
+      dispatch(addMessageActionCreator(message));
+    }, //диспачим сообщение из redux-form //мы диспатчем не экшнкриэйтор, ЭК мы запускаем, он возвращает нам экшн(это объект у которого есть минимум тип) и мы диспатчем это вернувшийся экшн
+    // messageChange: (text) => {
+    //   dispatch(updateNewMessageTextActionCreator(text));
+    // },//add redux-form
   };
 };
 

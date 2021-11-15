@@ -1,6 +1,6 @@
 import { usersAPI, profileAPI } from '../api/api';
 const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
+// const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USERS_PROFILE = 'SET_USERS_PROFILE';
 const SET_STATUS = 'SET_STATUS';
 
@@ -18,17 +18,17 @@ let initialState = {
 const profileReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_POST:
-      let newPost = state.newPostText;
+      // let newPost = action.newPostText;//add redux-form
       return {
         ...state,
-        newPostText: '',
-        posts: [...state.posts, { id: 4, message: newPost }], //добавляем новый элемент в массив
+        // newPostText: '',//add redux-form
+        posts: [...state.posts, { id: 4, message: action.newPostText }], //добавляем новый элемент в массив
       };
-    case UPDATE_NEW_POST_TEXT:
-      return {
-        ...state,
-        newPostText: action.newText,
-      };
+    // case UPDATE_NEW_POST_TEXT:
+    //   return {
+    //     ...state,
+    //     newPostText: action.newText,
+    //   };//add redux-form
     case SET_USERS_PROFILE:
       return {
         ...state,
@@ -45,14 +45,14 @@ const profileReducer = (state = initialState, action) => {
 };
 
 //создаем функции action creator, которая возвращает объект {action}, после чего переносим их в стейт
-export const addPostActionCreator = () => ({ type: ADD_POST });
+export const addPostActionCreator = (newPostText) => ({ type: ADD_POST, newPostText });
 
-export const updateNewPostTextActionCreator = (text) => {
-  return {
-    type: UPDATE_NEW_POST_TEXT,
-    newText: text,
-  };
-};
+// export const updateNewPostTextActionCreator = (text) => {
+//   return {
+//     type: UPDATE_NEW_POST_TEXT,
+//     newText: text,
+//   };
+// };//add redux-form
 
 export const setUserProfile = (profile) => ({ type: SET_USERS_PROFILE, profile });
 

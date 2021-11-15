@@ -4,17 +4,27 @@ import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
 import React from 'react';
 import { Redirect } from 'react-router';
-// import {
-//   addMessageActionCreator,
-//   updateNewMessageTextActionCreator,
-// } from './../../redux/dialog-reducer';
+import { Field, reduxForm } from 'redux-form';
 
-// import Avatar from './Avatar/Avatar';
+const AddMessageForm = (props) => {
+  const { handleSubmit } = props;
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <Field component={'textarea'} name={'newMessageText'} placeholder={'Enter your message'} />
+        {/* <Field component={'textarea'} name={'newMessageText'} value={props.newMessageText} /> */}
+      </div>
+      <div>
+        <button>Add message</button>
+      </div>
+    </form>
+  );
+};
+
+const AddMessageFormRedux = reduxForm({ form: 'dialogAddMessageForm' })(AddMessageForm);
 
 const Dialogs = (props) => {
   // debugger;
-
-  // const avatarElements = props.state.avatar.map((avatar, i) => <Avatar key={i} avatar={avatar.avatar} id={avatar.id}/>)
 
   const dialogsElements = props.dialogs.map((dialog, i) => (
     <DialogItem key={i} name={dialog.name} id={dialog.id} avatar={dialog.avatar} />
@@ -23,50 +33,30 @@ const Dialogs = (props) => {
   const messagesElements = props.messages.map((m, i) => (
     <Message key={i} message={m.message} id={m.id} />
   ));
-  // const messagesElementsFriend = props.state.messagesFriend.map((m, i) => <Message key={i} message={m.message} id={m.id} />)
 
-  // let newMessageElement = React.createRef();
+  // let onAddMessage = () => {
+  //   props.addMessage(); //callback from store
+  // };//add redux-form
 
-  let onAddMessage = () => {
-    props.addMessage(); //callback from store
-    // props.dispatch(addMessageActionCreator());
-    // props.updateNewMessageText('');
-    // let text = newMessageElement.current.value;
-    // alert(text);
-  };
+  // let onMessageChange = (e) => {
+  //   let text = e.target.value; //значение поста берем в textarea value
+  //   props.messageChange(text); //callback from store
+  // };//add redux-form
 
-  let onMessageChange = (e) => {
-    let text = e.target.value; //значение поста берем в textarea value
-    props.messageChange(text); //callback from store
-    // let text = newMessageElement.current.value; //значение поста берем в textarea value from ref
-    // let action = updateNewMessageTextActionCreator(text);
-    // props.dispatch(action); //обновляем поле ввода из стейта по пропсам
-  };
+  //в атрибуте value придут свойства как имена полей name у field
+  let addNewMassage = (value) => {
+    // console.log(value.newMessageText);
+    props.addMessage(value.newMessageText);
+  }; //add redux-form//передаем в колбэк значение поля ввода и далее диспачим его в стейт
 
   if (!props.isAuth) return <Redirect to={'/login'} />; //если пользователь не залогинен(пришедший в пропсах isAuth === false) то закрываем ему доступ к dialogs и перенаправляем на страницу логина
 
   return (
     <div className={styles.dialogs}>
-      <div className={styles.dialogsItems}>
-        {/* { avatarElements } */}
-        {dialogsElements}
-      </div>
+      <div className={styles.dialogsItems}>{dialogsElements}</div>
       <div className={styles.messages}>
         <div className={styles.messagesUser}>{messagesElements}</div>
-        <div>
-          <div>
-            <textarea
-              onChange={onMessageChange}
-              // ref={newMessageElement}//уходим от исользования ref
-              value={props.newMessageText}
-              // placeholder='Enter your message'
-            />
-          </div>
-          <div>
-            <button onClick={onAddMessage}>Add message</button>
-          </div>
-        </div>
-        {/* <div className={styles.messagesFriend}>{messagesElementsFriend}</div> */}
+        <AddMessageFormRedux onSubmit={addNewMassage} />
       </div>
     </div>
   );
