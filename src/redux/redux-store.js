@@ -5,6 +5,7 @@ import sidebarReducer from './sidebar-reducer';
 import usersReducer from './users-reducer';
 import authReducer from './auth-reducer';
 import thunk from 'redux-thunk';
+import { reducer as formReducer } from 'redux-form';
 
 //ключи из стейта, значения соответствующие редьюсеры(ветки нашего глобального стейта)
 let reducers = combineReducers({
@@ -13,6 +14,7 @@ let reducers = combineReducers({
   sidebar: sidebarReducer,
   usersPage: usersReducer,
   auth: authReducer,
+  form: formReducer,
 });
 
 //создаем редаксовский стор с помощью функции createStore(cS мы отдаем закомбайненые редьюсеры)

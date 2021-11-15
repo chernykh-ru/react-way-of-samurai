@@ -1,5 +1,3 @@
-import styles from './ProfileInfo.module.css';
-
 import React, { Component } from 'react';
 
 export default class ProfileStatus extends Component {
