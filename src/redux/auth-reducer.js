@@ -1,4 +1,5 @@
 import { authAPI } from '../api/api';
+import { stopSubmit } from 'redux-form';
 const SET_USER_DATA = 'SET_USER_DATA';
 const SET_USER_LOGIN_DATA = 'SET_USER_LOGIN_DATA';
 
@@ -48,7 +49,11 @@ export const getAuthUserData = () => (dispatch) => {
 export const login = (email, password, rememberMe) => (dispatch) => {
   authAPI.login(email, password, rememberMe).then((data) => {
     if (data.resultCode === 0) {
-      dispatch(getAuthUserData()); //диспачим метод
+      dispatch(getAuthUserData());
+    } else {
+      // let action = stopSubmit('login', { email: 'Email is wrong' }); //встроенный экш редакс-форм, передаем в него имя формы(_error - или общую ошибку формы), вторым параметром передаем объект с проблемными полями, которые вызвали ошибку
+      let message = data.messages.length > 0 ? data.messages[0] : 'some error';
+      dispatch(stopSubmit('login', { _error: message })); //диспачим экшен с именем формы и объектом с общей ощибкой формы и причиной
     }
   });
 };
