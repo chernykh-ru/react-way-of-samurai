@@ -1,5 +1,6 @@
 import { authAPI } from '../api/api';
 const SET_USER_DATA = 'SET_USER_DATA';
+const SET_USER_LOGIN_DATA = 'SET_USER_LOGIN_DATA';
 
 let initialState = {
   userId: null,
@@ -13,7 +14,12 @@ const authReducer = (state = initialState, action) => {
     case SET_USER_DATA: {
       return {
         ...state,
-        ...action.data, //в экшене будет сидеть объект data,который мы деструктурируем
+        ...action.payload, //в экшене будет сидеть объект data,который мы деструктурируем
+        // isAuth: true, //меняем флаг на true если пришли пользовательские данные
+      };
+    }
+    case SET_USER_LOGIN_DATA: {
+      return {
         isAuth: true, //меняем флаг на true если пришли пользовательские данные
       };
     }
@@ -23,9 +29,9 @@ const authReducer = (state = initialState, action) => {
 };
 
 //AC
-export const setAuthUserData = (userId, email, login) => ({
+export const setAuthUserData = (userId, email, login, isAuth) => ({
   type: SET_USER_DATA,
-  data: { userId, email, login },
+  payload: { userId, email, login, isAuth },
 }); //AC деструктурируем объект data до составляющих userId, email, login
 
 //TC
@@ -33,20 +39,42 @@ export const getAuthUserData = () => (dispatch) => {
   authAPI.me().then((data) => {
     if (data.resultCode === 0) {
       let { id, email, login } = data.data;
-      dispatch(setAuthUserData(id, email, login));
+      dispatch(setAuthUserData(id, email, login, true)); //isAuth true
     }
   });
 };
 
-// export const getAuthUserData = () => {
-//   return (dispatch) => {
-//     authAPI.me().then((data) => {
-//       if (data.resultCode === 0) {
-//         let { id, email, login } = data.data;
-//         dispatch(setAuthUserData(id, email, login));
-//       }
-//     });
-//   };
+//TC to login and logout
+export const login = (email, password, rememberMe) => (dispatch) => {
+  authAPI.login(email, password, rememberMe).then((data) => {
+    if (data.resultCode === 0) {
+      dispatch(getAuthUserData()); //диспачим метод
+    }
+  });
+};
+
+export const logout = () => (dispatch) => {
+  authAPI.logout().then((data) => {
+    if (data.resultCode === 0) {
+      dispatch(setAuthUserData(null, null, null, false)); //при логауте зануляем все данные и ставим флаг isAuth false
+    }
+  });
+};
+
+// export const login = (email, password, rememberMe) => (dispatch) => {
+//   authAPI.login(email, password, rememberMe).then((response) => {
+//     if (response.data.resultCode === 0) {
+//       dispatch(getAuthUserData()); //диспачим метод
+//     }
+//   });
+// };
+
+// export const logout = () => (dispatch) => {
+//   authAPI.logout().then((response) => {
+//     if (response.data.resultCode === 0) {
+//       dispatch(getAuthUserData(null, null, null, false)); //при логауте зануляем все данные и ставим флаг isAuth false
+//     }
+//   });
 // };
 
 export default authReducer;
