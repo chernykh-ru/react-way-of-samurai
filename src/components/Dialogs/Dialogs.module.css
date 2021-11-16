@@ -21,7 +21,7 @@
   border: 2px solid red;
 }
 
-.dialog a{
+.dialog a {
   color: #fff;
   text-decoration: none;
   cursor: pointer;
@@ -35,7 +35,7 @@
   border: 2px solid red;
 }
 
-.avatarWrapper{
+.avatarWrapper {
   padding: 10px;
 }
 
@@ -68,7 +68,6 @@
 
 .messagesFriend {
   padding: 20px;
-
 }
 
 .message {
