@@ -13,12 +13,12 @@
 
 .dialogsItems {
   padding: 10px;
-  border: 2px solid green;
+  /* border: 2px solid green; */
 }
 
 .dialog {
   padding: 10px;
-  border: 2px solid red;
+  /* border: 2px solid red; */
 }
 
 .dialog a {
@@ -32,7 +32,7 @@
 }
 
 .messages {
-  border: 2px solid red;
+  /* border: 2px solid red; */
 }
 
 .avatarWrapper {

@@ -1,6 +1,6 @@
 .nav {
   grid-area: nav;
-  border: 2px solid red;
+  /* border: 2px solid red; */
   background-color: rosybrown;
   padding: 20px;
 }
@@ -9,7 +9,7 @@
   padding: 10px;
 }
 
-.item a{
+.item a {
   color: #fff;
   text-decoration: none;
   cursor: pointer;
