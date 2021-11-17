@@ -7,6 +7,7 @@ import usersReducer from './users-reducer';
 import authReducer from './auth-reducer';
 import thunk from 'redux-thunk';
 import { reducer as formReducer } from 'redux-form';
+import appReducer from './app-reducer';
 
 //ключи из стейта, значения соответствующие редьюсеры(ветки нашего глобального стейта)
 let reducers = combineReducers({
@@ -16,10 +17,12 @@ let reducers = combineReducers({
   usersPage: usersReducer,
   auth: authReducer,
   form: formReducer,
+  app: appReducer,
 });
 
 //создаем редаксовский стор с помощью функции createStore(cS мы отдаем закомбайненые редьюсеры)
 //добавляем промежуточный слой middleware thunk
+// let store = createStore(reducers, applyMiddleware(thunk));
 let store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
 
 export default store;

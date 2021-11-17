@@ -12,44 +12,59 @@ import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Login from './components/Login/Login';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-// import store from './redux/store';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+// import { compose } from 'redux';
+import { initializeApp } from './redux/app-reducer';
+import Preloader from './components/common/preloader/Preloader';
 
-const App = (props) => {
+class App extends React.Component {
   // debugger;
-  return (
-    <div className='app-wrapper'>
-      <HeaderContainer />
-      <Navbar />
-      <div className='app-wrapper-content'>
-        <Route path='/profile/:userId?'>
-          <ProfileContainer
-          // store={props.store}
-          // profilePage={props.state.profilePage}
-          // dispatch={props.dispatch}
-          // updateNewPostText={props.updateNewPostText}
-          />
-        </Route>
-        <Route path='/dialogs'>
-          <DialogsContainer />
-        </Route>
-        <Route path='/users'>
-          <UsersContainer />
-        </Route>
-        <Route path='/login'>
-          <Login />
-        </Route>
-        <Route path='/news'>
-          <News />
-        </Route>
-        <Route path='/music'>
-          <Music />
-        </Route>
-        <Route path='/setings'>
-          <Setings />
-        </Route>
-      </div>
-    </div>
-  );
-};
+  componentDidMount() {
+    this.props.initializeApp();
+  } //переносим запрос из HeaderC
 
-export default App;
+  render() {
+    if (!this.props.initialized) {
+      return <Preloader />;
+    }
+    return (
+      <div className='app-wrapper'>
+        <HeaderContainer />
+        <Navbar />
+        <div className='app-wrapper-content'>
+          <Route path='/profile/:userId?'>
+            <ProfileContainer
+            //:userId? опциональный параметр ХОКа withRouter
+            />
+          </Route>
+          <Route path='/dialogs'>
+            <DialogsContainer />
+          </Route>
+          <Route path='/users'>
+            <UsersContainer />
+          </Route>
+          <Route path='/login'>
+            <Login />
+          </Route>
+          <Route path='/news'>
+            <News />
+          </Route>
+          <Route path='/music'>
+            <Music />
+          </Route>
+          <Route path='/setings'>
+            <Setings />
+          </Route>
+        </div>
+      </div>
+    );
+  }
+}
+
+let mapStateToProps = (state) => ({
+  initialized: state.app.initialized, //получаем из стейта флаг
+});
+
+export default withRouter(connect(mapStateToProps, { initializeApp })(App));
+// export default compose(withRouter, connect(mapStateToProps, { initializeApp })(App));//bug with compose

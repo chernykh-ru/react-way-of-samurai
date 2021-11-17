@@ -17,11 +17,15 @@ class ProfileContainer extends React.Component {
   // debugger;
   componentDidMount() {
     // debugger;
-    let userId = this.props.match.params.userId;
+    let userId = this.props.match.params.userId; //объявляем переменную userId которой присваиваем значение из пропсов(которые появились там после оборачивания ХОКом withRouter)
     // let userId = this.props.match.params.userId || 20627;
     if (!userId) {
-      userId = 20627;
-    } //проверка что userId не null или undefined
+      userId = this.props.autorizedUserId;
+      // userId = 20627;//проверка что userId не null или undefined
+      if (!userId) {
+        this.props.history.push('/login');
+      } //если и в autorizedUserId нет userId тогда переадресация на Логин встроенным методом withRouter
+    }
     this.props.getUserProfile(userId); //TC получения профиля
     this.props.getStatus(userId); //TC получения статуса
   }
@@ -42,6 +46,8 @@ class ProfileContainer extends React.Component {
 let mapStateToProps = (state) => ({
   profile: state.profilePage.profile, //начать с initialState
   status: state.profilePage.status, //начать с initialState
+  autorizedUserId: state.auth.userId,
+  isAuth: state.auth.isAuth,
 });
 
 //помещаем в withRouter обертку Auth

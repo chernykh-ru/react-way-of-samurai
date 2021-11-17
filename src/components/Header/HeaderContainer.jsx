@@ -1,12 +1,12 @@
 import React from 'react';
 import Header from './Header';
 import { connect } from 'react-redux';
-import { getAuthUserData, logout } from '../../redux/auth-reducer';
+import { logout } from '../../redux/auth-reducer';
 
 class HeaderContainer extends React.Component {
-  componentDidMount() {
-    this.props.getAuthUserData();
-  }
+  // componentDidMount() {
+  //   this.props.getAuthUserData();
+  // }//переносим запрос в App
   render() {
     return <Header {...this.props} />; //пробрасываем все пропсы ниже в целевую компоненту
   }
@@ -17,4 +17,4 @@ let mapStateToProps = (state) => ({
   isAuth: state.auth.isAuth, //флаг авторизации
 });
 
-export default connect(mapStateToProps, { getAuthUserData, logout })(HeaderContainer);
+export default connect(mapStateToProps, { logout })(HeaderContainer);
