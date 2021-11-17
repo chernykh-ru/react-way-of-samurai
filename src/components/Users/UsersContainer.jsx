@@ -73,7 +73,7 @@ class UsersContainer extends React.Component {
 let mapStateToProps = (state) => {
   // debugger;
   return {
-    users: getUsers(state),
+    users: getUsers(state),//test reselect
     pageSize: getPageSize(state),
     totalUsersCount: getTotalUsersCount(state),
     currentPage: getCurrentPage(state),
