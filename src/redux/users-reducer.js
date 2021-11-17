@@ -98,12 +98,12 @@ export const toggleFollowingProgress = (isFetching, userId) => ({
 
 //создаем функции thunk creator, которая создает(возвращает) thunk(dispatch action)
 //переименовываем AC без окончания AC
-export const getUsers = (currentPage, pageSize) => {
+export const requestUsers = (page, pageSize) => {
   // debugger;
   return (dispatch) => {
-    dispatch(setCurrentPage(currentPage)); //from onPageChanged(активная страница)
+    dispatch(setCurrentPage(page)); //from onPageChanged(активная страница)
     dispatch(toggleIsFetching(true)); //запрос ушел preloader виден
-    usersAPI.getUsers(currentPage, pageSize).then((data) => {
+    usersAPI.getUsers(page, pageSize).then((data) => {
       dispatch(toggleIsFetching(false)); //запрос пришел preloader скрывается
       dispatch(setUsers(data.items)); // у usersAPI дергаем метод getUsers//получаем user из data(данные) items(объект с юзерами) и диспачим setUsers
       dispatch(setTotalUsersCount(data.totalCount));
