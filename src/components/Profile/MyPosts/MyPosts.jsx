@@ -28,7 +28,7 @@ const AddPostForm = (props) => {
 
 const AddPostFormRedux = reduxForm({ form: 'postAddPostForm' })(AddPostForm);
 
-const MyPosts = (props) => {
+const MyPosts = React.memo((props) => {
   // debugger;
   const postsElements = props.posts.map((p, i) => (
     <Post key={i} message={p.message} likeCounter={p.likeCounter} />
@@ -45,6 +45,6 @@ const MyPosts = (props) => {
       <div className={styles.posts}>{postsElements}</div>
     </div>
   );
-};
+}); //обернули ХОКом мемо, тест, решает проблему с лишними рендерами при неизменившихся пропсах и стейте
 
 export default MyPosts;
