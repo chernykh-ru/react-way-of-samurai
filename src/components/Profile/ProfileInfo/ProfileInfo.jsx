@@ -1,7 +1,7 @@
 import Preloader from '../../common/preloader/Preloader';
 import styles from './ProfileInfo.module.css';
 import avataaars from '../../../assets/images/avataaars.png';
-import ProfileStatus from './ProfileStatus'; //следить за переименованием из FC в CC
+import ProfileStatusWithHooks from './ProfileStatusWithHooks'; //следить за переименованием из FC в CC
 
 const ProfileInfo = (props) => {
   // if (props.profile === null || props.profile === undefined)
@@ -35,7 +35,7 @@ const ProfileInfo = (props) => {
           <span>idUser: {props.profile.userId}</span>
         </div>
         <div className={styles.statusBlock}>
-          <ProfileStatus status={props.status} updateStatus={props.updateStatus} />
+          <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus} />
         </div>
       </div>
     </div>
