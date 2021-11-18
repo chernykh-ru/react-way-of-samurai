@@ -3,6 +3,7 @@ const ADD_POST = 'ADD-POST';
 // const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USERS_PROFILE = 'SET_USERS_PROFILE';
 const SET_STATUS = 'SET_STATUS';
+const DELETE_POST = 'DELETE_POST';
 
 let initialState = {
   posts: [
@@ -23,6 +24,11 @@ const profileReducer = (state = initialState, action) => {
         ...state,
         // newPostText: '',//add redux-form
         posts: [...state.posts, { id: 4, message: action.newPostText }], //добавляем новый элемент в массив
+      };
+    case DELETE_POST:
+      return {
+        ...state,
+        posts: state.posts.filter((p) => p.id !== action.postId), //jest test
       };
     // case UPDATE_NEW_POST_TEXT:
     //   return {
@@ -57,6 +63,8 @@ export const addPostActionCreator = (newPostText) => ({ type: ADD_POST, newPostT
 export const setUserProfile = (profile) => ({ type: SET_USERS_PROFILE, profile });
 
 export const setStatus = (status) => ({ type: SET_STATUS, status });
+
+export const deletePost = (postId) => ({ type: DELETE_POST, postId }); //jest test
 
 //TC
 export const getUserProfile = (userId) => {
