@@ -1,9 +1,9 @@
 import { usersAPI, profileAPI } from '../api/api';
-const ADD_POST = 'ADD-POST';
+const ADD_POST = 'WAY-OF-SAMURAI/PROFILE/ADD-POST'; //add redux-ducks
 // const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
-const SET_USERS_PROFILE = 'SET_USERS_PROFILE';
-const SET_STATUS = 'SET_STATUS';
-const DELETE_POST = 'DELETE_POST';
+const SET_USERS_PROFILE = 'WAY-OF-SAMURAI/PROFILE/SET_USERS_PROFILE';
+const SET_STATUS = 'WAY-OF-SAMURAI/PROFILE/SET_STATUS';
+const DELETE_POST = 'WAY-OF-SAMURAI/PROFILE/DELETE_POST';
 
 let initialState = {
   posts: [
@@ -67,26 +67,30 @@ export const setStatus = (status) => ({ type: SET_STATUS, status });
 export const deletePost = (postId) => ({ type: DELETE_POST, postId }); //jest test
 
 //TC
-export const getUserProfile = (userId) => {
-  return (dispatch) => {
-    usersAPI.getProfile(userId).then((data) => {
-      dispatch(setUserProfile(data));
-    });
-  };
-};
 
-export const getStatus = (userId) => (dispatch) => {
-  profileAPI.getStatus(userId).then((data) => {
-    dispatch(setStatus(data));
-  });
-};
+export const getUserProfile = (userId) => async (dispatch) => {
+  const data = await usersAPI.getProfile(userId);
+  dispatch(setUserProfile(data));
+}; //convert to async/await
 
-export const updateStatus = (status) => (dispatch) => {
-  profileAPI.updateStatus(status).then((data) => {
-    if (data.resultCode === 0) {
-      dispatch(setStatus(status)); //после подверждения сервера сетаем себе статус
-    }
-  });
-};
+// export const getUserProfile = (userId) => {
+//   return (dispatch) => {
+//     usersAPI.getProfile(userId).then((data) => {
+//       dispatch(setUserProfile(data));
+//     });
+//   };
+// }; //with then
+
+export const getStatus = (userId) => async (dispatch) => {
+  const data = await profileAPI.getStatus(userId);
+  dispatch(setStatus(data));
+}; //convert to async/await
+
+export const updateStatus = (status) => async (dispatch) => {
+  const data = await profileAPI.updateStatus(status);
+  if (data.resultCode === 0) {
+    dispatch(setStatus(status)); //после подверждения сервера сетаем себе статус
+  }
+}; //convert to async/await
 
 export default profileReducer;

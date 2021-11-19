@@ -1,4 +1,4 @@
-const ADD_MESSAGE = 'ADD-MESSAGE';
+const ADD_MESSAGE = 'WAY-OF-SAMURAI/DIALOG/ADD-MESSAGE'; //add redux-ducks
 // const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';//add redux-form
 
 let initialState = {

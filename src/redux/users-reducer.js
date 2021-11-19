@@ -1,11 +1,11 @@
 import { usersAPI } from '../api/api';
-const FOLLOW = 'FOLLOW';
-const UNFOLLOW = 'UNFOLLOW';
-const SET_USERS = 'SET_USERS';
-const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
-const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
-const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
-const TOGGLE_IS_FOLLOWING_PROGRESS = 'TOGGLE_IS_FOLLOWING_PROGRESS';
+const FOLLOW = 'WAY-OF-SAMURAI/USERS/FOLLOW'; //add redux-ducks
+const UNFOLLOW = 'WAY-OF-SAMURAI/USERS/UNFOLLOW';
+const SET_USERS = 'WAY-OF-SAMURAI/USERS/SET_USERS';
+const SET_CURRENT_PAGE = 'WAY-OF-SAMURAI/USERS/SET_CURRENT_PAGE';
+const SET_TOTAL_USERS_COUNT = 'WAY-OF-SAMURAI/USERS/SET_TOTAL_USERS_COUNT';
+const TOGGLE_IS_FETCHING = 'WAY-OF-SAMURAI/USERS/TOGGLE_IS_FETCHING';
+const TOGGLE_IS_FOLLOWING_PROGRESS = 'WAY-OF-SAMURAI/USERS/TOGGLE_IS_FOLLOWING_PROGRESS';
 
 let initialState = {
   users: [],
@@ -98,41 +98,44 @@ export const toggleFollowingProgress = (isFetching, userId) => ({
 
 //создаем функции thunk creator, которая создает(возвращает) thunk(dispatch action)
 //переименовываем AC без окончания AC
-export const requestUsers = (page, pageSize) => {
-  // debugger;
-  return (dispatch) => {
-    dispatch(setCurrentPage(page)); //from onPageChanged(активная страница)
-    dispatch(toggleIsFetching(true)); //запрос ушел preloader виден
-    usersAPI.getUsers(page, pageSize).then((data) => {
-      dispatch(toggleIsFetching(false)); //запрос пришел preloader скрывается
-      dispatch(setUsers(data.items)); // у usersAPI дергаем метод getUsers//получаем user из data(данные) items(объект с юзерами) и диспачим setUsers
-      dispatch(setTotalUsersCount(data.totalCount));
-    });
-  };
-};
+export const requestUsers = (page, pageSize) => async (dispatch) => {
+  dispatch(setCurrentPage(page)); //from onPageChanged(активная страница)
+  dispatch(toggleIsFetching(true)); //запрос ушел preloader виден
+  const data = await usersAPI.getUsers(page, pageSize);
+  dispatch(toggleIsFetching(false)); //запрос пришел preloader скрывается
+  dispatch(setUsers(data.items)); // у usersAPI дергаем метод getUsers//получаем user из data(данные) items(объект с юзерами) и диспачим setUsers
+  dispatch(setTotalUsersCount(data.totalCount));
+}; //convert to async/await
 
-export const follow = (userId) => {
-  return (dispatch) => {
-    dispatch(toggleFollowingProgress(true, userId));
-    usersAPI.follow(userId).then((data) => {
-      if (data.resultCode === 0) {
-        dispatch(followSuccess(userId));
-      } //если подписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
-      dispatch(toggleFollowingProgress(false, userId));
-    });
-  };
-};
+// export const requestUsers = (page, pageSize) => {
+//   // debugger;
+//   return (dispatch) => {
+//     dispatch(setCurrentPage(page)); //from onPageChanged(активная страница)
+//     dispatch(toggleIsFetching(true)); //запрос ушел preloader виден
+//     usersAPI.getUsers(page, pageSize).then((data) => {
+//       dispatch(toggleIsFetching(false)); //запрос пришел preloader скрывается
+//       dispatch(setUsers(data.items)); // у usersAPI дергаем метод getUsers//получаем user из data(данные) items(объект с юзерами) и диспачим setUsers
+//       dispatch(setTotalUsersCount(data.totalCount));
+//     });
+//   };
+// };//with then
 
-export const unfollow = (userId) => {
-  return (dispatch) => {
-    dispatch(toggleFollowingProgress(true, userId));
-    usersAPI.unfollow(userId).then((data) => {
-      if (data.resultCode === 0) {
-        dispatch(unfollowSuccess(userId));
-      } //если отписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
-      dispatch(toggleFollowingProgress(false, userId));
-    });
-  };
-};
+export const follow = (userId) => async (dispatch) => {
+  dispatch(toggleFollowingProgress(true, userId));
+  const data = await usersAPI.follow(userId);
+  if (data.resultCode === 0) {
+    dispatch(followSuccess(userId));
+  } //если подписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
+  dispatch(toggleFollowingProgress(false, userId));
+}; //convert to async/await
+
+export const unfollow = (userId) => async (dispatch) => {
+  dispatch(toggleFollowingProgress(true, userId));
+  const data = await usersAPI.unfollow(userId);
+  if (data.resultCode === 0) {
+    dispatch(unfollowSuccess(userId));
+  } //если отписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
+  dispatch(toggleFollowingProgress(false, userId));
+}; //convert to async/await
 
 export default usersReducer;

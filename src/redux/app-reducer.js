@@ -27,10 +27,9 @@ export const initializedSuccess = () => ({
 export const initializeApp = () => (dispatch) => {
   let promise = dispatch(getAuthUserData()); //диспачим получение юзерских данных
   //dispatch(somethingelse())//диспачим получение любых других данных
-  //и когда промис (в auth.me) зарезолвится, после этого мы задиспачим AC success
+  //и когда промис (в authAPI.me) зарезолвится, мы его здесь получим как результат promise и после этого мы задиспачим AC success
   // promise.then(() => {dispatch(initializedSuccess())})//если промис один
   Promise.all([promise]).then(() => dispatch(initializedSuccess()));
 };
 
 export default appReducer;
-  
