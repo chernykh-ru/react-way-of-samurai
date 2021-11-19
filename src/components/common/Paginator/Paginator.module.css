@@ -1,0 +1,7 @@
+.pagination {
+  cursor: pointer;
+}
+
+.selectedPage {
+  font-weight: 700;
+}
