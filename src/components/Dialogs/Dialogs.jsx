@@ -10,28 +10,6 @@ import { Redirect } from 'react-router';
 import { AddMessageForm } from './AddMessageForm/AddMessageForm';
 import { reduxForm } from 'redux-form';
 
-// const maxLength50 = maxLengthCreator(50);
-
-// const AddMessageForm = (props) => {
-//   const { handleSubmit } = props;
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <div>
-//         <Field
-//           component={Textarea}
-//           name={'newMessageText'}
-//           placeholder={'Enter your message'}
-//           validate={[required, maxLength50]}
-//         />
-//         {/* <Field component={'textarea'} name={'newMessageText'} value={props.newMessageText} /> */}
-//       </div>
-//       <div>
-//         <button>Add message</button>
-//       </div>
-//     </form>
-//   );
-// };
-
 const AddMessageFormRedux = reduxForm({ form: 'dialogAddMessageForm' })(AddMessageForm);
 
 const Dialogs = (props) => {
@@ -44,15 +22,6 @@ const Dialogs = (props) => {
   const messagesElements = props.messages.map((m, i) => (
     <Message key={i} message={m.message} id={m.id} />
   ));
-
-  // let onAddMessage = () => {
-  //   props.addMessage(); //callback from store
-  // };//add redux-form
-
-  // let onMessageChange = (e) => {
-  //   let text = e.target.value; //значение поста берем в textarea value
-  //   props.messageChange(text); //callback from store
-  // };//add redux-form
 
   //в атрибуте value придут свойства как имена полей name у field
   let addNewMassage = (value) => {

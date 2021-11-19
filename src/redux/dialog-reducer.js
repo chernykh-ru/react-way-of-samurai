@@ -15,10 +15,10 @@ let initialState = {
     },
     {
       id: 3,
-      name: 'Sasha',
+      name: 'Sveta',
       avatar: 'https://i.pinimg.com/originals/5a/f1/dd/5af1ddcde07255e8a999abcc061dd201.png',
     },
-    { id: 4, name: 'Sveta' },
+    { id: 4, name: 'Sasha' },
     { id: 5, name: 'Valera' },
     { id: 6, name: 'Viktor' },
   ],

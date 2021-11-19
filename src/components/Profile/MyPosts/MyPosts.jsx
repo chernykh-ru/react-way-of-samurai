@@ -30,9 +30,9 @@ const AddPostFormRedux = reduxForm({ form: 'postAddPostForm' })(AddPostForm);
 
 const MyPosts = React.memo((props) => {
   // debugger;
-  const postsElements = props.posts.map((p, i) => (
-    <Post key={i} message={p.message} likeCounter={p.likeCounter} />
-  ));
+  const postsElements = [...props.posts] //иммутабельность - меняем отображение постов на странице не затрагивая исходные данные, а делая копию и ее переворачивая
+    .reverse()
+    .map((p, i) => <Post key={i} message={p.message} likeCounter={p.likeCounter} />);
 
   const addNewPost = (value) => {
     props.addPost(value.newPostText);

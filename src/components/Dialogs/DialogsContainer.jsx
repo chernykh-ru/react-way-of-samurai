@@ -1,21 +1,13 @@
-// import { NavLink } from 'react-router-dom';
-// import styles from './Dialogs.module.css';
-// import DialogItem from './DialogItem/DialogItem';
-// import Message from './Message/Message';
-// import React from 'react';
 import { connect } from 'react-redux';
 import {
   addMessageActionCreator,
   // updateNewMessageTextActionCreator,//add redux-form
 } from '../../redux/dialog-reducer';
-// import StoreContext from '../../StoreContext';
 import Dialogs from './Dialogs';
-// import { Redirect } from 'react-router';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 import { compose } from 'redux';
 
-//данные стейта(замапить стейт на пропсы - превратить нужную часть стейта в пропсы)
-//connect в mstp засунет стейт
+//connect в mstp отдаст стейт
 let mapStateToProps = (state) => {
   return {
     dialogs: state.dialogsPage.dialogs,
