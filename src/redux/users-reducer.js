@@ -1,4 +1,5 @@
 import { usersAPI } from '../api/api';
+import { updateObjectInArray } from '../utils/object-helpers';
 const FOLLOW = 'WAY-OF-SAMURAI/USERS/FOLLOW'; //add redux-ducks
 const UNFOLLOW = 'WAY-OF-SAMURAI/USERS/UNFOLLOW';
 const SET_USERS = 'WAY-OF-SAMURAI/USERS/SET_USERS';
@@ -18,26 +19,41 @@ let initialState = {
 
 const usersReducer = (state = initialState, action) => {
   switch (action.type) {
+    //======
+    //рефакторинг, вынесение дублирующей логики из follow и unfollow во вспомогутальную функцию updateObjectInArray из утилит
     case FOLLOW:
       return {
         ...state, //создаем копию стейта(работать можем только с копией)
-        users: state.users.map((user) => {
-          if (user.id === action.userId) {
-            return { ...user, followed: true };
-          } //мапим массив юзеров(если id юзера совпадает с id пришедшим из AC) то возвращаем в глубокую копию новый объект с добавленным статусом followed true у юзера
-          return user; //если id не совпадает, возвращаем тот же самый объект юзер
-        }),
+        users: updateObjectInArray(state.users, action.userId, 'id', { followed: true }),
       };
     case UNFOLLOW:
       return {
         ...state, //создаем копию стейта(работать можем только с копией)
-        users: state.users.map((user) => {
-          if (user.id === action.userId) {
-            return { ...user, followed: false };
-          } //мапим массив юзеров(если id юзера совпадает с id пришедшим из AC) то возвращаем в глубокую копию новый объект с измененным статусом followed false у юзера
-          return user; //если id не совпадает, возвращаем тот же самый объект юзер
-        }),
+        users: updateObjectInArray(state.users, action.userId, 'id', { followed: false }),
       };
+    //рефакторинг, вынесение дублирующей логики из follow и unfollow во вспомогутальную функцию updateObjectInArray из утилит
+    //=====
+
+    // case FOLLOW:
+    //   return {
+    //     ...state, //создаем копию стейта(работать можем только с копией)
+    //     users: state.users.map((user) => {
+    //       if (user.id === action.userId) {
+    //         return { ...user, followed: true };
+    //       } //мапим массив юзеров(если id юзера совпадает с id пришедшим из AC) то возвращаем в глубокую копию новый объект с добавленным статусом followed true у юзера
+    //       return user; //если id не совпадает, возвращаем тот же самый объект юзер
+    //     }),
+    //   };
+    // case UNFOLLOW:
+    //   return {
+    //     ...state, //создаем копию стейта(работать можем только с копией)
+    //     users: state.users.map((user) => {
+    //       if (user.id === action.userId) {
+    //         return { ...user, followed: false };
+    //       } //мапим массив юзеров(если id юзера совпадает с id пришедшим из AC) то возвращаем в глубокую копию новый объект с измененным статусом followed false у юзера
+    //       return user; //если id не совпадает, возвращаем тот же самый объект юзер
+    //     }),
+    //   };
     case SET_USERS: {
       return {
         ...state,
@@ -120,22 +136,40 @@ export const requestUsers = (page, pageSize) => async (dispatch) => {
 //   };
 // };//with then
 
-export const follow = (userId) => async (dispatch) => {
+//рефакторинг, вынесение дублирующей логики из follow и unfollow в функцию followUnfollowFlow
+export const followUnfollowFlow = async (dispatch, userId, apiMethod, actionCreator) => {
   dispatch(toggleFollowingProgress(true, userId));
-  const data = await usersAPI.follow(userId);
+  const data = await apiMethod(userId);
   if (data.resultCode === 0) {
-    dispatch(followSuccess(userId));
-  } //если подписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
+    dispatch(actionCreator(userId));
+  } //если отписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
   dispatch(toggleFollowingProgress(false, userId));
+};
+
+export const follow = (userId) => async (dispatch) => {
+  // const apiMethod = usersAPI.follow.bind(usersAPI);
+  // const actionCreator = followSuccess;
+  followUnfollowFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), followSuccess);
+
+  // dispatch(toggleFollowingProgress(true, userId));
+  // const data = await apiMethod(userId);
+  // if (data.resultCode === 0) {
+  //   dispatch(actionCreator(userId));
+  // } //если подписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
+  // dispatch(toggleFollowingProgress(false, userId));
 }; //convert to async/await
 
 export const unfollow = (userId) => async (dispatch) => {
-  dispatch(toggleFollowingProgress(true, userId));
-  const data = await usersAPI.unfollow(userId);
-  if (data.resultCode === 0) {
-    dispatch(unfollowSuccess(userId));
-  } //если отписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
-  dispatch(toggleFollowingProgress(false, userId));
+  // const apiMethod = usersAPI.unfollow.bind(usersAPI);
+  // const actionCreator = unfollowSuccess;
+  followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), unfollowSuccess);
+
+  // dispatch(toggleFollowingProgress(true, userId));
+  // const data = await apiMethod(userId);
+  // if (data.resultCode === 0) {
+  //   dispatch(actionCreator(userId));
+  // } //если отписка произошла и сервер подтвердил(resultCode === 0) диспачим в редьюсер
+  // dispatch(toggleFollowingProgress(false, userId));
 }; //convert to async/await
 
 export default usersReducer;
