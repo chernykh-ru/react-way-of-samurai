@@ -1,7 +1,29 @@
+.paginationBlockWrapper {
+  display: flex;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.paginationBlock {
+  display: flex;
+  justify-content: space-between;
+  min-width: 600px;
+}
+
 .pagination {
   cursor: pointer;
+  padding: 4px;
 }
 
 .selectedPage {
   font-weight: 700;
+}
+
+.buttonPrev {
+  margin-right: 10px;
+}
+
+.buttonNext {
+  margin-left: 10px;
 }

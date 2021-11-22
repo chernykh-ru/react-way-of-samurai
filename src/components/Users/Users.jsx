@@ -17,7 +17,7 @@ const Users = ({
   return (
     <div>
       <Paginator //выносим логику пагинации в отдельный компонент, прокидываем пропсы
-        totalUsersCount={totalUsersCount}
+        totalItemsCount={totalUsersCount}
         pageSize={pageSize}
         onPageChanged={onPageChanged}
         currentPage={currentPage}
