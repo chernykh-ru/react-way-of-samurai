@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import './App.css';
 // import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
@@ -7,16 +7,21 @@ import News from './components/News/News';
 import Music from './components/Music/Music';
 import Setings from './components/Setings/Setings';
 import UsersContainer from './components/Users/UsersContainer';
-import DialogsContainer from './components/Dialogs/DialogsContainer';
-import ProfileContainer from './components/Profile/ProfileContainer';
+// import DialogsContainer from './components/Dialogs/DialogsContainer';
+// import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
-import Login from './components/Login/Login';
+// import Login from './components/Login/Login';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 // import { compose } from 'redux';
 import { initializeApp } from './redux/app-reducer';
 import Preloader from './components/common/preloader/Preloader';
+// import { withSuspense } from './hoc/withSuspense';
+
+const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer')); // Ленивая загрузка
+const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer')); // Ленивая загрузка
+const Login = React.lazy(() => import('./components/Login/Login')); // Ленивая загрузка
 
 class App extends React.Component {
   // debugger;
@@ -33,19 +38,22 @@ class App extends React.Component {
         <HeaderContainer />
         <Navbar />
         <div className='app-wrapper-content'>
-          <Route path='/profile/:userId?'>
-            <ProfileContainer
-            //:userId? опциональный параметр ХОКа withRouter
-            />
-          </Route>
-          <Route path='/dialogs'>
-            <DialogsContainer />
-          </Route>
+          <Suspense fallback={<Preloader />}>
+            <Route path='/profile/:userId?'>
+              <ProfileContainer
+              //:userId? опциональный параметр ХОКа withRouter
+              />
+            </Route>
+            <Route path='/dialogs'>
+              <DialogsContainer />
+            </Route>
+            <Route path='/login'>
+              <Login />
+            </Route>
+          </Suspense>
+          {/* <Route path='/login' render={withSuspense(Login)} /> //custom HOC */}
           <Route path='/users'>
             <UsersContainer />
-          </Route>
-          <Route path='/login'>
-            <Login />
           </Route>
           <Route path='/news'>
             <News />
