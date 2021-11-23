@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 import { login } from '../../redux/auth-reducer';
 import { Redirect } from 'react-router';
 import styles from '../common/FormsControls/FormsControls.module.css';
+import stylesLogin from './Login.module.css';
 
 const LoginForm = ({ handleSubmit, error }) => {
   // debugger;
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.loginFormWrapper}>
       <div>
         <Field placeholder={'Email'} name={'email'} component={Input} validate={[required]} />
       </div>
@@ -28,11 +29,6 @@ const LoginForm = ({ handleSubmit, error }) => {
       {error && <div className={styles.formSummaryError}>{error}</div>}
       <div>
         <button>Login</button>
-      </div>
-      <div>
-        <h2>Данные тестового аккаунта:</h2>
-        <span>Email: free@samuraijs.com</span>
-        <span>Password: free</span>
       </div>
     </form>
   );
@@ -60,8 +56,13 @@ const Login = (props) => {
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1 className={stylesLogin.loginH1}>Login</h1>
       <LoginReduxForm onSubmit={onSubmit} />
+      <div className={stylesLogin.loginblock}>
+        <h2>Данные тестового аккаунта:</h2>
+        <p>Email: free@samuraijs.com</p>
+        <p>Password: free</p>
+      </div>
     </div>
   );
 };

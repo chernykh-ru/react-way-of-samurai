@@ -15,7 +15,7 @@ const User = ({ followingInProgress, follow, unfollow, user }) => {
             />
           </NavLink>
         </div>
-        <div>
+        <div className={styles.userButton}>
           {user.followed ? (
             <button
               disabled={followingInProgress.some((id) => id === user.id)}
