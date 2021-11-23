@@ -39,6 +39,16 @@ export const profileAPI = {
     const response = await instance.put(`profile/status`, { status: status }); //вторым параметром передаем объект json
     return response.data;
   },
+  async savePhoto(photoFile) {
+    const formData = new FormData(); //Конструктор FormData() создаёт новые объект FormData, если проще - HTML-форму//https://developer.mozilla.org/ru/docs/Web/API/FormData/FormData
+    formData.append('image', photoFile); //формируем formData по spec API
+    const response = await instance.put(`profile/photo`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }); //вторым параметром передаем formData, а третьим объект со спец заголовками(необязательно, его формирует форма)
+    return response.data;
+  },
 };
 
 export const authAPI = {

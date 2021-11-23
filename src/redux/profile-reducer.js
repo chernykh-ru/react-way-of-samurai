@@ -1,8 +1,8 @@
 import { usersAPI, profileAPI } from '../api/api';
 const ADD_POST = 'WAY-OF-SAMURAI/PROFILE/ADD-POST'; //add redux-ducks
-// const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USERS_PROFILE = 'WAY-OF-SAMURAI/PROFILE/SET_USERS_PROFILE';
 const SET_STATUS = 'WAY-OF-SAMURAI/PROFILE/SET_STATUS';
+const SAVE_PHOTO_SUCCESS = 'WAY-OF-SAMURAI/PROFILE/SAVE_PHOTO_SUCCESS';
 const DELETE_POST = 'WAY-OF-SAMURAI/PROFILE/DELETE_POST';
 
 let initialState = {
@@ -19,10 +19,8 @@ let initialState = {
 const profileReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_POST:
-      // let newPost = action.newPostText;//add redux-form
       return {
         ...state,
-        // newPostText: '',//add redux-form
         posts: [...state.posts, { id: 4, message: action.newPostText }], //добавляем новый элемент в массив
       };
     case DELETE_POST:
@@ -30,11 +28,6 @@ const profileReducer = (state = initialState, action) => {
         ...state,
         posts: state.posts.filter((p) => p.id !== action.postId), //jest test
       };
-    // case UPDATE_NEW_POST_TEXT:
-    //   return {
-    //     ...state,
-    //     newPostText: action.newText,
-    //   };//add redux-form
     case SET_USERS_PROFILE:
       return {
         ...state,
@@ -45,6 +38,11 @@ const profileReducer = (state = initialState, action) => {
         ...state,
         status: action.status,
       };
+    case SAVE_PHOTO_SUCCESS:
+      return {
+        ...state,
+        profile: { ...state.profile, photos: action.photos },
+      };
     default:
       return state;
   }
@@ -53,16 +51,11 @@ const profileReducer = (state = initialState, action) => {
 //создаем функции action creator, которая возвращает объект {action}, после чего переносим их в стейт
 export const addPostActionCreator = (newPostText) => ({ type: ADD_POST, newPostText });
 
-// export const updateNewPostTextActionCreator = (text) => {
-//   return {
-//     type: UPDATE_NEW_POST_TEXT,
-//     newText: text,
-//   };
-// };//add redux-form
-
 export const setUserProfile = (profile) => ({ type: SET_USERS_PROFILE, profile });
 
 export const setStatus = (status) => ({ type: SET_STATUS, status });
+
+export const savePhotoSuccess = (photos) => ({ type: SAVE_PHOTO_SUCCESS, photos });
 
 export const deletePost = (postId) => ({ type: DELETE_POST, postId }); //jest test
 
@@ -92,5 +85,12 @@ export const updateStatus = (status) => async (dispatch) => {
     dispatch(setStatus(status)); //после подверждения сервера сетаем себе статус
   }
 }; //convert to async/await
+
+export const savePhoto = (file) => async (dispatch) => {
+  const data = await profileAPI.savePhoto(file);
+  if (data.resultCode === 0) {
+    dispatch(savePhotoSuccess(data.data.photos)); //диспачим полученные фото
+  }
+};
 
 export default profileReducer;
