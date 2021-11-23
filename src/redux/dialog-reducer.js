@@ -6,17 +6,17 @@ let initialState = {
     {
       id: 1,
       name: 'Andrew',
-      avatar: 'https://author.today/content/2020/02/29/5f7d802fc35d4cbdacea7161f5f45212.jpg',
+      // avatar: 'https://author.today/content/2020/02/29/5f7d802fc35d4cbdacea7161f5f45212.jpg',
     },
     {
       id: 2,
       name: 'Dmitry',
-      avatar: 'https://i.pinimg.com/originals/9c/77/46/9c7746225873e02d83b9315501b8dd2f.jpg',
+      // avatar: 'https://i.pinimg.com/originals/9c/77/46/9c7746225873e02d83b9315501b8dd2f.jpg',
     },
     {
       id: 3,
-      name: 'Sveta',
-      avatar: 'https://i.pinimg.com/originals/5a/f1/dd/5af1ddcde07255e8a999abcc061dd201.png',
+      name: 'Petya',
+      // avatar: 'https://i.pinimg.com/originals/5a/f1/dd/5af1ddcde07255e8a999abcc061dd201.png',
     },
     { id: 4, name: 'Sasha' },
     { id: 5, name: 'Valera' },

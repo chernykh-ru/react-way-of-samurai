@@ -1,5 +1,5 @@
 import styles from './Users.module.css';
-import avataaars from './../../../src/assets/images/avataaars.png';
+import avataaars from './../../../src/assets/images/avataaars.svg';
 import { NavLink } from 'react-router-dom';
 
 const User = ({ followingInProgress, follow, unfollow, user }) => {

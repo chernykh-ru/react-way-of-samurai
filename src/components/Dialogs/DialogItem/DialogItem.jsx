@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import styles from './../Dialogs.module.css';
-import avataaars from './../../../assets/images/avataaars.png';
+import avataaars from './../../../assets/images/avataaars.svg';
 
 const DialogItem = (props) => {
   // debugger
