@@ -1,9 +1,11 @@
 import { usersAPI, profileAPI } from '../api/api';
+import { stopSubmit } from 'redux-form';
 const ADD_POST = 'WAY-OF-SAMURAI/PROFILE/ADD-POST'; //add redux-ducks
 const SET_USERS_PROFILE = 'WAY-OF-SAMURAI/PROFILE/SET_USERS_PROFILE';
 const SET_STATUS = 'WAY-OF-SAMURAI/PROFILE/SET_STATUS';
 const SAVE_PHOTO_SUCCESS = 'WAY-OF-SAMURAI/PROFILE/SAVE_PHOTO_SUCCESS';
 const DELETE_POST = 'WAY-OF-SAMURAI/PROFILE/DELETE_POST';
+// const SAVE_PROFILE_SUCCESS = 'WAY-OF-SAMURAI/PROFILE/SAVE_PROFILE_SUCCESS';
 
 let initialState = {
   posts: [
@@ -43,6 +45,11 @@ const profileReducer = (state = initialState, action) => {
         ...state,
         profile: { ...state.profile, photos: action.photos },
       };
+    // case SAVE_PROFILE_SUCCESS:
+    //   return {
+    //     ...state,
+    //     profile: { ...state.profile, photos: action.photos },
+    //   };
     default:
       return state;
   }
@@ -59,6 +66,7 @@ export const savePhotoSuccess = (photos) => ({ type: SAVE_PHOTO_SUCCESS, photos 
 
 export const deletePost = (postId) => ({ type: DELETE_POST, postId }); //jest test
 
+// export const saveProfileSuccess = (payload) => ({ type: SAVE_PROFILE_SUCCESS, payload });
 //TC
 
 export const getUserProfile = (userId) => async (dispatch) => {
@@ -92,5 +100,25 @@ export const savePhoto = (file) => async (dispatch) => {
     dispatch(savePhotoSuccess(data.data.photos)); //диспачим полученные фото
   }
 };
+
+//TC отправка и получение данных профиля
+export const saveProfile = (profile) => async (dispatch, getState) => {
+  const userId = getState().auth.userId; //в санку помимо диспача приходит стейт целиком, берем getState() и достаем из ветки auth нужный userId
+  // console.log(userId);
+  const data = await profileAPI.saveProfile(profile);
+  if (data.resultCode === 0) {
+    dispatch(getUserProfile(userId)); //диспачим id для получения новых данных с сервера после редатирования профиля
+  } else {
+    //встроенный экш редакс-форм, передаем в него имя формы(_error - или общую ошибку формы), вторым параметром передаем объект с проблемными полями, которые вызвали ошибку
+    let message = data.messages.length > 0 ? data.messages[0] : 'some error';
+    dispatch(stopSubmit('edit-profile', { _error: message })); //диспачим экшен с именем формы и объектом с общей ощибкой формы и причиной
+    return Promise.reject(message); //решение с отображением ошибки формы
+  }
+};
+
+// export const getUserProfileData = (userId) => async (dispatch) => {
+//   const data = await usersAPI.getProfile(userId);
+//   dispatch(setUserProfile(data));
+// };
 
 export default profileReducer;

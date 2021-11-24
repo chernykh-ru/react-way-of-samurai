@@ -49,6 +49,28 @@ export const profileAPI = {
     }); //вторым параметром передаем formData, а третьим объект со спец заголовками(необязательно, его формирует форма)
     return response.data;
   },
+  async saveProfile(profile) {
+    const response = await instance.put(`profile`, profile); //вторым параметром передаем объект json из redux-form
+    return response.data;
+  },
+  // async saveProfile(
+  //   aboutMe,
+  //   contacts = {},
+  //   lookingForAJob = false,
+  //   lookingForAJobDescription,
+  //   fullName,
+  //   userId = 20627,
+  // ) {
+  //   const response = await instance.put(`profile/`, {
+  //     aboutMe: aboutMe,
+  //     contacts: contacts,
+  //     lookingForAJob: lookingForAJob,
+  //     lookingForAJobDescription: lookingForAJobDescription,
+  //     fullName: fullName,
+  //     userId: userId,
+  //   });
+  //   return response.data;
+  // },
 };
 
 export const authAPI = {

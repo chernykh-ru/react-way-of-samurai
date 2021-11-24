@@ -1,15 +1,14 @@
-// import ProfileInfo from './ProfileInfo/ProfileInfo';
-// import MyPosts from './MyPosts/MyPosts';
-// import classes from './Profile.module.css'
-// import MyPostsContainer from './MyPosts/MyPostsContainer';
-// import store from '../../redux/store';
 import React from 'react';
-// import axios from 'axios';
 import Profile from './Profile';
 import { connect } from 'react-redux';
-import { getUserProfile, getStatus, updateStatus, savePhoto } from '../../redux/profile-reducer';
+import {
+  getUserProfile,
+  getStatus,
+  updateStatus,
+  savePhoto,
+  saveProfile,
+} from '../../redux/profile-reducer';
 import { withRouter } from 'react-router';
-// import { usersAPI } from '../../api/api';
 // import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 import { compose } from 'redux';
 
@@ -55,6 +54,7 @@ class ProfileContainer extends React.Component {
         profile={this.props.profile}
         status={this.props.status}
         updateStatus={this.props.updateStatus}
+        saveProfile={this.props.saveProfile} //TC сохранение данных профиля из redux-form
       />
     );
   }
@@ -73,7 +73,7 @@ let mapStateToProps = (state) => ({
 // export default connect(mapStateToProps, { getUserProfile })(withRouter(ProfileContainer));
 
 export default compose(
-  connect(mapStateToProps, { getUserProfile, getStatus, updateStatus, savePhoto }),
+  connect(mapStateToProps, { getUserProfile, getStatus, updateStatus, savePhoto, saveProfile }),
   withRouter,
   // withAuthRedirect,
 )(ProfileContainer); //add compose
