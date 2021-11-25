@@ -53,24 +53,6 @@ export const profileAPI = {
     const response = await instance.put(`profile`, profile); //вторым параметром передаем объект json из redux-form
     return response.data;
   },
-  // async saveProfile(
-  //   aboutMe,
-  //   contacts = {},
-  //   lookingForAJob = false,
-  //   lookingForAJobDescription,
-  //   fullName,
-  //   userId = 20627,
-  // ) {
-  //   const response = await instance.put(`profile/`, {
-  //     aboutMe: aboutMe,
-  //     contacts: contacts,
-  //     lookingForAJob: lookingForAJob,
-  //     lookingForAJobDescription: lookingForAJobDescription,
-  //     fullName: fullName,
-  //     userId: userId,
-  //   });
-  //   return response.data;
-  // },
 };
 
 export const authAPI = {
@@ -78,11 +60,12 @@ export const authAPI = {
     const response = await instance.get(`auth/me`);
     return response.data;
   },
-  async login(email, password, rememberMe = false) {
+  async login(email, password, rememberMe = false, captcha = null) {
     const response = await instance.post(`auth/login`, {
       email: email,
       password: password,
       rememberMe: rememberMe,
+      captcha: captcha,
     });
     return response.data;
   },
@@ -100,4 +83,11 @@ export const authAPI = {
   // logout() {
   //   return instance.delete(`auth/login`);
   // },
+};
+
+export const securityAPI = {
+  async getCaptchaUrl() {
+    const response = await instance.get(`security/get-captcha-url`);
+    return response.data;
+  },
 };
