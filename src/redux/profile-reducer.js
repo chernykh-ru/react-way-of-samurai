@@ -1,11 +1,10 @@
-import { usersAPI, profileAPI } from '../api/api';
+import { profileAPI } from '../api/api';
 import { stopSubmit } from 'redux-form';
 const ADD_POST = 'WAY-OF-SAMURAI/PROFILE/ADD-POST'; //add redux-ducks
 const SET_USERS_PROFILE = 'WAY-OF-SAMURAI/PROFILE/SET_USERS_PROFILE';
 const SET_STATUS = 'WAY-OF-SAMURAI/PROFILE/SET_STATUS';
 const SAVE_PHOTO_SUCCESS = 'WAY-OF-SAMURAI/PROFILE/SAVE_PHOTO_SUCCESS';
 const DELETE_POST = 'WAY-OF-SAMURAI/PROFILE/DELETE_POST';
-// const SAVE_PROFILE_SUCCESS = 'WAY-OF-SAMURAI/PROFILE/SAVE_PROFILE_SUCCESS';
 
 let initialState = {
   posts: [
@@ -45,11 +44,6 @@ const profileReducer = (state = initialState, action) => {
         ...state,
         profile: { ...state.profile, photos: action.photos },
       };
-    // case SAVE_PROFILE_SUCCESS:
-    //   return {
-    //     ...state,
-    //     profile: { ...state.profile, photos: action.photos },
-    //   };
     default:
       return state;
   }
@@ -70,7 +64,7 @@ export const deletePost = (postId) => ({ type: DELETE_POST, postId }); //jest te
 //TC
 
 export const getUserProfile = (userId) => async (dispatch) => {
-  const data = await usersAPI.getProfile(userId);
+  const data = await profileAPI.getProfile(userId);
   dispatch(setUserProfile(data));
 }; //convert to async/await
 
@@ -88,11 +82,15 @@ export const getStatus = (userId) => async (dispatch) => {
 }; //convert to async/await
 
 export const updateStatus = (status) => async (dispatch) => {
-  const data = await profileAPI.updateStatus(status);
-  if (data.resultCode === 0) {
-    dispatch(setStatus(status)); //после подверждения сервера сетаем себе статус
+  try {
+    const data = await profileAPI.updateStatus(status);
+    if (data.resultCode === 0) {
+      dispatch(setStatus(status)); //после подверждения сервера сетаем себе статус
+    }
+  } catch (error) {
+    console.log('updateStatus error');
   }
-}; //convert to async/await
+}; //test try catch
 
 export const savePhoto = (file) => async (dispatch) => {
   const data = await profileAPI.savePhoto(file);
@@ -115,10 +113,5 @@ export const saveProfile = (profile) => async (dispatch, getState) => {
     return Promise.reject(message); //решение с отображением ошибки формы
   }
 };
-
-// export const getUserProfileData = (userId) => async (dispatch) => {
-//   const data = await usersAPI.getProfile(userId);
-//   dispatch(setUserProfile(data));
-// };
 
 export default profileReducer;

@@ -20,10 +20,10 @@ export const usersAPI = {
     const response = await instance.post(`follow/${userId}`);
     return response.data;
   },
-  async getProfile(userId) {
-    console.warn('Obsolete method. Please use profileAPI object');
-    return profileAPI.getProfile(userId); //перенаправялем на новый метод с предупреждением
-  },
+  // async getProfile(userId) {
+  //   console.warn('Obsolete method. Please use profileAPI object');
+  //   return profileAPI.getProfile(userId); //перенаправялем на новый метод с предупреждением
+  // },
 };
 
 export const profileAPI = {
