@@ -1,7 +1,7 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import profileReducer from './profile-reducer';
-import dialogsReducer from './dialog-reducer';
+import dialogsReducer from './dialog-reducer'; //add ts
 import sidebarReducer from './sidebar-reducer';
 import usersReducer from './users-reducer';
 import authReducer from './auth-reducer';

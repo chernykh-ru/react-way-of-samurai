@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import {
-  addMessageActionCreator,
+  addMessage,
   // updateNewMessageTextActionCreator,//add redux-form
 } from '../../redux/dialog-reducer';
 import Dialogs from './Dialogs';
@@ -22,27 +22,16 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (message) => {
-      dispatch(addMessageActionCreator(message));
-    }, //диспачим сообщение из redux-form //мы диспатчем не экшнкриэйтор, ЭК мы запускаем, он возвращает нам экшн(это объект у которого есть минимум тип) и мы диспатчем это вернувшийся экшн
-    // messageChange: (text) => {
-    //   dispatch(updateNewMessageTextActionCreator(text));
-    // },//add redux-form
+      dispatch(addMessage(message));
+    },
   };
 };
-
-//вызываем HOC с нужным параметром(передаем ему нужную целевую компоненту) получаем ответ AuthRedirectComponent и этот ответ мы закидываем целевой компонентой в коннект
-// let AuthRedirectComponent = withAuthRedirect(Dialogs);//add compose
-// (props) => {
-//   if (!this.props.isAuth) return <Redirect to={'/login'} />;
-//   return <Dialogs {...props} />; //прокидываем все пропсы в целевую компоненту
-// };
 
 //connect from react-redux
 //двойной вызов ()() -  вызываем функцию connect, она возвращает другую функцию и мы вызываем другую функцию, которую нам вернул предыдущий вызов
 // const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent);//add compose
 // const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
 
-//
 // export default DialogsContainer;//compose
 
 //оборачиваем compose (каждая функция примет один параметр, его возвращенное взначение будет передано вышестоящей(слева) функции как аргумент), выполнение идет справа налево(снизу вверх)
