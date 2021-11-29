@@ -55,6 +55,7 @@
     ]
   },
   "devDependencies": {
-    "react-test-renderer": "^17.0.2"
+    "react-test-renderer": "^17.0.2",
+    "typescript-plugin-css-modules": "^3.4.0"
   }
 }
