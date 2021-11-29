@@ -6,7 +6,7 @@ type PropsType = {
   pageSize: number,
   onPageChanged: (page: number) => void,
   currentPage: number,
-  portionSize: number
+  portionSize?: number//'?' необязательный параметр
 }//типизируем пропсы и ниже компонент: React.FC<Props>
 
 const Paginator: React.FC<PropsType> = ({ totalItemsCount, pageSize, onPageChanged, currentPage, portionSize = 10 }) => {
