@@ -1,4 +1,8 @@
 import { getAuthUserData } from './auth-reducer';
+import { AppStateType } from './redux-store';
+import { Dispatch } from 'redux';
+import { ThunkAction } from 'redux-thunk'
+
 const INITIALIZED_SUCCESS = 'INITIALIZED_SUCCESS';
 
 export type InitialStateType = {
@@ -22,6 +26,8 @@ const appReducer = (state: InitialStateType = initialState, action: InitializedS
   }
 };//TS редьюсер на входе и на выходе должен принять и вернуть state: InitialStateType
 
+type ActionsTypes = InitializedSuccessActionType
+
 export type InitializedSuccessActionType = {
   type: typeof INITIALIZED_SUCCESS,
 }//TS typeof на этапе компиляции выведет значение константы (строку 'INITIALIZED_SUCCESS')
@@ -32,7 +38,11 @@ export const initializedSuccess = (): InitializedSuccessActionType => ({
 }); //TS возвращаемое значение функции пишем после (параметров): и перед =>
 
 //TC
-export const initializeApp = () => (dispatch: any) => {
+type GetStateType = () => AppStateType//создаем "псевдоним" типа для getState
+type DispatchType = Dispatch<ActionsTypes>//создаем "псевдоним" типа для dispatch
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+
+export const initializeApp = (): ThunkType => async (dispatch) => {
   let promise = dispatch(getAuthUserData()); //диспачим получение юзерских данных
   //dispatch(somethingelse())//диспачим получение любых других данных
   //и когда промис (в authAPI.me) зарезолвится, мы его здесь получим как результат promise и после этого мы задиспачим AC success

@@ -52,6 +52,10 @@ const dialogsReducer = (state: InitialStateType = stateDialogs, action: AddMessa
       return state;
   }
 };
+
+//AC
+// type ActionsTypes = AddMessageActionType
+
 type AddMessageActionType = {
   type: typeof ADD_MESSAGE,
   message: string,

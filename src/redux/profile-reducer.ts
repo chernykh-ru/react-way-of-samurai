@@ -1,45 +1,15 @@
 import { profileAPI } from '../api/api';
 import { stopSubmit } from 'redux-form';
 import {PostType, ContactsType, PhotosType, ProfileType} from '../types/types'
+import { AppStateType } from './redux-store';
+import { Dispatch } from 'redux';
+import { ThunkAction } from 'redux-thunk'
+
 const ADD_POST = 'WAY-OF-SAMURAI/PROFILE/ADD-POST'; //add redux-ducks
 const SET_USERS_PROFILE = 'WAY-OF-SAMURAI/PROFILE/SET_USERS_PROFILE';
 const SET_STATUS = 'WAY-OF-SAMURAI/PROFILE/SET_STATUS';
 const SAVE_PHOTO_SUCCESS = 'WAY-OF-SAMURAI/PROFILE/SAVE_PHOTO_SUCCESS';
 const DELETE_POST = 'WAY-OF-SAMURAI/PROFILE/DELETE_POST';
-
-
-//выносим типы в отдельный файл types и импортируем их по необходимости
-// type PostType = {
-//   id: number | null,
-//   message: string | null,
-//   likeCounter: number | null
-// }
-
-// type ContactsType = {
-//   facebook: string | null,
-//   website: string | null,
-//   vk: string | null,
-//   twitter: string | null,
-//   instagram: string | null,
-//   youtube: string | null,
-//   github: string | null,
-//   mainLink: string | null,
-// }
-
-// type PhotosType = {
-//   small: string | null,
-//   large: string | null,
-// }
-
-// type ProfileType = {
-//   aboutMe: string | null,
-//   contacts: ContactsType,
-//   lookingForAJob: boolean,
-//   lookingForAJobDescription: string | null,
-//   fullName: string | null,
-//   userId: number | null,
-//   photos: PhotosType,
-// }
 
 let initialState = {
   posts: [
@@ -54,7 +24,7 @@ let initialState = {
 
 export type InitialStateType = typeof initialState
 
-const profileReducer = (state: InitialStateType = initialState, action: AddPostActionCreatorActionType | SetUserProfileActionType | SetStatusActionType | SavePhotoSuccessActionType | DeletePostActionType): InitialStateType => {
+const profileReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
     case ADD_POST:
       return {
@@ -87,6 +57,8 @@ const profileReducer = (state: InitialStateType = initialState, action: AddPostA
 };
 
 //ACTypes
+type ActionsTypes = AddPostActionCreatorActionType | SetUserProfileActionType | SetStatusActionType | SavePhotoSuccessActionType | DeletePostActionType
+
 type AddPostActionCreatorActionType = {
   type: typeof ADD_POST,
   newPostText: string | null
@@ -108,11 +80,6 @@ type DeletePostActionType = {
   postId: number | null
 }
 
-// type ActionTypes = {
-//   action: AddPostActionCreatorActionType | SetUserProfileActionType | SetStatusActionType | SavePhotoSuccessActionType | DeletePostActionType
-// }
-
-
 //AC
 //создаем функции action creator, которая возвращает объект {action}, после чего переносим их в стейт
 export const addPostActionCreator = (newPostText: string | null): AddPostActionCreatorActionType => ({ type: ADD_POST, newPostText });
@@ -125,10 +92,13 @@ export const savePhotoSuccess = (photos: PhotosType): SavePhotoSuccessActionType
 
 export const deletePost = (postId: number | null): DeletePostActionType => ({ type: DELETE_POST, postId }); //jest test
 
-// export const saveProfileSuccess = (payload) => ({ type: SAVE_PROFILE_SUCCESS, payload });
-//TC
 
-export const getUserProfile = (userId: number | null) => async (dispatch: any) => {
+//TC
+// type GetStateType = () => AppStateType//создаем "псевдоним" типа для getState
+// type DispatchType = Dispatch<ActionsTypes>//создаем "псевдоним" типа для dispatch
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+
+export const getUserProfile = (userId: number | null): ThunkType => async (dispatch) => {
   const data = await profileAPI.getProfile(userId);
   dispatch(setUserProfile(data));
 }; //convert to async/await
@@ -141,12 +111,12 @@ export const getUserProfile = (userId: number | null) => async (dispatch: any) =
 //   };
 // }; //with then
 
-export const getStatus = (userId: number | null) => async (dispatch: any) => {
+export const getStatus = (userId: number | null): ThunkType => async (dispatch) => {
   const data = await profileAPI.getStatus(userId);
   dispatch(setStatus(data));
 }; //convert to async/await
 
-export const updateStatus = (status: string | null) => async (dispatch: any) => {
+export const updateStatus = (status: string | null): ThunkType => async (dispatch) => {
   try {
     const data = await profileAPI.updateStatus(status);
     if (data.resultCode === 0) {
@@ -157,7 +127,7 @@ export const updateStatus = (status: string | null) => async (dispatch: any) => 
   }
 }; //test try catch
 
-export const savePhoto = (file: any) => async (dispatch: any) => {
+export const savePhoto = (file: any): ThunkType => async (dispatch) => {
   const data = await profileAPI.savePhoto(file);
   if (data.resultCode === 0) {
     dispatch(savePhotoSuccess(data.data.photos)); //диспачим полученные фото
@@ -165,7 +135,7 @@ export const savePhoto = (file: any) => async (dispatch: any) => {
 };
 
 //TC отправка и получение данных профиля
-export const saveProfile = (profile: ProfileType) => async (dispatch: any, getState: any) => {
+export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch: any, getState) => {
   const userId = getState().auth.userId; //в санку помимо диспача приходит стейт целиком, берем getState() и достаем из ветки auth нужный userId
   // console.log(userId);
   const data = await profileAPI.saveProfile(profile);
@@ -177,6 +147,6 @@ export const saveProfile = (profile: ProfileType) => async (dispatch: any, getSt
     dispatch(stopSubmit('edit-profile', { _error: message })); //диспачим экшен с именем формы и объектом с общей ощибкой формы и причиной
     return Promise.reject(message); //решение с отображением ошибки формы
   }
-};
+};//Fix dispatch: any dispatch(stopSubmit('edit-profile', { _error: message }))
 
 export default profileReducer;
