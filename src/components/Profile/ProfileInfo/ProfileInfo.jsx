@@ -109,9 +109,11 @@ const ProfileData = ({ profile, isOwner, setEditMode }) => {
 const Contact = ({ contactTitle, contactValue }) => {
   return (
     <div className={styles.contactsWrapper}>
-      <p>
-        {contactTitle}: {contactValue}
-      </p>
+      {contactValue && (
+        <p>
+          {contactTitle}: {contactValue}
+        </p>
+      )}
     </div>
   );
 };

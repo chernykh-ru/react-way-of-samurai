@@ -58,7 +58,7 @@ class App extends React.Component {
             <Login />
           </Route>
           <Route path='/users'>
-            <UsersContainer />
+            <UsersContainer pageTitle={'Самураи'} />
           </Route>
           <Route path='/news'>
             <News />

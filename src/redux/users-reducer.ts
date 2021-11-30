@@ -27,9 +27,9 @@ const TOGGLE_IS_FOLLOWING_PROGRESS = 'WAY-OF-SAMURAI/USERS/TOGGLE_IS_FOLLOWING_P
 
 let initialState = {
   users: [] as Array<UsersType>,
-  pageSize: 10 as number | null,
-  totalUsersCount: 0 as number | null,
-  currentPage: 1 as number | null,
+  pageSize: 10 as number,//remove | null
+  totalUsersCount: 0 as number,//remove | null
+  currentPage: 1 as number,//remove | null
   isFetching: true as boolean,
   followingInProgress: [] as Array<number | null>,//array of users Id
 };
@@ -126,12 +126,12 @@ type SetUsersActionType = {
 }
 type SetCurrentPageActionType = {
   type: typeof SET_CURRENT_PAGE,
-  currentPage: number | null
-}
+  currentPage: number
+}//remove | null
 type SetTotalUsersCountActionType = {
   type: typeof SET_TOTAL_USERS_COUNT,
-  totalUsersCount: number | null
-}
+  totalUsersCount: number
+}//remove | null
 type ToggleIsFetchingActionType = {
   type: typeof TOGGLE_IS_FETCHING,
   isFetching: boolean
@@ -148,11 +148,11 @@ type ToggleFollowingProgressActionType = {
 export const followSuccess = (userId: number | null): FollowSuccessActionType => ({ type: FOLLOW, userId }); //переименуем из-за thunkCreate
 export const unfollowSuccess = (userId: number | null): UnfollowSuccessActionType => ({ type: UNFOLLOW, userId }); //переименуем из-за thunkCreate
 export const setUsers = (users: Array<UsersType>): SetUsersActionType => ({ type: SET_USERS, users }); //возьмем данные о юзерах с сервера и поместим их потом в стейт
-export const setCurrentPage = (currentPage: number | null): SetCurrentPageActionType => ({ type: SET_CURRENT_PAGE, currentPage });
-export const setTotalUsersCount = (totalUsersCount: number | null): SetTotalUsersCountActionType => ({
+export const setCurrentPage = (currentPage: number): SetCurrentPageActionType => ({ type: SET_CURRENT_PAGE, currentPage });//remove | null
+export const setTotalUsersCount = (totalUsersCount: number): SetTotalUsersCountActionType => ({
   type: SET_TOTAL_USERS_COUNT,
   totalUsersCount, //когда ключ и значение не одинаковы(специально)
-});
+});//remove | null
 // export const setTotalUsersCount = (totalUsersCount: number | null) => ({
 //   type: SET_TOTAL_USERS_COUNT,
 //   count: totalUsersCount, //когда ключ и значение не одинаковы(специально)
@@ -169,14 +169,14 @@ export const toggleFollowingProgress = (isFetching: boolean, userId: number | nu
 
 //создаем функции thunk creator, которая создает(возвращает) thunk(dispatch action)
 //переименовываем AC без окончания AC
-export const requestUsers = (page: number | null, pageSize: number | null) => async (dispatch: any) => {
+export const requestUsers = (page: number, pageSize: number | null) => async (dispatch: any) => {
   dispatch(setCurrentPage(page)); //from onPageChanged(активная страница)
   dispatch(toggleIsFetching(true)); //запрос ушел preloader виден
   const data = await usersAPI.getUsers(page, pageSize);
   dispatch(toggleIsFetching(false)); //запрос пришел preloader скрывается
   dispatch(setUsers(data.items)); // у usersAPI дергаем метод getUsers//получаем user из data(данные) items(объект с юзерами) и диспачим setUsers
   dispatch(setTotalUsersCount(data.totalCount));
-}; //convert to async/await
+}; //remove page | null
 
 // export const requestUsers = (page, pageSize) => {
 //   // debugger;

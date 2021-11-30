@@ -12,8 +12,8 @@ type PropsType = {
   currentPage: number,
   users: Array<UsersType>,
   followingInProgress: Array<number | null>,
-  follow: () => void,
-  unfollow: () => void,
+  follow: (userId: number | null) => void,
+  unfollow: (userId: number | null) => void,
 }
 
 const Users: React.FC<PropsType> = ({

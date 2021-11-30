@@ -12,7 +12,7 @@ type PropsType = {
 const Paginator: React.FC<PropsType> = ({ totalItemsCount, pageSize, onPageChanged, currentPage, portionSize = 10 }) => {
   const pagesCount = Math.ceil(totalItemsCount / pageSize); //кол-во странииц
   const portionCount = Math.ceil(pagesCount / portionSize); //кол-во порций
-  const [portionNumber, setPortionNumber] = useState(Math.ceil(currentPage / portionSize)); //отслеживаем номер порции и его изменение//решение со сбросом порции при смене страницы
+  const [portionNumber, setPortionNumber] = useState<number>(Math.ceil(currentPage / portionSize)); //отслеживаем номер порции и его изменение//решение со сбросом порции при смене страницы
   // const [portionNumber, setPortionNumber] = useState(1); //отслеживаем номер порции и его изменение
   const leftPortionPageNumber = (portionNumber - 1) * portionSize + 1; //номер левого элемента порции
   const rightPortionPageNumber = portionNumber * portionSize; //номер правого элемента порции
