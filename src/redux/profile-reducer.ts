@@ -1,8 +1,8 @@
-import { profileAPI } from '../api/api';
+import { profileAPI, ResultCodeEnum } from '../api/api';
 import { stopSubmit } from 'redux-form';
-import {PostType, ContactsType, PhotosType, ProfileType} from '../types/types'
+import {PostType, PhotosType, ProfileType} from '../types/types'
 import { AppStateType } from './redux-store';
-import { Dispatch } from 'redux';
+// import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk'
 
 const ADD_POST = 'WAY-OF-SAMURAI/PROFILE/ADD-POST'; //add redux-ducks
@@ -119,7 +119,7 @@ export const getStatus = (userId: number | null): ThunkType => async (dispatch) 
 export const updateStatus = (status: string | null): ThunkType => async (dispatch) => {
   try {
     const data = await profileAPI.updateStatus(status);
-    if (data.resultCode === 0) {
+    if (data.resultCode === ResultCodeEnum.Success) {
       dispatch(setStatus(status)); //после подверждения сервера сетаем себе статус
     }
   } catch (error) {
@@ -127,10 +127,11 @@ export const updateStatus = (status: string | null): ThunkType => async (dispatc
   }
 }; //test try catch
 
-export const savePhoto = (file: any): ThunkType => async (dispatch) => {
-  const data = await profileAPI.savePhoto(file);
+export const savePhoto = (photoFile: any): ThunkType => async (dispatch) => {
+  const data = await profileAPI.savePhoto(photoFile);
   if (data.resultCode === 0) {
     dispatch(savePhotoSuccess(data.data.photos)); //диспачим полученные фото
+    // dispatch(savePhotoSuccess(data.data.photos)); //диспачим полученные фото
   }
 };
 
@@ -139,7 +140,7 @@ export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch:
   const userId = getState().auth.userId; //в санку помимо диспача приходит стейт целиком, берем getState() и достаем из ветки auth нужный userId
   // console.log(userId);
   const data = await profileAPI.saveProfile(profile);
-  if (data.resultCode === 0) {
+  if (data.resultCode === ResultCodeEnum.Success) {
     dispatch(getUserProfile(userId)); //диспачим id для получения новых данных с сервера после редатирования профиля
   } else {
     //встроенный экш редакс-форм, передаем в него имя формы(_error - или общую ошибку формы), вторым параметром передаем объект с проблемными полями, которые вызвали ошибку

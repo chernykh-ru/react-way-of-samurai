@@ -1,4 +1,4 @@
-import { authAPI, securityAPI } from '../api/api';
+import { authAPI, securityAPI, ResultCodeEnum, ResultCodeForCaptcha } from '../api/api';
 import { stopSubmit } from 'redux-form';//add @types/redux-form
 import { AppStateType } from './redux-store';
 // import { Dispatch } from 'redux';
@@ -69,19 +69,19 @@ type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const getAuthUserData = (): ThunkType => async (dispatch) => {
   const data = await authAPI.me();
-  if (data.resultCode === 0) {
-    let { id, email, login } = data.data;
+  if (data.resultCode === ResultCodeEnum.Success) {
+    const { id, email, login } = data.data;
     dispatch(setAuthUserData(id, email, login, true)); //isAuth true
   }
-};
+};//added TS API, ResultCodeEnum
 
 //TC to login and logout
 export const login = (email: string, password: string, rememberMe: boolean, captcha: any): ThunkType => async (dispatch: any) => {
   const data = await authAPI.login(email, password, rememberMe, captcha);
-  if (data.resultCode === 0) {
+  if (data.resultCode === ResultCodeEnum.Success) {
     dispatch(getAuthUserData());
   } else {
-    if (data.resultCode === 10) {
+    if (data.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
       dispatch(getCaptchaUrl());
     } //при ответе сервера 10 диспачим санку на получение капчи
     // let action = stopSubmit('login', { email: 'Email is wrong' }); //встроенный экш редакс-форм, передаем в него имя формы(_error - или общую ошибку формы), вторым параметром передаем объект с проблемными полями, которые вызвали ошибку
@@ -92,7 +92,7 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
 
 export const logout = (): ThunkType => async (dispatch) => {
   const data = await authAPI.logout();
-  if (data.resultCode === 0) {
+  if (data.resultCode === ResultCodeEnum.Success) {
     dispatch(setAuthUserData(null, null, null, false)); //при логауте зануляем все данные и ставим флаг isAuth false
   }
 };
