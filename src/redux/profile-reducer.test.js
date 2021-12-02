@@ -1,4 +1,4 @@
-import profileReducer, { addPostActionCreator, deletePost } from './profile-reducer';
+import profileReducer, { actions } from './profile-reducer';
 
 // import { render, screen } from '@testing-library/react';
 
@@ -12,7 +12,7 @@ let state = {
 
 it('length of posts should be incremented', () => {
   //1. test data
-  let action = addPostActionCreator('chernykh.ru');
+  let action = actions.addPostActionCreator('chernykh.ru');
   //2. action
   let newState = profileReducer(state, action);
   //3 expectation
@@ -21,7 +21,7 @@ it('length of posts should be incremented', () => {
 
 it('the integrity of the text is preserved', () => {
   //1. test data
-  let action = addPostActionCreator('chernykh.ru');
+  let action = actions.addPostActionCreator('chernykh.ru');
   //2. action
   let newState = profileReducer(state, action);
   //3 expectation
@@ -30,7 +30,7 @@ it('the integrity of the text is preserved', () => {
 
 it('length of posts after deleting should be decremented', () => {
   //1. test data
-  let action = deletePost(1);
+  let action = actions.deletePost(1);
   //2. action
   let newState = profileReducer(state, action);
   //3 expectation
@@ -39,7 +39,7 @@ it('length of posts after deleting should be decremented', () => {
 
 it(`length of posts after deleting shouldn't be decremented if id incorrect`, () => {
   //1. test data
-  let action = deletePost(1000);
+  let action = actions.deletePost(1000);
   //2. action
   let newState = profileReducer(state, action);
   //3 expectation

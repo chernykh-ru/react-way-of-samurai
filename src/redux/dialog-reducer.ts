@@ -1,4 +1,7 @@
-const ADD_MESSAGE = 'WAY-OF-SAMURAI/DIALOG/ADD-MESSAGE';
+import { InferActionsTypes } from './redux-store';
+
+// const ADD_MESSAGE = 'WAY-OF-SAMURAI/DIALOG/ADD-MESSAGE';
+
 
 type DialogsType = {
   id: number | null,
@@ -9,14 +12,12 @@ type MessagesType = {
   message: string | null
 }
 
+// const initialState = {
+//   dialogs: [] as Array<DialogsType>,
+//   messages: [] as Array<MessagesType>,
+// };
+
 const initialState = {
-  dialogs: [] as Array<DialogsType>,
-  messages: [] as Array<MessagesType>,
-};
-
-export type InitialStateType = typeof initialState
-
-const stateDialogs: InitialStateType = {
   dialogs: [
     {
       id: 1,
@@ -33,17 +34,19 @@ const stateDialogs: InitialStateType = {
     { id: 4, name: 'Sasha' },
     { id: 5, name: 'Valera' },
     { id: 6, name: 'Viktor' },
-  ],
+  ] as DialogsType[],
   messages: [
     { id: 1, message: 'Hi' },
     { id: 2, message: 'How is your it?' },
     { id: 3, message: 'I am fine' },
-  ],
+  ] as MessagesType[],
 };
 
-const dialogsReducer = (state: InitialStateType = stateDialogs, action: AddMessageActionType): InitialStateType => {
+export type InitialStateType = typeof initialState
+
+const dialogsReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
-    case ADD_MESSAGE:
+    case 'WAY-OF-SAMURAI/DIALOG/ADD-MESSAGE':
       return {
         ...state,
         messages: [...state.messages, { id: 4, message: action.message }],
@@ -53,16 +56,26 @@ const dialogsReducer = (state: InitialStateType = stateDialogs, action: AddMessa
   }
 };
 
+type ActionsTypes = InferActionsTypes<typeof actions>
+
 //AC
 // type ActionsTypes = AddMessageActionType
 
-type AddMessageActionType = {
-  type: typeof ADD_MESSAGE,
-  message: string,
-}//типизация action creator
+export const actions = {
+  addMessage: (message: string) => ({ type: 'WAY-OF-SAMURAI/DIALOG/ADD-MESSAGE', message } as const),
+}
+
+// type AddMessageActionType = {
+//   type: typeof ADD_MESSAGE,
+//   message: string,
+// }//типизация action creator
 
 // export const addMessage: (message: string) => AddMessageActionType = (message) => ({ type: ADD_MESSAGE, message });
 
-export const addMessage = (message: string): AddMessageActionType => ({ type: ADD_MESSAGE, message });
+// export const addMessage = (message: string): AddMessageActionType => ({ type: ADD_MESSAGE, message });
+
+// type GetStateType = () => AppStateType//создаем "псевдоним" типа для getState
+// type DispatchType = Dispatch<ActionsTypes>//создаем "псевдоним" типа для dispatch
+// type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export default dialogsReducer;

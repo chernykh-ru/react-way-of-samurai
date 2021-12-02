@@ -6,7 +6,7 @@ import { AppStateType, InferActionsTypes } from './redux-store';
 import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk'
 
-let initialState = {
+const initialState = {
   users: [] as Array<UsersType>,
   pageSize: 10 as number,//remove | null
   totalUsersCount: 0 as number,//remove | null
@@ -19,42 +19,42 @@ export type InitialStateType = typeof initialState
 
 const usersReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
-    case 'FOLLOW' :
+    case 'WAY-OF-SAMURAI/USERS/FOLLOW' :
       return {
         ...state, //создаем копию стейта(работать можем только с копией)
         users: updateObjectInArray(state.users, action.userId, 'id', { followed: true }),
       };
-    case 'UNFOLLOW':
+    case 'WAY-OF-SAMURAI/USERS/UNFOLLOW':
       return {
         ...state,
         users: updateObjectInArray(state.users, action.userId, 'id', { followed: false }),
       };
-    case 'SET_USERS': {
+    case 'WAY-OF-SAMURAI/USERS/SET_USERS': {
       return {
         ...state,
         users: action.users, //перезатираем массив юзеров
         // users: [...state.users, ...action.users],
       }; //с сервера придут пользователи, мы должны взять старый стейт(сделать копию) и дополнить его новыми пользователями пришедшими из экшна (склеить два массива спред оператором)
     }
-    case 'SET_CURRENT_PAGE': {
+    case 'WAY-OF-SAMURAI/USERS/SET_CURRENT_PAGE': {
       return {
         ...state,
         currentPage: action.currentPage,
       };
     }
-    case 'SET_TOTAL_USERS_COUNT': {
+    case 'WAY-OF-SAMURAI/USERS/SET_TOTAL_USERS_COUNT': {
       return {
         ...state,
         totalUsersCount: action.totalUsersCount,
       };
     }
-    case 'TOGGLE_IS_FETCHING': {
+    case 'WAY-OF-SAMURAI/USERS/TOGGLE_IS_FETCHING': {
       return {
         ...state,
         isFetching: action.isFetching,
       };
     }
-    case 'TOGGLE_IS_FOLLOWING_PROGRESS': {
+    case 'WAY-OF-SAMURAI/USERS/TOGGLE_IS_FOLLOWING_PROGRESS': {
       return {
         ...state,
         followingInProgress: action.isFetching
@@ -70,20 +70,20 @@ const usersReducer = (state: InitialStateType = initialState, action: ActionsTyp
 type ActionsTypes = InferActionsTypes<typeof actions>
 //выносим AC в объект
 export const actions = {
-  followSuccess: (userId: number | null) => ({ type: 'FOLLOW', userId } as const), //переименуем из-за thunkCreate
-  unfollowSuccess: (userId: number | null) => ({ type: 'UNFOLLOW', userId }) as const, //переименуем из-за thunkCreate
-  setUsers: (users: Array<UsersType>) => ({ type: 'SET_USERS', users } as const), //возьмем данные о юзерах с сервера и поместим их потом в стейт
-  setCurrentPage: (currentPage: number) => ({ type: 'SET_CURRENT_PAGE', currentPage } as const),//remove | null
+  followSuccess: (userId: number | null) => ({ type: 'WAY-OF-SAMURAI/USERS/FOLLOW', userId } as const), //переименуем из-за thunkCreate
+  unfollowSuccess: (userId: number | null) => ({ type: 'WAY-OF-SAMURAI/USERS/UNFOLLOW', userId }) as const, //переименуем из-за thunkCreate
+  setUsers: (users: Array<UsersType>) => ({ type: 'WAY-OF-SAMURAI/USERS/SET_USERS', users } as const), //возьмем данные о юзерах с сервера и поместим их потом в стейт
+  setCurrentPage: (currentPage: number) => ({ type: 'WAY-OF-SAMURAI/USERS/SET_CURRENT_PAGE', currentPage } as const),//remove | null
   setTotalUsersCount: (totalUsersCount: number) => ({
-    type: 'SET_TOTAL_USERS_COUNT',
+    type: 'WAY-OF-SAMURAI/USERS/SET_TOTAL_USERS_COUNT',
     totalUsersCount, //когда ключ и значение не одинаковы(специально)
   } as const),//remove | null
   toggleIsFetching: (isFetching: boolean) => ({
-    type: 'TOGGLE_IS_FETCHING',
+    type: 'WAY-OF-SAMURAI/USERS/TOGGLE_IS_FETCHING',
     isFetching,
   } as const),
   toggleFollowingProgress: (isFetching: boolean, userId: number | null) => ({
-    type: 'TOGGLE_IS_FOLLOWING_PROGRESS',
+    type: 'WAY-OF-SAMURAI/USERS/TOGGLE_IS_FOLLOWING_PROGRESS',
     isFetching,
     userId,
   } as const),

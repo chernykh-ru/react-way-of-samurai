@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import {
-  addMessage,
+  actions,
   // updateNewMessageTextActionCreator,//add redux-form
 } from '../../redux/dialog-reducer';
 import Dialogs from './Dialogs';
@@ -22,7 +22,7 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (message) => {
-      dispatch(addMessage(message));
+      dispatch(actions.addMessage(message));
     },
   };
 };

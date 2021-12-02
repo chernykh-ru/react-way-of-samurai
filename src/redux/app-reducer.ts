@@ -1,21 +1,23 @@
 import { getAuthUserData } from './auth-reducer';
-import { AppStateType } from './redux-store';
-import { Dispatch } from 'redux';
+import { AppStateType, InferActionsTypes } from './redux-store';
+// import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk'
 
-const INITIALIZED_SUCCESS = 'INITIALIZED_SUCCESS';
+// const INITIALIZED_SUCCESS = 'WAY-OF-SAMURAI/APP/INITIALIZED_SUCCESS';
 
-export type InitialStateType = {
-  initialized: boolean,
-}
+// export type InitialStateType = {
+//   initialized: boolean,
+// }
 
-const initialState: InitialStateType = {
-  initialized: false,
+const initialState = {
+  initialized: false as boolean,
 }; //инициализируем стейт, initialized флаг того, что юзер залогинен(нет)
+export type InitialStateType = typeof initialState
 
-const appReducer = (state: InitialStateType = initialState, action: InitializedSuccessActionType): InitialStateType => {
+
+const appReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
-    case INITIALIZED_SUCCESS: {
+    case 'WAY-OF-SAMURAI/APP/INITIALIZED_SUCCESS': {
       return {
         ...state,
         initialized: true, // isAuth: true, //меняем флаг на true если пришли пользовательские данные
@@ -26,20 +28,27 @@ const appReducer = (state: InitialStateType = initialState, action: InitializedS
   }
 };//TS редьюсер на входе и на выходе должен принять и вернуть state: InitialStateType
 
-type ActionsTypes = InitializedSuccessActionType
+type ActionsTypes = InferActionsTypes<typeof actions>
 
-export type InitializedSuccessActionType = {
-  type: typeof INITIALIZED_SUCCESS,
-}//TS typeof на этапе компиляции выведет значение константы (строку 'INITIALIZED_SUCCESS')
+export const actions = {
+  initializedSuccess: () => ({
+    type: 'WAY-OF-SAMURAI/APP/INITIALIZED_SUCCESS',
+  } as const)
+}
+// type ActionsTypes = InitializedSuccessActionType
+
+// export type InitializedSuccessActionType = {
+//   type: typeof INITIALIZED_SUCCESS,
+// }//TS typeof на этапе компиляции выведет значение константы (строку 'INITIALIZED_SUCCESS')
 
 //AC
-export const initializedSuccess = (): InitializedSuccessActionType => ({
-  type: INITIALIZED_SUCCESS,
-}); //TS возвращаемое значение функции пишем после (параметров): и перед =>
+// export const initializedSuccess = (): InitializedSuccessActionType => ({
+//   type: INITIALIZED_SUCCESS,
+// }); //TS возвращаемое значение функции пишем после (параметров): и перед =>
 
 //TC
-type GetStateType = () => AppStateType//создаем "псевдоним" типа для getState
-type DispatchType = Dispatch<ActionsTypes>//создаем "псевдоним" типа для dispatch
+// type GetStateType = () => AppStateType//создаем "псевдоним" типа для getState
+// type DispatchType = Dispatch<ActionsTypes>//создаем "псевдоним" типа для dispatch
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const initializeApp = (): ThunkType => async (dispatch) => {
@@ -47,7 +56,7 @@ export const initializeApp = (): ThunkType => async (dispatch) => {
   //dispatch(somethingelse())//диспачим получение любых других данных
   //и когда промис (в authAPI.me) зарезолвится, мы его здесь получим как результат promise и после этого мы задиспачим AC success
   // promise.then(() => {dispatch(initializedSuccess())})//если промис один
-  Promise.all([promise]).then(() => dispatch(initializedSuccess()));
+  Promise.all([promise]).then(() => dispatch(actions.initializedSuccess()));
 };
 
 export default appReducer;

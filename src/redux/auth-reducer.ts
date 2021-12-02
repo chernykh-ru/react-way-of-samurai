@@ -2,12 +2,12 @@ import { ResultCodeEnum, ResultCodeForCaptchaEnam } from '../api/api';
 import { authAPI } from '../api/auth-api';
 import { securityAPI } from '../api/security-api';
 import { stopSubmit } from 'redux-form';//add @types/redux-form
-import { AppStateType } from './redux-store';
+import { AppStateType, InferActionsTypes } from './redux-store';
 // import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk'
 
-const SET_USER_DATA = 'WAY-OF-SAMURAI/AUTH/SET_USER_DATA'; //add redux-ducks
-const SET_CAPTCHA_URL_SUCCESS = 'WAY-OF-SAMURAI/AUTH/SET_CAPTCHA_URL_SUCCESS';
+// const SET_USER_DATA = 'WAY-OF-SAMURAI/AUTH/SET_USER_DATA'; //add redux-ducks
+// const SET_CAPTCHA_URL_SUCCESS = 'WAY-OF-SAMURAI/AUTH/SET_CAPTCHA_URL_SUCCESS';
 
 const initialState = {
   userId: null as number | null,
@@ -21,13 +21,13 @@ export type InitialStateType = typeof initialState
 
 const authReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
-    case SET_USER_DATA: {
+    case 'WAY-OF-SAMURAI/AUTH/SET_USER_DATA': {
       return {
         ...state,
         ...action.payload, //в экшене будет сидеть объект data,который мы деструктурируем
       };
     }
-    case SET_CAPTCHA_URL_SUCCESS: {
+    case 'WAY-OF-SAMURAI/AUTH/SET_CAPTCHA_URL_SUCCESS': {
       return {
         ...state,
         captchaUrl: action.captchaUrl,
@@ -38,31 +38,43 @@ const authReducer = (state: InitialStateType = initialState, action: ActionsType
   }
 };
 
-type ActionsTypes = SetAuthUserDataActionType | SetCaptchaUrlSuccessActionType
+// type ActionsTypes = SetAuthUserDataActionType | SetCaptchaUrlSuccessActionType
+type ActionsTypes = InferActionsTypes<typeof actions>
 
-type SetAuthUserDataActionPayloadType = {
-  userId: number | null, email: string | null, login: string | null, isAuth: boolean, captchaUrl: string | null
+export const actions = {
+  setAuthUserData: (userId: number | null, email: string | null, login: string | null, isAuth: boolean, captchaUrl: string | null = null) => ({
+    type: 'WAY-OF-SAMURAI/AUTH/SET_USER_DATA',
+    payload: { userId, email, login, isAuth, captchaUrl },
+  } as const), //AC деструктурируем объект data до составляющих userId, email, login, isAuth true, зануляем капчу
+  setCaptchaUrlSuccess: (captchaUrl: string | null) => ({
+    type: 'WAY-OF-SAMURAI/AUTH/SET_CAPTCHA_URL_SUCCESS', //
+    captchaUrl,
+  } as const),
 }
 
-export type SetAuthUserDataActionType = {
-  type: typeof SET_USER_DATA,
-  payload: SetAuthUserDataActionPayloadType
-}
+// type SetAuthUserDataActionPayloadType = {
+//   userId: number | null, email: string | null, login: string | null, isAuth: boolean, captchaUrl: string | null
+// }
 
-export type SetCaptchaUrlSuccessActionType = {
-  type: typeof SET_CAPTCHA_URL_SUCCESS,
-  captchaUrl: string | null
-}
+// export type SetAuthUserDataActionType = {
+//   type: typeof SET_USER_DATA,
+//   payload: SetAuthUserDataActionPayloadType
+// }
+
+// export type SetCaptchaUrlSuccessActionType = {
+//   type: typeof SET_CAPTCHA_URL_SUCCESS,
+//   captchaUrl: string | null
+// }
 //AC
-export const setAuthUserData = (userId: number | null, email: string | null, login: string | null, isAuth: boolean, captchaUrl: string | null = null): SetAuthUserDataActionType => ({
-  type: SET_USER_DATA,
-  payload: { userId, email, login, isAuth, captchaUrl },
-}); //AC деструктурируем объект data до составляющих userId, email, login, isAuth true, зануляем капчу
+// export const setAuthUserData = (userId: number | null, email: string | null, login: string | null, isAuth: boolean, captchaUrl: string | null = null): SetAuthUserDataActionType => ({
+//   type: SET_USER_DATA,
+//   payload: { userId, email, login, isAuth, captchaUrl },
+// }); //AC деструктурируем объект data до составляющих userId, email, login, isAuth true, зануляем капчу
 
-export const setCaptchaUrlSuccess = (captchaUrl: string | null): SetCaptchaUrlSuccessActionType => ({
-  type: SET_CAPTCHA_URL_SUCCESS, //
-  captchaUrl,
-});
+// export const setCaptchaUrlSuccess = (captchaUrl: string | null): SetCaptchaUrlSuccessActionType => ({
+//   type: SET_CAPTCHA_URL_SUCCESS, //
+//   captchaUrl,
+// });
 
 //TC
 // type GetStateType = () => AppStateType//создаем "псевдоним" типа для getState
@@ -73,7 +85,7 @@ export const getAuthUserData = (): ThunkType => async (dispatch) => {
   const data = await authAPI.me();
   if (data.resultCode === ResultCodeEnum.Success) {
     const { id, email, login } = data.data;
-    dispatch(setAuthUserData(id, email, login, true)); //isAuth true
+    dispatch(actions.setAuthUserData(id, email, login, true)); //isAuth true
   }
 };//added TS API, ResultCodeEnum
 
@@ -95,13 +107,13 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
 export const logout = (): ThunkType => async (dispatch) => {
   const data = await authAPI.logout();
   if (data.resultCode === ResultCodeEnum.Success) {
-    dispatch(setAuthUserData(null, null, null, false)); //при логауте зануляем все данные и ставим флаг isAuth false
+    dispatch(actions.setAuthUserData(null, null, null, false)); //при логауте зануляем все данные и ставим флаг isAuth false
   }
 };
 
 export const getCaptchaUrl = (): ThunkType => async (dispatch) => {
   const data = await securityAPI.getCaptchaUrl();
-  dispatch(setCaptchaUrlSuccess(data.url));
+  dispatch(actions.setCaptchaUrlSuccess(data.url));
 }; //получаем капчу с сервера
 
 export default authReducer;
