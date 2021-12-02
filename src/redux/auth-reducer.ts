@@ -1,4 +1,6 @@
-import { authAPI, securityAPI, ResultCodeEnum, ResultCodeForCaptcha } from '../api/api';
+import { ResultCodeEnum, ResultCodeForCaptchaEnam } from '../api/api';
+import { authAPI } from '../api/auth-api';
+import { securityAPI } from '../api/security-api';
 import { stopSubmit } from 'redux-form';//add @types/redux-form
 import { AppStateType } from './redux-store';
 // import { Dispatch } from 'redux';
@@ -81,7 +83,7 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
   if (data.resultCode === ResultCodeEnum.Success) {
     dispatch(getAuthUserData());
   } else {
-    if (data.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
+    if (data.resultCode === ResultCodeForCaptchaEnam.CaptchaIsRequired) {
       dispatch(getCaptchaUrl());
     } //при ответе сервера 10 диспачим санку на получение капчи
     // let action = stopSubmit('login', { email: 'Email is wrong' }); //встроенный экш редакс-форм, передаем в него имя формы(_error - или общую ошибку формы), вторым параметром передаем объект с проблемными полями, которые вызвали ошибку

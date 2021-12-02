@@ -1,17 +1,10 @@
-import { usersAPI, ResultCodeEnum } from '../api/api';
+import { ResultCodeEnum } from '../api/api';
+import { usersAPI} from '../api/users-api';
 import { updateObjectInArray } from '../utils/object-helpers';
-import {PhotosType, UsersType} from '../types/types'
+import { UsersType} from '../types/types'
 import { AppStateType, InferActionsTypes } from './redux-store';
 import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk'
-
-// const FOLLOW = 'WAY-OF-SAMURAI/USERS/FOLLOW'; //add redux-ducks
-// const UNFOLLOW = 'WAY-OF-SAMURAI/USERS/UNFOLLOW';
-// const SET_USERS = 'WAY-OF-SAMURAI/USERS/SET_USERS';
-// const SET_CURRENT_PAGE = 'WAY-OF-SAMURAI/USERS/SET_CURRENT_PAGE';
-// const SET_TOTAL_USERS_COUNT = 'WAY-OF-SAMURAI/USERS/SET_TOTAL_USERS_COUNT';
-// const TOGGLE_IS_FETCHING = 'WAY-OF-SAMURAI/USERS/TOGGLE_IS_FETCHING';
-// const TOGGLE_IS_FOLLOWING_PROGRESS = 'WAY-OF-SAMURAI/USERS/TOGGLE_IS_FOLLOWING_PROGRESS';
 
 let initialState = {
   users: [] as Array<UsersType>,
@@ -26,8 +19,6 @@ export type InitialStateType = typeof initialState
 
 const usersReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
-    //======
-    //рефакторинг, вынесение дублирующей логики из follow и unfollow во вспомогутальную функцию updateObjectInArray из утилит
     case 'FOLLOW' :
       return {
         ...state, //создаем копию стейта(работать можем только с копией)
@@ -38,29 +29,6 @@ const usersReducer = (state: InitialStateType = initialState, action: ActionsTyp
         ...state,
         users: updateObjectInArray(state.users, action.userId, 'id', { followed: false }),
       };
-    //рефакторинг, вынесение дублирующей логики из follow и unfollow во вспомогутальную функцию updateObjectInArray из утилит
-    //=====
-
-    // case FOLLOW:
-    //   return {
-    //     ...state, //создаем копию стейта(работать можем только с копией)
-    //     users: state.users.map((user) => {
-    //       if (user.id === action.userId) {
-    //         return { ...user, followed: true };
-    //       } //мапим массив юзеров(если id юзера совпадает с id пришедшим из AC) то возвращаем в глубокую копию новый объект с добавленным статусом followed true у юзера
-    //       return user; //если id не совпадает, возвращаем тот же самый объект юзер
-    //     }),
-    //   };
-    // case UNFOLLOW:
-    //   return {
-    //     ...state, //создаем копию стейта(работать можем только с копией)
-    //     users: state.users.map((user) => {
-    //       if (user.id === action.userId) {
-    //         return { ...user, followed: false };
-    //       } //мапим массив юзеров(если id юзера совпадает с id пришедшим из AC) то возвращаем в глубокую копию новый объект с измененным статусом followed false у юзера
-    //       return user; //если id не совпадает, возвращаем тот же самый объект юзер
-    //     }),
-    //   };
     case 'SET_USERS': {
       return {
         ...state,
@@ -99,40 +67,6 @@ const usersReducer = (state: InitialStateType = initialState, action: ActionsTyp
   }
 };
 
-// //ACTypes
-// type ActionsTypes = FollowSuccessActionType | UnfollowSuccessActionType | SetUsersActionType | SetCurrentPageActionType | SetTotalUsersCountActionType | ToggleIsFetchingActionType | ToggleFollowingProgressActionType
-
-// type FollowSuccessActionType = {
-  //   type: typeof FOLLOW,
-  //   userId: number | null
-  // }
-  // type UnfollowSuccessActionType = {
-    //   type: typeof UNFOLLOW,
-    //   userId: number | null
-    // }
-    // type SetUsersActionType = {
-      //   type: typeof SET_USERS,
-      //   users: Array<UsersType>
-      // }
-      // type SetCurrentPageActionType = {
-        //   type: typeof SET_CURRENT_PAGE,
-//   currentPage: number
-// }//remove | null
-// type SetTotalUsersCountActionType = {
-  //   type: typeof SET_TOTAL_USERS_COUNT,
-  //   totalUsersCount: number
-  // }//remove | null
-  // type ToggleIsFetchingActionType = {
-//   type: typeof TOGGLE_IS_FETCHING,
-//   isFetching: boolean
-// }
-// type ToggleFollowingProgressActionType = {
-  //   type: typeof TOGGLE_IS_FOLLOWING_PROGRESS,
-  //   isFetching: boolean,
-  //   userId: number | null
-  //   // userId: Array<number | null>
-  // }
-  
 type ActionsTypes = InferActionsTypes<typeof actions>
 //выносим AC в объект
 export const actions = {
@@ -155,9 +89,8 @@ export const actions = {
   } as const),
 }
 
-
 //создаем функции thunk creator, которая создает(возвращает) thunk(dispatch action)
-type GetStateType = () => AppStateType//создаем "псевдоним" типа для getState
+// type GetStateType = () => AppStateType//создаем "псевдоним" типа для getState
 type DispatchType = Dispatch<ActionsTypes>//создаем "псевдоним" типа для dispatch
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 

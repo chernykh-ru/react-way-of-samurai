@@ -1,4 +1,5 @@
-import { profileAPI, ResultCodeEnum } from '../api/api';
+import { ResultCodeEnum } from '../api/api';
+import { profileAPI } from '../api/profile-api';
 import { stopSubmit } from 'redux-form';
 import {PostType, PhotosType, ProfileType} from '../types/types'
 import { AppStateType } from './redux-store';
