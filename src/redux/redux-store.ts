@@ -23,8 +23,9 @@ const rootReducer = combineReducers({
 type RootReducerType = typeof rootReducer;//(globalstate: AppStateType) => AppStateType
 export type AppStateType = ReturnType<RootReducerType>//ReturnType утилита создает тип, состоящий из возвращаемого типа функции (самостоятельно определяет тип возвращаемый из <RootReducerType>) и присваиваем его AppStateType
 
-// let state: AppStateType
-// state.
+//Вывод типов из обекта actions, содержащего Action Creators
+type PropertiesTypes<T> = T extends {[key: string]: infer U} ? U : never
+export type InferActionsTypes<T extends {[key: string]: (...args: any[]) => any}> = ReturnType<PropertiesTypes<T>>
 
 //создаем редаксовский стор с помощью функции createStore(cS мы отдаем закомбайненые редьюсеры)
 //добавляем промежуточный слой middleware thunk
