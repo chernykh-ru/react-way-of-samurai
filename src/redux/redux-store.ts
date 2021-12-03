@@ -24,8 +24,9 @@ type RootReducerType = typeof rootReducer;//(globalstate: AppStateType) => AppSt
 export type AppStateType = ReturnType<RootReducerType>//ReturnType утилита создает тип, состоящий из возвращаемого типа функции (самостоятельно определяет тип возвращаемый из <RootReducerType>) и присваиваем его AppStateType
 
 //Вывод типов из обекта actions, содержащего Action Creators
-type PropertiesTypes<T> = T extends {[key: string]: infer U} ? U : never
-export type InferActionsTypes<T extends {[key: string]: (...args: any[]) => any}> = ReturnType<PropertiesTypes<T>>
+// type PropertiesTypes<T> = T extends {[key: string]: infer U} ? U : never
+// export type InferActionsTypes<T extends {[key: string]: (...args: any[]) => any}> = ReturnType<PropertiesTypes<T>>
+export type InferActionsTypes<T> = T extends {[keys: string]: (...args: any[]) => infer U } ? U : never
 export type BasicThunkType<A extends Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A>
 //A = A extends Action from redux(ActionsTypes)
 //R(возвращаемое значение) = Promise<void>//большинство санок нам ничего не возвращает(возвращает промис который ничем не резолвится), поэтому по умолчанию поставим R = Promise<void>

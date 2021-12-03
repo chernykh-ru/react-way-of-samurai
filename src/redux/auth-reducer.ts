@@ -68,7 +68,7 @@ export const getAuthUserData = (): ThunkType => async (dispatch) => {
 };//added TS API, ResultCodeEnum
 
 //TC to login and logout
-export const login = (email: string, password: string, rememberMe: boolean, captcha: string): ThunkType => async (dispatch) => {
+export const login = (email: string, password: string, rememberMe: boolean, captcha: string | null): ThunkType => async (dispatch) => {
   const data = await authAPI.login(email, password, rememberMe, captcha);
   if (data.resultCode === ResultCodeEnum.Success) {
     dispatch(getAuthUserData());

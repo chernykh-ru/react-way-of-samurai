@@ -38,3 +38,12 @@ export type UsersType = {
   status: string | null,
   followed: boolean,
 }
+
+export type DialogsType = {
+  id: number | null,
+  name: string | null
+}
+export type MessagesType = {
+  id: number | null,
+  message: string | null
+}
