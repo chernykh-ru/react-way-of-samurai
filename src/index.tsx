@@ -2,11 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+// import SamuraiJSApp from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './redux/redux-store';
 import { HashRouter as Router } from 'react-router-dom'; //HashRouter применен для деплоя на gh-pages
 // import { BrowserRouter as Router, Route } from 'react-router-dom';//заменен на HashRouter
 import { Provider } from 'react-redux';
+
+// ReactDOM.render(<SamuraiJSApp />, document.getElementById('root'),
+// );//variant IT-Dimich
 
 ReactDOM.render(
   // <React.StrictMode>

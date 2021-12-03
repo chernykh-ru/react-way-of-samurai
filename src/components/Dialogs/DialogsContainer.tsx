@@ -36,5 +36,5 @@ let mapStateToProps = (state: AppStateType) => {
 // export default DialogsContainer;//compose
 
 //оборачиваем compose (каждая функция примет один параметр, его возвращенное значение будет передано вышестоящей(слева) функции как аргумент), выполнение идет справа налево(снизу вверх)
-export default compose(connect(mapStateToProps, {...actions}), withAuthRedirect)(Dialogs);
+export default compose<React.ComponentType>(connect(mapStateToProps, {...actions}), withAuthRedirect)(Dialogs);
 // export default compose(connect(mapStateToProps, mapDispatchToProps), withAuthRedirect)(Dialogs);
