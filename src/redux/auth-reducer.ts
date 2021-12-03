@@ -1,13 +1,13 @@
 import { ResultCodeEnum, ResultCodeForCaptchaEnam } from '../api/api';
 import { authAPI } from '../api/auth-api';
 import { securityAPI } from '../api/security-api';
-import { stopSubmit } from 'redux-form';//add @types/redux-form
-import { AppStateType, InferActionsTypes } from './redux-store';
-// import { Dispatch } from 'redux';
-import { ThunkAction } from 'redux-thunk'
+import { FormAction, stopSubmit } from 'redux-form';//add @types/redux-form
+import { InferActionsTypes, BasicThunkType } from './redux-store';
+// import { Action } from 'redux';
+// import { ThunkAction } from 'redux-thunk'
 
-// const SET_USER_DATA = 'WAY-OF-SAMURAI/AUTH/SET_USER_DATA'; //add redux-ducks
-// const SET_CAPTCHA_URL_SUCCESS = 'WAY-OF-SAMURAI/AUTH/SET_CAPTCHA_URL_SUCCESS';
+// const SET_USER_DATA = 'RWOS/AUTH/SET_USER_DATA'; //add redux-ducks
+// const SET_CAPTCHA_URL_SUCCESS = 'RWOS/AUTH/SET_CAPTCHA_URL_SUCCESS';
 
 const initialState = {
   userId: null as number | null,
@@ -17,17 +17,15 @@ const initialState = {
   captchaUrl: null as string | null, //по наличию капчи в стейте отображаем капчу и поле ввода в форме на странице логина
 }; //инициализируем стейт согласно данным из API response
 
-export type InitialStateType = typeof initialState
-
 const authReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
-    case 'WAY-OF-SAMURAI/AUTH/SET_USER_DATA': {
+    case 'RWOS/AUTH/SET_USER_DATA': {
       return {
         ...state,
         ...action.payload, //в экшене будет сидеть объект data,который мы деструктурируем
       };
     }
-    case 'WAY-OF-SAMURAI/AUTH/SET_CAPTCHA_URL_SUCCESS': {
+    case 'RWOS/AUTH/SET_CAPTCHA_URL_SUCCESS': {
       return {
         ...state,
         captchaUrl: action.captchaUrl,
@@ -39,47 +37,27 @@ const authReducer = (state: InitialStateType = initialState, action: ActionsType
 };
 
 // type ActionsTypes = SetAuthUserDataActionType | SetCaptchaUrlSuccessActionType
-type ActionsTypes = InferActionsTypes<typeof actions>
 
 export const actions = {
   setAuthUserData: (userId: number | null, email: string | null, login: string | null, isAuth: boolean, captchaUrl: string | null = null) => ({
-    type: 'WAY-OF-SAMURAI/AUTH/SET_USER_DATA',
+    type: 'RWOS/AUTH/SET_USER_DATA',
     payload: { userId, email, login, isAuth, captchaUrl },
   } as const), //AC деструктурируем объект data до составляющих userId, email, login, isAuth true, зануляем капчу
   setCaptchaUrlSuccess: (captchaUrl: string | null) => ({
-    type: 'WAY-OF-SAMURAI/AUTH/SET_CAPTCHA_URL_SUCCESS', //
+    type: 'RWOS/AUTH/SET_CAPTCHA_URL_SUCCESS', //
     captchaUrl,
   } as const),
 }
 
-// type SetAuthUserDataActionPayloadType = {
-//   userId: number | null, email: string | null, login: string | null, isAuth: boolean, captchaUrl: string | null
-// }
-
-// export type SetAuthUserDataActionType = {
-//   type: typeof SET_USER_DATA,
-//   payload: SetAuthUserDataActionPayloadType
-// }
-
-// export type SetCaptchaUrlSuccessActionType = {
-//   type: typeof SET_CAPTCHA_URL_SUCCESS,
-//   captchaUrl: string | null
-// }
-//AC
-// export const setAuthUserData = (userId: number | null, email: string | null, login: string | null, isAuth: boolean, captchaUrl: string | null = null): SetAuthUserDataActionType => ({
-//   type: SET_USER_DATA,
-//   payload: { userId, email, login, isAuth, captchaUrl },
-// }); //AC деструктурируем объект data до составляющих userId, email, login, isAuth true, зануляем капчу
-
-// export const setCaptchaUrlSuccess = (captchaUrl: string | null): SetCaptchaUrlSuccessActionType => ({
-//   type: SET_CAPTCHA_URL_SUCCESS, //
-//   captchaUrl,
-// });
+export type InitialStateType = typeof initialState
+type ActionsTypes = InferActionsTypes<typeof actions>
+type ThunkType = BasicThunkType<ActionsTypes | FormAction>//расширяем типами экшенов для redux-form
+// type ThunkType = BasicThunkType<ActionsTypes | ReturnType<typeof stopSubmit>>//расширяем типами экшенов для redux-form
 
 //TC
 // type GetStateType = () => AppStateType//создаем "псевдоним" типа для getState
 // type DispatchType = Dispatch<ActionsTypes>//создаем "псевдоним" типа для dispatch
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+// type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const getAuthUserData = (): ThunkType => async (dispatch) => {
   const data = await authAPI.me();
@@ -90,7 +68,7 @@ export const getAuthUserData = (): ThunkType => async (dispatch) => {
 };//added TS API, ResultCodeEnum
 
 //TC to login and logout
-export const login = (email: string, password: string, rememberMe: boolean, captcha: any): ThunkType => async (dispatch: any) => {
+export const login = (email: string, password: string, rememberMe: boolean, captcha: string): ThunkType => async (dispatch) => {
   const data = await authAPI.login(email, password, rememberMe, captcha);
   if (data.resultCode === ResultCodeEnum.Success) {
     dispatch(getAuthUserData());

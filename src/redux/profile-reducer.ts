@@ -1,16 +1,16 @@
 import { ResultCodeEnum } from '../api/api';
 import { profileAPI } from '../api/profile-api';
-import { stopSubmit } from 'redux-form';
+import { FormAction, stopSubmit } from 'redux-form';
 import {PostType, PhotosType, ProfileType} from '../types/types'
-import { AppStateType, InferActionsTypes } from './redux-store';
+import { InferActionsTypes, BasicThunkType } from './redux-store';
 // import { Dispatch } from 'redux';
-import { ThunkAction } from 'redux-thunk'
+// import { ThunkAction } from 'redux-thunk'
 
-// const ADD_POST = 'WAY-OF-SAMURAI/PROFILE/ADD-POST'; //add redux-ducks
-// const SET_USERS_PROFILE = 'WAY-OF-SAMURAI/PROFILE/SET_USERS_PROFILE';
-// const SET_STATUS = 'WAY-OF-SAMURAI/PROFILE/SET_STATUS';
-// const SAVE_PHOTO_SUCCESS = 'WAY-OF-SAMURAI/PROFILE/SAVE_PHOTO_SUCCESS';
-// const DELETE_POST = 'WAY-OF-SAMURAI/PROFILE/DELETE_POST';
+// const ADD_POST = 'RWOS/PROFILE/ADD-POST'; //add redux-ducks
+// const SET_USERS_PROFILE = 'RWOS/PROFILE/SET_USERS_PROFILE';
+// const SET_STATUS = 'RWOS/PROFILE/SET_STATUS';
+// const SAVE_PHOTO_SUCCESS = 'RWOS/PROFILE/SAVE_PHOTO_SUCCESS';
+// const DELETE_POST = 'RWOS/PROFILE/DELETE_POST';
 
 let initialState = {
   posts: [
@@ -27,27 +27,27 @@ export type InitialStateType = typeof initialState
 
 const profileReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
-    case 'WAY-OF-SAMURAI/PROFILE/ADD-POST':
+    case 'RWOS/PROFILE/ADD-POST':
       return {
         ...state,
         posts: [...state.posts, { id: 4, message: action.newPostText, likeCounter: 0 }], //добавляем новый элемент в массив
       };
-    case 'WAY-OF-SAMURAI/PROFILE/DELETE_POST':
+    case 'RWOS/PROFILE/DELETE_POST':
       return {
         ...state,
         posts: state.posts.filter((p) => p.id !== action.postId), //jest test
       };
-    case 'WAY-OF-SAMURAI/PROFILE/SET_USERS_PROFILE':
+    case 'RWOS/PROFILE/SET_USERS_PROFILE':
       return {
         ...state,
         profile: action.profile,
       };
-    case 'WAY-OF-SAMURAI/PROFILE/SET_STATUS':
+    case 'RWOS/PROFILE/SET_STATUS':
       return {
         ...state,
         status: action.status,
       };
-    case 'WAY-OF-SAMURAI/PROFILE/SAVE_PHOTO_SUCCESS':
+    case 'RWOS/PROFILE/SAVE_PHOTO_SUCCESS':
       return {
         ...state,
         profile: { ...state.profile, photos: action.photos },
@@ -57,61 +57,24 @@ const profileReducer = (state: InitialStateType = initialState, action: ActionsT
   }
 };
 
-//ACTypes
-// type ActionsTypes = AddPostActionCreatorActionType | SetUserProfileActionType | SetStatusActionType | SavePhotoSuccessActionType | DeletePostActionType
+//AC
 type ActionsTypes = InferActionsTypes<typeof actions>
 
 export const actions = {
-  addPostActionCreator: (newPostText: string | null) => ({ type: 'WAY-OF-SAMURAI/PROFILE/ADD-POST', newPostText } as const),
-
-  setUserProfile: (profile: ProfileType) => ({ type: 'WAY-OF-SAMURAI/PROFILE/SET_USERS_PROFILE', profile } as const),
-  
-  setStatus: (status: string | null) => ({ type: 'WAY-OF-SAMURAI/PROFILE/SET_STATUS', status } as const),
-  
-  savePhotoSuccess: (photos: PhotosType) => ({ type: 'WAY-OF-SAMURAI/PROFILE/SAVE_PHOTO_SUCCESS', photos } as const),
-  
-  deletePost: (postId: number | null) => ({ type: 'WAY-OF-SAMURAI/PROFILE/DELETE_POST', postId } as const), //jest test
-  
+  addPostActionCreator: (newPostText: string | null) => ({ type: 'RWOS/PROFILE/ADD-POST', newPostText } as const),
+  setUserProfile: (profile: ProfileType) => ({ type: 'RWOS/PROFILE/SET_USERS_PROFILE', profile } as const),  
+  setStatus: (status: string | null) => ({ type: 'RWOS/PROFILE/SET_STATUS', status } as const),  
+  savePhotoSuccess: (photos: PhotosType) => ({ type: 'RWOS/PROFILE/SAVE_PHOTO_SUCCESS', photos } as const),  
+  deletePost: (postId: number | null) => ({ type: 'RWOS/PROFILE/DELETE_POST', postId } as const), //jest test  
 }
-
-// type AddPostActionCreatorActionType = {
-//   type: typeof ADD_POST,
-//   newPostText: string | null
-// }
-// type SetUserProfileActionType = {
-//   type: typeof SET_USERS_PROFILE,
-//   profile: ProfileType
-// }
-// type SetStatusActionType = {
-//   type: typeof SET_STATUS,
-//   status: string | null
-// }
-// type SavePhotoSuccessActionType = {
-//   type: typeof SAVE_PHOTO_SUCCESS,
-//   photos: PhotosType
-// }
-// type DeletePostActionType = {
-//   type: typeof DELETE_POST,
-//   postId: number | null
-// }
-
-//AC
-//создаем функции action creator, которая возвращает объект {action}, после чего переносим их в стейт
-// export const addPostActionCreator = (newPostText: string | null): AddPostActionCreatorActionType => ({ type: ADD_POST, newPostText });
-
-// export const setUserProfile = (profile: ProfileType): SetUserProfileActionType => ({ type: SET_USERS_PROFILE, profile });
-
-// export const setStatus = (status: string | null): SetStatusActionType => ({ type: SET_STATUS, status });
-
-// export const savePhotoSuccess = (photos: PhotosType): SavePhotoSuccessActionType => ({ type: SAVE_PHOTO_SUCCESS, photos });
-
-// export const deletePost = (postId: number | null): DeletePostActionType => ({ type: DELETE_POST, postId }); //jest test
-
 
 //TC
 // type GetStateType = () => AppStateType//создаем "псевдоним" типа для getState
 // type DispatchType = Dispatch<ActionsTypes>//создаем "псевдоним" типа для dispatch
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+// type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+// type ThunkType = BasicThunkType<ActionsTypes | ReturnType<typeof stopSubmit>>//расширяем типами экшенов для redux-form
+type ThunkType = BasicThunkType<ActionsTypes | FormAction>//расширяем типами экшенов для redux-form
+
 
 export const getUserProfile = (userId: number | null): ThunkType => async (dispatch) => {
   const data = await profileAPI.getProfile(userId);
@@ -142,7 +105,7 @@ export const updateStatus = (status: string | null): ThunkType => async (dispatc
   }
 }; //test try catch
 
-export const savePhoto = (photoFile: any): ThunkType => async (dispatch) => {
+export const savePhoto = (photoFile: File): ThunkType => async (dispatch) => {
   const data = await profileAPI.savePhoto(photoFile);
   if (data.resultCode === 0) {
     dispatch(actions.savePhotoSuccess(data.data.photos)); //диспачим полученные фото
@@ -151,7 +114,7 @@ export const savePhoto = (photoFile: any): ThunkType => async (dispatch) => {
 };
 
 //TC отправка и получение данных профиля
-export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch: any, getState) => {
+export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch, getState) => {
   const userId = getState().auth.userId; //в санку помимо диспача приходит стейт целиком, берем getState() и достаем из ветки auth нужный userId
   // console.log(userId);
   const data = await profileAPI.saveProfile(profile);

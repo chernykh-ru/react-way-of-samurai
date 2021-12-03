@@ -2,7 +2,7 @@ import { ResultCodeEnum } from '../api/api';
 import { usersAPI} from '../api/users-api';
 import { updateObjectInArray } from '../utils/object-helpers';
 import { UsersType} from '../types/types'
-import { AppStateType, InferActionsTypes } from './redux-store';
+import { AppStateType, InferActionsTypes, BasicThunkType } from './redux-store';
 import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk'
 
@@ -15,46 +15,45 @@ const initialState = {
   followingInProgress: [] as Array<number | null>,//array of users Id
 };
 
-export type InitialStateType = typeof initialState
 
 const usersReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
-    case 'WAY-OF-SAMURAI/USERS/FOLLOW' :
+    case 'RWOS/USERS/FOLLOW' :
       return {
         ...state, //создаем копию стейта(работать можем только с копией)
         users: updateObjectInArray(state.users, action.userId, 'id', { followed: true }),
       };
-    case 'WAY-OF-SAMURAI/USERS/UNFOLLOW':
+    case 'RWOS/USERS/UNFOLLOW':
       return {
         ...state,
         users: updateObjectInArray(state.users, action.userId, 'id', { followed: false }),
       };
-    case 'WAY-OF-SAMURAI/USERS/SET_USERS': {
+    case 'RWOS/USERS/SET_USERS': {
       return {
         ...state,
         users: action.users, //перезатираем массив юзеров
         // users: [...state.users, ...action.users],
       }; //с сервера придут пользователи, мы должны взять старый стейт(сделать копию) и дополнить его новыми пользователями пришедшими из экшна (склеить два массива спред оператором)
     }
-    case 'WAY-OF-SAMURAI/USERS/SET_CURRENT_PAGE': {
+    case 'RWOS/USERS/SET_CURRENT_PAGE': {
       return {
         ...state,
         currentPage: action.currentPage,
       };
     }
-    case 'WAY-OF-SAMURAI/USERS/SET_TOTAL_USERS_COUNT': {
+    case 'RWOS/USERS/SET_TOTAL_USERS_COUNT': {
       return {
         ...state,
         totalUsersCount: action.totalUsersCount,
       };
     }
-    case 'WAY-OF-SAMURAI/USERS/TOGGLE_IS_FETCHING': {
+    case 'RWOS/USERS/TOGGLE_IS_FETCHING': {
       return {
         ...state,
         isFetching: action.isFetching,
       };
     }
-    case 'WAY-OF-SAMURAI/USERS/TOGGLE_IS_FOLLOWING_PROGRESS': {
+    case 'RWOS/USERS/TOGGLE_IS_FOLLOWING_PROGRESS': {
       return {
         ...state,
         followingInProgress: action.isFetching
@@ -67,23 +66,23 @@ const usersReducer = (state: InitialStateType = initialState, action: ActionsTyp
   }
 };
 
-type ActionsTypes = InferActionsTypes<typeof actions>
+// type ActionsTypes = InferActionsTypes<typeof actions>
 //выносим AC в объект
 export const actions = {
-  followSuccess: (userId: number | null) => ({ type: 'WAY-OF-SAMURAI/USERS/FOLLOW', userId } as const), //переименуем из-за thunkCreate
-  unfollowSuccess: (userId: number | null) => ({ type: 'WAY-OF-SAMURAI/USERS/UNFOLLOW', userId }) as const, //переименуем из-за thunkCreate
-  setUsers: (users: Array<UsersType>) => ({ type: 'WAY-OF-SAMURAI/USERS/SET_USERS', users } as const), //возьмем данные о юзерах с сервера и поместим их потом в стейт
-  setCurrentPage: (currentPage: number) => ({ type: 'WAY-OF-SAMURAI/USERS/SET_CURRENT_PAGE', currentPage } as const),//remove | null
+  followSuccess: (userId: number | null) => ({ type: 'RWOS/USERS/FOLLOW', userId } as const), //переименуем из-за thunkCreate
+  unfollowSuccess: (userId: number | null) => ({ type: 'RWOS/USERS/UNFOLLOW', userId }) as const, //переименуем из-за thunkCreate
+  setUsers: (users: Array<UsersType>) => ({ type: 'RWOS/USERS/SET_USERS', users } as const), //возьмем данные о юзерах с сервера и поместим их потом в стейт
+  setCurrentPage: (currentPage: number) => ({ type: 'RWOS/USERS/SET_CURRENT_PAGE', currentPage } as const),//remove | null
   setTotalUsersCount: (totalUsersCount: number) => ({
-    type: 'WAY-OF-SAMURAI/USERS/SET_TOTAL_USERS_COUNT',
+    type: 'RWOS/USERS/SET_TOTAL_USERS_COUNT',
     totalUsersCount, //когда ключ и значение не одинаковы(специально)
   } as const),//remove | null
   toggleIsFetching: (isFetching: boolean) => ({
-    type: 'WAY-OF-SAMURAI/USERS/TOGGLE_IS_FETCHING',
+    type: 'RWOS/USERS/TOGGLE_IS_FETCHING',
     isFetching,
   } as const),
   toggleFollowingProgress: (isFetching: boolean, userId: number | null) => ({
-    type: 'WAY-OF-SAMURAI/USERS/TOGGLE_IS_FOLLOWING_PROGRESS',
+    type: 'RWOS/USERS/TOGGLE_IS_FOLLOWING_PROGRESS',
     isFetching,
     userId,
   } as const),
@@ -91,8 +90,12 @@ export const actions = {
 
 //создаем функции thunk creator, которая создает(возвращает) thunk(dispatch action)
 // type GetStateType = () => AppStateType//создаем "псевдоним" типа для getState
-type DispatchType = Dispatch<ActionsTypes>//создаем "псевдоним" типа для dispatch
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+// type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+// type DispatchType = Dispatch<ActionsTypes>//создаем "псевдоним" типа для dispatch
+export type InitialStateType = typeof initialState
+type ThunkType = BasicThunkType<ActionsTypes>
+type ActionsTypes = InferActionsTypes<typeof actions>
+
 
 export const requestUsers = (page: number, pageSize: number | null): ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> => async (dispatch, getState) => {
   dispatch(actions.setCurrentPage(page)); //from onPageChanged(активная страница)
@@ -104,7 +107,7 @@ export const requestUsers = (page: number, pageSize: number | null): ThunkAction
 }; //remove page | null
 
 //рефакторинг, вынесение дублирующей логики из follow и unfollow в функцию followUnfollowFlow
-const _followUnfollowFlow = async (dispatch: DispatchType, userId: number | null, apiMethod: any, actionCreator: (userId: number | null) => ActionsTypes) => {
+const _followUnfollowFlow = async (dispatch: Dispatch<ActionsTypes>, userId: number | null, apiMethod: any, actionCreator: (userId: number | null) => ActionsTypes) => {
   dispatch(actions.toggleFollowingProgress(true, userId));
   const data = await apiMethod(userId);
   if (data.resultCode === ResultCodeEnum.Success) {

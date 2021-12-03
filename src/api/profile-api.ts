@@ -19,7 +19,7 @@ export const profileAPI = {
     const response = await instance.put<BasicResponseType>(`profile/status`, { status: status }); //вторым параметром передаем объект json
     return response.data;
   },
-  async savePhoto(photoFile: any) {
+  async savePhoto(photoFile: File) {
     const formData = new FormData(); //Конструктор FormData() создаёт новые объект FormData, если проще - HTML-форму//https://developer.mozilla.org/ru/docs/Web/API/FormData/FormData
     formData.append('image', photoFile); //формируем formData по spec API
     const response = await instance.put<BasicResponseType<SavePhotoResponseType>>(`profile/photo`, formData, {

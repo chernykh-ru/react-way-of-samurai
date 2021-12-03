@@ -1,13 +1,7 @@
 import { getAuthUserData } from './auth-reducer';
-import { AppStateType, InferActionsTypes } from './redux-store';
+import { InferActionsTypes, BasicThunkType } from './redux-store';
 // import { Dispatch } from 'redux';
-import { ThunkAction } from 'redux-thunk'
-
-// const INITIALIZED_SUCCESS = 'WAY-OF-SAMURAI/APP/INITIALIZED_SUCCESS';
-
-// export type InitialStateType = {
-//   initialized: boolean,
-// }
+// import { ThunkAction } from 'redux-thunk'
 
 const initialState = {
   initialized: false as boolean,
@@ -17,7 +11,7 @@ export type InitialStateType = typeof initialState
 
 const appReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
-    case 'WAY-OF-SAMURAI/APP/INITIALIZED_SUCCESS': {
+    case 'RWOS/APP/INITIALIZED_SUCCESS': {
       return {
         ...state,
         initialized: true, // isAuth: true, //меняем флаг на true если пришли пользовательские данные
@@ -28,28 +22,22 @@ const appReducer = (state: InitialStateType = initialState, action: ActionsTypes
   }
 };//TS редьюсер на входе и на выходе должен принять и вернуть state: InitialStateType
 
+
+//AC
 type ActionsTypes = InferActionsTypes<typeof actions>
 
 export const actions = {
   initializedSuccess: () => ({
-    type: 'WAY-OF-SAMURAI/APP/INITIALIZED_SUCCESS',
+    type: 'RWOS/APP/INITIALIZED_SUCCESS',
   } as const)
 }
-// type ActionsTypes = InitializedSuccessActionType
-
-// export type InitializedSuccessActionType = {
-//   type: typeof INITIALIZED_SUCCESS,
-// }//TS typeof на этапе компиляции выведет значение константы (строку 'INITIALIZED_SUCCESS')
-
-//AC
-// export const initializedSuccess = (): InitializedSuccessActionType => ({
-//   type: INITIALIZED_SUCCESS,
-// }); //TS возвращаемое значение функции пишем после (параметров): и перед =>
 
 //TC
 // type GetStateType = () => AppStateType//создаем "псевдоним" типа для getState
 // type DispatchType = Dispatch<ActionsTypes>//создаем "псевдоним" типа для dispatch
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+// type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+type ThunkType = BasicThunkType<ActionsTypes>
+
 
 export const initializeApp = (): ThunkType => async (dispatch) => {
   let promise = dispatch(getAuthUserData()); //диспачим получение юзерских данных

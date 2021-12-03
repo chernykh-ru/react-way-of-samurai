@@ -1,8 +1,5 @@
 import { InferActionsTypes } from './redux-store';
 
-// const ADD_MESSAGE = 'WAY-OF-SAMURAI/DIALOG/ADD-MESSAGE';
-
-
 type DialogsType = {
   id: number | null,
   name: string | null
@@ -11,11 +8,6 @@ type MessagesType = {
   id: number | null,
   message: string | null
 }
-
-// const initialState = {
-//   dialogs: [] as Array<DialogsType>,
-//   messages: [] as Array<MessagesType>,
-// };
 
 const initialState = {
   dialogs: [
@@ -46,7 +38,7 @@ export type InitialStateType = typeof initialState
 
 const dialogsReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
   switch (action.type) {
-    case 'WAY-OF-SAMURAI/DIALOG/ADD-MESSAGE':
+    case 'RWOS/DIALOG/ADD-MESSAGE':
       return {
         ...state,
         messages: [...state.messages, { id: 4, message: action.message }],
@@ -59,23 +51,8 @@ const dialogsReducer = (state: InitialStateType = initialState, action: ActionsT
 type ActionsTypes = InferActionsTypes<typeof actions>
 
 //AC
-// type ActionsTypes = AddMessageActionType
-
 export const actions = {
-  addMessage: (message: string) => ({ type: 'WAY-OF-SAMURAI/DIALOG/ADD-MESSAGE', message } as const),
+  addMessage: (message: string) => ({ type: 'RWOS/DIALOG/ADD-MESSAGE', message } as const),
 }
-
-// type AddMessageActionType = {
-//   type: typeof ADD_MESSAGE,
-//   message: string,
-// }//типизация action creator
-
-// export const addMessage: (message: string) => AddMessageActionType = (message) => ({ type: ADD_MESSAGE, message });
-
-// export const addMessage = (message: string): AddMessageActionType => ({ type: ADD_MESSAGE, message });
-
-// type GetStateType = () => AppStateType//создаем "псевдоним" типа для getState
-// type DispatchType = Dispatch<ActionsTypes>//создаем "псевдоним" типа для dispatch
-// type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export default dialogsReducer;

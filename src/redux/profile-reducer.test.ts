@@ -1,4 +1,6 @@
 import profileReducer, { actions } from './profile-reducer';
+import {PostType, ProfileType} from '../types/types'
+
 
 // import { render, screen } from '@testing-library/react';
 
@@ -7,7 +9,10 @@ let state = {
     { id: 1, message: 'Hi, how are you?', likeCounter: 15 },
     { id: 2, message: 'My first react post', likeCounter: 25 },
     { id: 3, message: 'Yo', likeCounter: 5 },
-  ],
+  ] as PostType[],
+  newPostText: '' as string | null,
+  profile: null as unknown as ProfileType,
+  status: '' as string | null,
 };
 
 it('length of posts should be incremented', () => {
