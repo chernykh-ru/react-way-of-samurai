@@ -4,12 +4,12 @@ import React, { useState } from 'react';
 type PropsType = {
   totalItemsCount: number,
   pageSize: number,
-  onPageChanged: (page: number) => void,
+  onPageChanged?: (page: number) => void,//?для теста
   currentPage: number,
   portionSize?: number//'?' необязательный параметр
 }//типизируем пропсы и ниже компонент: React.FC<Props>
 
-const Paginator: React.FC<PropsType> = ({ totalItemsCount, pageSize, onPageChanged, currentPage, portionSize = 10 }) => {
+const Paginator: React.FC<PropsType> = ({ totalItemsCount, pageSize, onPageChanged = x => x, currentPage = 1, portionSize = 10 }) => {
   const pagesCount = Math.ceil(totalItemsCount / pageSize); //кол-во странииц
   const portionCount = Math.ceil(pagesCount / portionSize); //кол-во порций
   const [portionNumber, setPortionNumber] = useState<number>(Math.ceil(currentPage / portionSize)); //отслеживаем номер порции и его изменение//решение со сбросом порции при смене страницы

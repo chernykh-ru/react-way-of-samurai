@@ -12,7 +12,7 @@ describe('Paginator component test', () => {
   });
 
   test('if pages count is more then 10 buttons PREV and NEXT should be present', () => {
-    const component = create(<Paginator totalItemsCount={11} pageSize={1} portionSize={10} />);
+    const component = create(<Paginator currentPage={10} totalItemsCount={11} pageSize={1} portionSize={10} />);
     const root = component.root;
     const button = root.findAllByType('button');
     // expect(button).not.toBeNull();

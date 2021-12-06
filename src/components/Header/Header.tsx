@@ -1,21 +1,21 @@
 import styles from './Header.module.css';
 import { NavLink } from 'react-router-dom';
 
-const Header = (props) => {
+type PropsType = {
+  isAuth: boolean,
+  login: string | null,
+  logout: () => void,
+}
+
+const Header: React.FC<PropsType> = ({isAuth, login, logout}) => {
   return (
     <header className={styles.header}>
       <div>
-        {/* <img
-          src='https://freepngimg.com/thumb/logo/69613-litecoin-bitcoin-cryptocurrency-london-bull-logo.png'
-          width='40'
-          height='40'
-          alt='logo'
-        /> */}
       </div>
       <div className={styles.login}>
-        {props.isAuth ? (
+        {isAuth ? (
           <div>
-            {props.login} <button onClick={props.logout}>Log out</button>
+            {login} <button onClick={logout}>Log out</button>
           </div>
         ) : (
           <NavLink to={'/Login/'}>Login</NavLink>
