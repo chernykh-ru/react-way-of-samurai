@@ -8,13 +8,32 @@ import {
   savePhoto,
   saveProfile,
 } from '../../redux/profile-reducer';
-import { withRouter } from 'react-router';
-// import { withAuthRedirect } from '../../hoc/withAuthRedirect';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { compose } from 'redux';
+import {AppStateType} from '../../redux/redux-store'
+import { ProfileType} from '../../types/types'
 
-class ProfileContainer extends React.Component {
+
+type MapPropsType = ReturnType<typeof mapStateToProps>//автоматически выводим типы из mSTP
+
+type DispatchPropsType = {
+  getUserProfile: (userId: number | null) => void,
+  getStatus: (userId: number | null) => void,
+  updateStatus: (status: string) => void,
+  savePhoto: (photoFile: File) => void,
+  saveProfile: (profile: ProfileType) => Promise<any>,
+  // saveProfile: (profile: ProfileType) => void,
+}
+
+type PathParamsType = {
+  userId: string,
+}//HOC withRouter RouteComponentProps<PathParamsType>
+
+export type PropsType = MapPropsType & DispatchPropsType & RouteComponentProps<PathParamsType>
+
+class ProfileContainer extends React.Component<PropsType> {
   refreshProfile() {
-    let userId = this.props.match.params.userId; //объявляем переменную userId которой присваиваем значение из пропсов(которые появились там после оборачивания ХОКом withRouter)
+    let userId: number | null = Number(this.props.match.params.userId); //объявляем переменную userId которой присваиваем значение из пропсов(которые появились там после оборачивания ХОКом withRouter)//userId: number | null = +приводим строку к числу
     // let userId = this.props.match.params.userId || 20627;
     if (!userId) {
       userId = this.props.autorizedUserId;
@@ -25,18 +44,21 @@ class ProfileContainer extends React.Component {
     }
     this.props.getUserProfile(userId); //TC получения профиля
     this.props.getStatus(userId); //TC получения статуса
+    // if (!userId) {
+    //   console.error("ID should exist in URI params or in state ('autorizedUserId')")
+    // } else {
+    //   this.props.getUserProfile(userId); //TC получения профиля
+    //   this.props.getStatus(userId); //TC получения статуса
+    // }
   }
 
   componentDidMount() {
     // console.log('auth', this.props.autorizedUserId);
     // console.log('params', Number(this.props.match.params.userId));
-
-    // debugger;
     this.refreshProfile();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    // debugger;
+  componentDidUpdate(prevProps: PropsType, prevState: PropsType) {
     if (this.props.match.params.userId !== prevProps.match.params.userId) {
       this.refreshProfile(); //сравниваем текущие пропсы userId с прошлыми
     }
@@ -61,19 +83,15 @@ class ProfileContainer extends React.Component {
 }
 //profile={this.props.profile} выше передавать не обязательно, мы уже передаем все пропсы целиком через {...this.props}, сделано для наглядности
 
-let mapStateToProps = (state) => ({
-  profile: state.profilePage.profile, //начать с initialState
-  status: state.profilePage.status, //начать с initialState
+let mapStateToProps = (state: AppStateType) => ({
+  profile: state.profilePage.profile,
+  status: state.profilePage.status,
   autorizedUserId: state.auth.userId,
   isAuth: state.auth.isAuth,
 });
 
-//помещаем в withRouter обертку Auth
-// export default connect(mapStateToProps, { getUserProfile })(withRouter(AuthRedirectComponent));//add compose
-// export default connect(mapStateToProps, { getUserProfile })(withRouter(ProfileContainer));
-
-export default compose(
+//connect<MapPropsType, DispatchPropsType, RouteComponentProps<PathParamsType>, AppStateType>
+export default compose<React.ComponentType>(
   connect(mapStateToProps, { getUserProfile, getStatus, updateStatus, savePhoto, saveProfile }),
   withRouter,
-  // withAuthRedirect,
-)(ProfileContainer); //add compose
+)(ProfileContainer);

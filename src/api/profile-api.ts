@@ -15,7 +15,7 @@ export const profileAPI = {
     const response = await instance.get<string>(`profile/status/${userId}`);
     return response.data;
   },
-  async updateStatus(status: string | null) {
+  async updateStatus(status: string) {
     const response = await instance.put<BasicResponseType>(`profile/status`, { status: status }); //вторым параметром передаем объект json
     return response.data;
   },

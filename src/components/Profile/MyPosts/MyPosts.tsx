@@ -1,14 +1,19 @@
 import Post from './Post/Post';
 import styles from './MyPosts.module.css';
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import { required, maxLengthCreator } from '../../../utils/validators/validators';
 import { Textarea } from '../../common/FormsControls/FormsControls';
+import {PostType} from '../../../types/types'
+
 
 const maxLength30 = maxLengthCreator(30);
 
-const AddPostForm = (props) => {
-  const { handleSubmit } = props;
+type AddPostOwnProps = {
+}//для дальнейшего использования
+
+const AddPostForm: React.FC<InjectedFormProps<AddPostValuesType & AddPostOwnProps> & AddPostOwnProps> = ({ handleSubmit}) => {
+  // const { handleSubmit } = props;
   return (
     <form onSubmit={handleSubmit} className={styles.postBlock}>
       <div>
@@ -26,16 +31,31 @@ const AddPostForm = (props) => {
   );
 };
 
-const AddPostFormRedux = reduxForm({ form: 'postAddPostForm' })(AddPostForm);
+type AddPostValuesType = {
+  newPostText: string | null
+}
 
-const MyPosts = React.memo((props) => {
+const AddPostFormRedux = reduxForm<AddPostValuesType>({ form: 'postAddPostForm' })(AddPostForm);
+
+export type MapStatePropsType = {
+  posts: Array<PostType>
+}
+
+export type MapDispatchPropsType = {
+  addPost: (newPostText: string | null) => void,
+
+}
+
+type PropsType = MapStatePropsType & MapDispatchPropsType
+
+const MyPosts: React.FC<PropsType> = React.memo(({posts, addPost}) => {
   // debugger;
-  const postsElements = [...props.posts] //иммутабельность - меняем отображение постов на странице не затрагивая исходные данные, а делая копию и ее переворачивая
+  const postsElements = [...posts] //иммутабельность - меняем отображение постов на странице не затрагивая исходные данные, а делая копию и ее переворачивая(новые посты сверху)
     .reverse()
     .map((p, i) => <Post key={i} message={p.message} likeCounter={p.likeCounter} />);
 
-  const addNewPost = (value) => {
-    props.addPost(value.newPostText);
+  const addNewPost = (value: AddPostValuesType) => {
+    addPost(value.newPostText);
   };
 
   return (

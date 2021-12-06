@@ -20,7 +20,7 @@ let initialState = {
   ] as Array<PostType>,
   newPostText: '' as string | null,
   profile: null as unknown as ProfileType,
-  status: '' as string | null,
+  status: '' as string,
 };
 
 export type InitialStateType = typeof initialState
@@ -58,12 +58,12 @@ const profileReducer = (state: InitialStateType = initialState, action: ActionsT
 };
 
 //AC
-type ActionsTypes = InferActionsTypes<typeof actions>
+export type ActionsTypes = InferActionsTypes<typeof actions>
 
 export const actions = {
   addPostActionCreator: (newPostText: string | null) => ({ type: 'RWOS/PROFILE/ADD-POST', newPostText } as const),
   setUserProfile: (profile: ProfileType) => ({ type: 'RWOS/PROFILE/SET_USERS_PROFILE', profile } as const),  
-  setStatus: (status: string | null) => ({ type: 'RWOS/PROFILE/SET_STATUS', status } as const),  
+  setStatus: (status: string) => ({ type: 'RWOS/PROFILE/SET_STATUS', status } as const),  
   savePhotoSuccess: (photos: PhotosType) => ({ type: 'RWOS/PROFILE/SAVE_PHOTO_SUCCESS', photos } as const),  
   deletePost: (postId: number | null) => ({ type: 'RWOS/PROFILE/DELETE_POST', postId } as const), //jest test  
 }
@@ -94,7 +94,7 @@ export const getStatus = (userId: number | null): ThunkType => async (dispatch) 
   dispatch(actions.setStatus(data));
 }; //convert to async/await
 
-export const updateStatus = (status: string | null): ThunkType => async (dispatch) => {
+export const updateStatus = (status: string): ThunkType => async (dispatch) => {
   try {
     const data = await profileAPI.updateStatus(status);
     if (data.resultCode === ResultCodeEnum.Success) {

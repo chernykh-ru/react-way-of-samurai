@@ -1,6 +1,11 @@
 import styles from './Post.module.css';
 
-const Post = (props) => (
+type PropsType = {
+  message: string | null,
+  likeCounter: number | null
+}
+
+const Post: React.FC<PropsType> = (props) => (
   <div className={styles.item}>
     <img
       src='https://e7.pngegg.com/pngimages/57/256/png-clipart-bender-philip-j-fry-computer-icons-leela-bender-smiley-cartoon.png'

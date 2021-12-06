@@ -12,7 +12,7 @@ let state = {
   ] as PostType[],
   newPostText: '' as string | null,
   profile: null as unknown as ProfileType,
-  status: '' as string | null,
+  status: '' as string,
 };
 
 it('length of posts should be incremented', () => {

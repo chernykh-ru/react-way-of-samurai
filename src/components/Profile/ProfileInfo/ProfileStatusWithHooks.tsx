@@ -6,8 +6,10 @@ type PropsType ={
 }
 
 const ProfileStatusWithHooks: React.FC<PropsType> = ({status, updateStatus }) => {
-  const [editMode, setEditMode] = useState<boolean>(false);
-  const [localStatus, setLocalStatus] = useState<string>(status);
+  const [editMode, setEditMode] = useState(false);
+  const [localStatus, setLocalStatus] = useState(status);
+  // const [editMode, setEditMode] = useState<boolean>(false);
+  // const [localStatus, setLocalStatus] = useState<string | null>(status);
 
   useEffect(() => {
     setLocalStatus(status);

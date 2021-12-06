@@ -2,26 +2,37 @@ import Preloader from '../../common/preloader/Preloader';
 import styles from './ProfileInfo.module.css';
 import avataaars from '../../../assets/images/avataaars.png';
 import ProfileStatusWithHooks from './ProfileStatusWithHooks'; //следить за переименованием из FC в CC
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import ProfileDataReduxForm from './ProfileDataForm';
+import { ProfileType, ContactsType } from '../../../types/types'
 
-const ProfileInfo = ({ profile, status, updateStatus, isOwner, savePhoto, saveProfile }) => {
+type PropsType = {
+  profile: ProfileType,
+  status: string,
+  updateStatus: (status: string) => void,
+  isOwner: boolean,
+  savePhoto: (photoFile: File) => void,
+  saveProfile: (profile: ProfileType) => Promise<any>,
+}
+
+const ProfileInfo: React.FC<PropsType> = ({ profile, status, updateStatus, isOwner, savePhoto, saveProfile }) => {
   const [editMode, setEditMode] = useState(false);
   // if (props.profile === null || props.profile === undefined)
   if (!profile) {
     return <Preloader />;
   }
 
-  const onSubmit = (formData) => {
+  const onSubmit = (formData: ProfileType) => {
+    //todo: remove then
     saveProfile(formData).then(() => {
       setEditMode(false); //при успешном без ошибоксабмите убираем режим редактирования
     });
     // console.log(formData);
   };
 
-  const onMainPhotoSelected = (e) => {
+  const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
     // debugger;
-    if (e.target.files.length) {
+    if (e.target.files?.length) {//?необязательный(в данном случае если он есть не null)
       savePhoto(e.target.files[0]);
     } //проверяем что файлы прицепились и повесили на обработчик инпута колбэк TC
   };
@@ -69,10 +80,13 @@ const ProfileInfo = ({ profile, status, updateStatus, isOwner, savePhoto, savePr
   );
 };
 
-const ProfileData = ({ profile, isOwner, setEditMode }) => {
-  // const goToEditMode = () => {
-  //   return setEditMode(true);
-  // };
+type ProfileDataOwnPropsType = {
+  profile: ProfileType,
+  isOwner: boolean,
+  setEditMode: (arg: boolean) => void,
+}
+
+const ProfileData: React.FC<ProfileDataOwnPropsType> = ({ profile, isOwner, setEditMode }) => {
   return (
     <div>
       <div>
@@ -96,7 +110,7 @@ const ProfileData = ({ profile, isOwner, setEditMode }) => {
         <b>Contacts: </b>
         {Object.keys(profile.contacts).map((key) => {
           //Метод Object.keys возвращает массив строковых элементов, соответствующих именам перечисляемых свойств, после мапим массив передавая в компонент ключ-значение
-          return <Contact key={key} contactTitle={key} contactValue={profile.contacts[key]} />; //обратимся к profile.contacts и прочитаем свойство по ключу[key](наподобие точечной нотации)
+          return <Contact key={key} contactTitle={key} contactValue={profile.contacts[key as keyof ContactsType]} />; //обратимся к profile.contacts и прочитаем свойство по ключу[key](наподобие точечной нотации)
         })}
       </div>
       <div>
@@ -106,7 +120,12 @@ const ProfileData = ({ profile, isOwner, setEditMode }) => {
   );
 };
 
-const Contact = ({ contactTitle, contactValue }) => {
+type ContactPropsType = {
+  contactTitle: string | null, 
+  contactValue: string | null,
+}
+
+const Contact: React.FC<ContactPropsType> = ({ contactTitle, contactValue }) => {
   return (
     <div className={styles.contactsWrapper}>
       {contactValue && (
