@@ -1,8 +1,16 @@
 import styles from './Users.module.css';
 import avataaars from './../../../src/assets/images/avataaars.svg';
 import { NavLink } from 'react-router-dom';
+import {UsersType} from '../../types/types'
 
-const User = ({ followingInProgress, follow, unfollow, user }) => {
+type PropsType = {
+  followingInProgress: Array<number | null>,
+  user: UsersType,
+  follow: (userId: number | null) => void,
+  unfollow: (userId: number | null) => void,
+}
+
+const User: React.FC<PropsType> = ({ followingInProgress, follow, unfollow, user }) => {
   return (
     <div>
       <div>
