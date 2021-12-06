@@ -1,6 +1,6 @@
 import styles from './Setings.module.css'
 
-const Setings = () => (
+const Setings: React.FC = () => (
   <div>
     <p>Setings</p>
     <div className={styles.wrapper}>

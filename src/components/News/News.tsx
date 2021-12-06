@@ -1,6 +1,6 @@
 import styles from './News.module.css'
 
-const News = () => (
+const News: React.FC = () => (
   <div>
     <p>News</p>
     <div className={styles.wrapper}>

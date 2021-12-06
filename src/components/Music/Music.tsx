@@ -1,6 +1,6 @@
 import styles from './Music.module.css'
 
-const Music = () => (
+const Music: React.FC = () => (
   <div>
     <p>Music</p>
     <div className={styles.wrapper}>
