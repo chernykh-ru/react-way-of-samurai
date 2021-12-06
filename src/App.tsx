@@ -16,6 +16,7 @@ import { initializeApp } from './redux/app-reducer';
 import Preloader from './components/common/preloader/Preloader';
 import { AppStateType } from './redux/redux-store'
 import { compose } from 'redux';
+import { withSuspense } from './hoc/withSuspense'
 // import { BrowserRouter as Router } from 'react-router-dom'; //HashRouter применен для деплоя на gh-pages!!!
 // import { HashRouter as Router } from 'react-router-dom'; //HashRouter применен для деплоя на gh-pages
 // import store from './redux/redux-store';
@@ -35,6 +36,8 @@ type MapDispatchPropsType = {
 
 type PropsType = MapStatePropsType & MapDispatchPropsType
 
+const SuspendedDialogs = withSuspense(DialogsContainer)//единожды при загрузке приложения оборачиваем в HOC withSuspense, и ниже отрисовываем уже обернутую компоненту
+
 class App extends React.Component<PropsType> {
   catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
     console.log('Some error occured');
@@ -49,6 +52,7 @@ class App extends React.Component<PropsType> {
   componentWillUnmount() {
     window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors);
   }
+
 
   render() {
     if (!this.props.initialized) {
@@ -65,10 +69,13 @@ class App extends React.Component<PropsType> {
               //:userId? опциональный параметр ХОКа withRouter
               />
             </Route>
-            <Route path='/dialogs'>
-              <DialogsContainer />
-            </Route>
+            {/* <Route path='/dialogs'>
+              <DialogsContainer />//ниже с HOC withSuspense
+            </Route> */}
           </Suspense>
+          <Route path='/dialogs'>
+            <SuspendedDialogs />
+          </Route>
           <Route path='/login'>
             <Login />
           </Route>
@@ -95,6 +102,10 @@ class App extends React.Component<PropsType> {
     );
   }
 }
+
+
+//  <Route path='/dialogs'//Suspense custom HOC
+// render = {() => withSuspense(DialogsContainer)} /> 
 
 let mapStateToProps = (state: AppStateType) => ({
   initialized: state.app.initialized, //получаем из стейта флаг

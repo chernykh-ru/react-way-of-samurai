@@ -1,22 +1,31 @@
 import React from 'react';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
+import { AppStateType } from '../redux/redux-store'
 
-let mapStateToPropsForRedirect = (state) => ({
+
+let mapStateToPropsForRedirect = (state: AppStateType) => ({
   isAuth: state.auth.isAuth, //вытаскиваем из стейта инфу залогинен или нет
 });
 
-export const withAuthRedirect = (Component) => {
-  class RedirectComponent extends React.Component {
-    render() {
-      if (!this.props.isAuth) return <Redirect to={'/login'} />;
+type MapPropsType = {
+  isAuth: boolean
+}
 
-      return <Component {...this.props} />;
-    }
+type DispatchPropsType = {
+}
+
+export function withAuthRedirect<WCP> (WrappedComponent: React.ComponentType<WCP>) {
+
+  const  RedirectComponent: React.FC<MapPropsType & DispatchPropsType> = (props) => {
+    let {isAuth, ...restProps} = props
+    if (!isAuth) return <Redirect to={'/login'} />;
+
+    return <WrappedComponent {...restProps as WCP} />;
   }
 
   //конненктим к стору RedirectComponent которую создали внутри ХОКа, и возвращаем ее наружу
-  let ConnectedAuthRedirectComponent = connect(mapStateToPropsForRedirect)(RedirectComponent);
+  let ConnectedAuthRedirectComponent = connect<MapPropsType, DispatchPropsType, WCP, AppStateType>(mapStateToPropsForRedirect)(RedirectComponent);
 
   return ConnectedAuthRedirectComponent;
 };
