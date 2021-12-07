@@ -18,6 +18,9 @@ export const getTotalUsersCount = (state: AppStateType) => {
 export const getCurrentPage = (state: AppStateType) => {
   return state.usersPage.currentPage;
 };
+export const getUsersFilter = (state: AppStateType) => {
+  return state.usersPage.filter;
+};//add formik term in URL
 export const getIsFetching = (state: AppStateType) => {
   return state.usersPage.isFetching;
 };

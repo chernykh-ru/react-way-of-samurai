@@ -2,18 +2,24 @@ import styles from './Paginator.module.css';
 import React, { useState } from 'react';
 
 type PropsType = {
-  totalItemsCount: number,
-  pageSize: number,
-  onPageChanged?: (page: number) => void,//?для теста
-  currentPage: number,
-  portionSize?: number//'?' необязательный параметр
-}//типизируем пропсы и ниже компонент: React.FC<Props>
+  totalItemsCount: number;
+  pageSize: number;
+  onPageChanged?: (page: number) => void; //?для теста
+  currentPage: number;
+  portionSize?: number; //'?' необязательный параметр
+}; //типизируем пропсы и ниже компонент: React.FC<Props>
 
-const Paginator: React.FC<PropsType> = ({ totalItemsCount, pageSize, onPageChanged = x => x, currentPage = 1, portionSize = 10 }) => {
+const Paginator: React.FC<PropsType> = ({
+  totalItemsCount,
+  pageSize,
+  onPageChanged = (x) => x,
+  currentPage = 1,
+  portionSize = 10,
+}) => {
   const pagesCount = Math.ceil(totalItemsCount / pageSize); //кол-во странииц
   const portionCount = Math.ceil(pagesCount / portionSize); //кол-во порций
   const [portionNumber, setPortionNumber] = useState<number>(Math.ceil(currentPage / portionSize)); //отслеживаем номер порции и его изменение//решение со сбросом порции при смене страницы
-  // const [portionNumber, setPortionNumber] = useState(1); //отслеживаем номер порции и его изменение
+  // let [portionNumber, setPortionNumber] = useState(1); //отслеживаем номер порции и его изменение
   const leftPortionPageNumber = (portionNumber - 1) * portionSize + 1; //номер левого элемента порции
   const rightPortionPageNumber = portionNumber * portionSize; //номер правого элемента порции
   const pages: number[] = [];
