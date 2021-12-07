@@ -14,11 +14,11 @@ export const usersAPI = {
       .get<GetUsersResponseType>(`users?page=${currentPage}&count=${pageSize}`)
       .then((response) => response.data); //промисом вернем не весь ответ а нужную часть data
   },
-  async follow(userId: number) {
+  async follow(userId: number | null) {
     const response = await instance.post<BasicResponseType>(`follow/${userId}`);
     return response.data;
   },
-  async unfollow(userId: number) {
+  async unfollow(userId: number | null) {
     const response = await instance.delete<BasicResponseType>(`follow/${userId}`);
     return response.data;
   },

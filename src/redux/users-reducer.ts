@@ -1,4 +1,4 @@
-import { ResultCodeEnum } from '../api/api';
+import { ResultCodeEnum, BasicResponseType } from '../api/api';
 import { usersAPI} from '../api/users-api';
 import { updateObjectInArray } from '../utils/object-helpers';
 import { UsersType} from '../types/types'
@@ -98,8 +98,8 @@ type ActionsTypes = InferActionsTypes<typeof actions>
 
 
 export const requestUsers = (page: number, pageSize: number | null): ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> => async (dispatch, getState) => {
-  dispatch(actions.setCurrentPage(page)); //from onPageChanged(активная страница)
   dispatch(actions.toggleIsFetching(true)); //запрос ушел preloader виден
+  dispatch(actions.setCurrentPage(page)); //from onPageChanged(активная страница)
   const data = await usersAPI.getUsers(page, pageSize);
   dispatch(actions.toggleIsFetching(false)); //запрос пришел preloader скрывается
   dispatch(actions.setUsers(data.items)); // у usersAPI дергаем метод getUsers//получаем user из data(данные) items(объект с юзерами) и диспачим setUsers
@@ -107,7 +107,7 @@ export const requestUsers = (page: number, pageSize: number | null): ThunkAction
 }; //remove page | null
 
 //рефакторинг, вынесение дублирующей логики из follow и unfollow в функцию followUnfollowFlow
-const _followUnfollowFlow = async (dispatch: Dispatch<ActionsTypes>, userId: number | null, apiMethod: any, actionCreator: (userId: number | null) => ActionsTypes) => {
+const _followUnfollowFlow = async (dispatch: Dispatch<ActionsTypes>, userId: number | null, apiMethod: (userId: number | null) => Promise<BasicResponseType>, actionCreator: (userId: number | null) => ActionsTypes) => {
   dispatch(actions.toggleFollowingProgress(true, userId));
   const data = await apiMethod(userId);
   if (data.resultCode === ResultCodeEnum.Success) {
@@ -117,11 +117,11 @@ const _followUnfollowFlow = async (dispatch: Dispatch<ActionsTypes>, userId: num
 };
 
 export const follow = (userId: number | null): ThunkType => async (dispatch) => {
-  _followUnfollowFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), actions.followSuccess);
+  await _followUnfollowFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), actions.followSuccess);
 };//типизируем TC по типу ThunkType
 
 export const unfollow = (userId: number | null): ThunkType => async (dispatch) => {
-  _followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), actions.unfollowSuccess);
+  await _followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), actions.unfollowSuccess);
 };
 
 export default usersReducer;
