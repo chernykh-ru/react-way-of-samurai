@@ -4,7 +4,7 @@ import Navbar from './components/Navbar/Navbar';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Setings from './components/Setings/Setings';
-import UsersContainer from './components/Users/UsersContainer';
+import { UsersPage as UsersContainer } from './components/Users/UsersContainer';
 // import DialogsContainer from './components/Dialogs/DialogsContainer';
 // import ProfileContainer from './components/Profile/ProfileContainer';
 import Login from './components/Login/Login';
@@ -14,9 +14,9 @@ import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router';
 import { initializeApp } from './redux/app-reducer';
 import Preloader from './components/common/preloader/Preloader';
-import { AppStateType } from './redux/redux-store'
+import { AppStateType } from './redux/redux-store';
 import { compose } from 'redux';
-import { withSuspense } from './hoc/withSuspense'
+import { withSuspense } from './hoc/withSuspense';
 // import { BrowserRouter as Router } from 'react-router-dom'; //HashRouter применен для деплоя на gh-pages!!!
 // import { HashRouter as Router } from 'react-router-dom'; //HashRouter применен для деплоя на gh-pages
 // import store from './redux/redux-store';
@@ -27,16 +27,16 @@ const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileCo
 // const Login = React.lazy(() => import('./components/Login/Login'));
 
 type MapStatePropsType = {
-  initialized: boolean,
-}
+  initialized: boolean;
+};
 
 type MapDispatchPropsType = {
-  initializeApp: () => void,
-}
+  initializeApp: () => void;
+};
 
-type PropsType = MapStatePropsType & MapDispatchPropsType
+type PropsType = MapStatePropsType & MapDispatchPropsType;
 
-const SuspendedDialogs = withSuspense(DialogsContainer)//единожды при загрузке приложения оборачиваем в HOC withSuspense, и ниже отрисовываем уже обернутую компоненту
+const SuspendedDialogs = withSuspense(DialogsContainer); //единожды при загрузке приложения оборачиваем в HOC withSuspense, и ниже отрисовываем уже обернутую компоненту
 
 class App extends React.Component<PropsType> {
   catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
@@ -52,7 +52,6 @@ class App extends React.Component<PropsType> {
   componentWillUnmount() {
     window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors);
   }
-
 
   render() {
     if (!this.props.initialized) {
@@ -103,9 +102,8 @@ class App extends React.Component<PropsType> {
   }
 }
 
-
 //  <Route path='/dialogs'//Suspense custom HOC
-// render = {() => withSuspense(DialogsContainer)} /> 
+// render = {() => withSuspense(DialogsContainer)} />
 
 let mapStateToProps = (state: AppStateType) => ({
   initialized: state.app.initialized, //получаем из стейта флаг
@@ -122,7 +120,10 @@ let mapStateToProps = (state: AppStateType) => ({
 //   </Router>)
 // }//variant IT-Dimich
 
-export default compose<React.ComponentType>(withRouter, connect(mapStateToProps, { initializeApp }))(App)
+export default compose<React.ComponentType>(
+  withRouter,
+  connect(mapStateToProps, { initializeApp }),
+)(App);
 // export default withRouter(connect<MapStatePropsType, MapDispatchPropsType, AppStateType>(mapStateToProps, { initializeApp }))(App);
 // export default compose(withRouter, connect(mapStateToProps, { initializeApp })(App));//bug with compose
 

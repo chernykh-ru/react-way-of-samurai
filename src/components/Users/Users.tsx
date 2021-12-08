@@ -1,34 +1,48 @@
 import styles from './Users.module.css';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Paginator from '../common/Paginator/Paginator';
 import User from './User';
-import { UsersType } from '../../types/types';
 import UsersSearchForm from './UsersSearchForm';
-import { FilterType } from '../../redux/users-reducer';
+import { AppStateType } from '../../redux/redux-store';
+import { follow, unfollow, requestUsers, FilterType } from '../../redux/users-reducer';
+import {
+  getCurrentPage,
+  getFollowingInProgress,
+  getPageSize,
+  getUsers,
+  getUsersFilter,
+} from '../../redux/users-selectors';
 
-type PropsType = {
-  totalUsersCount: number;
-  pageSize: number;
-  onPageChanged: (page: number) => void;
-  onFilterChanged: (filter: FilterType) => void; //add formik term in URL
-  currentPage: number;
-  users: Array<UsersType>;
-  followingInProgress: Array<number | null>;
-  follow: (userId: number | null) => void;
-  unfollow: (userId: number | null) => void;
-};
+export const Users: React.FC = () => {
+  const dispatch = useDispatch();
+  const totalUsersCount = useSelector((state: AppStateType) => state.usersPage.totalUsersCount); //example
+  const pageSize = useSelector(getPageSize); //from users-selectors
+  const currentPage = useSelector(getCurrentPage);
+  const users = useSelector(getUsers);
+  const filter = useSelector(getUsersFilter);
+  const followingInProgress = useSelector(getFollowingInProgress);
 
-const Users: React.FC<PropsType> = ({
-  totalUsersCount,
-  pageSize,
-  onPageChanged,
-  onFilterChanged, //add formik term in URL
-  currentPage,
-  users,
-  followingInProgress,
-  follow,
-  unfollow,
-}) => {
+  useEffect(() => {
+    dispatch(requestUsers(currentPage, pageSize, filter));
+  }, []);
+
+  const onPageChanged = (currentPage: number) => {
+    dispatch(requestUsers(currentPage, pageSize, filter));
+  };
+
+  const onFilterChanged = (filter: FilterType) => {
+    dispatch(requestUsers(1, pageSize, filter)); //1 сброс страницы на первую при фильтрации
+  }; //add formik term in URL
+
+  const _follow = (userId: number | null) => {
+    dispatch(follow(userId));
+  };
+
+  const _unfollow = (userId: number | null) => {
+    dispatch(unfollow(userId));
+  };
+
   return (
     <div>
       <UsersSearchForm onFilterChanged={onFilterChanged} />
@@ -42,8 +56,8 @@ const Users: React.FC<PropsType> = ({
         <div className={styles.wrapper} key={user.id}>
           <User //выносим логику в компонент, прокидываем пропсы
             followingInProgress={followingInProgress}
-            follow={follow}
-            unfollow={unfollow}
+            follow={_follow}
+            unfollow={_unfollow}
             user={user}
           />
         </div>
@@ -51,5 +65,3 @@ const Users: React.FC<PropsType> = ({
     </div>
   );
 };
-
-export default Users;
