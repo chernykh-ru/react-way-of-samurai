@@ -7,7 +7,7 @@ import Setings from './components/Setings/Setings';
 import { UsersPage as UsersContainer } from './components/Users/UsersContainer';
 // import DialogsContainer from './components/Dialogs/DialogsContainer';
 // import ProfileContainer from './components/Profile/ProfileContainer';
-import Login from './components/Login/Login';
+import { LoginPage } from './components/Login/LoginPage';
 import HeaderContainer from './components/Header/HeaderContainer';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -76,7 +76,7 @@ class App extends React.Component<PropsType> {
             <SuspendedDialogs />
           </Route>
           <Route path='/login'>
-            <Login />
+            <LoginPage />
           </Route>
           <Route path='/users'>
             <UsersContainer pageTitle={'Самураи'} />
@@ -94,7 +94,7 @@ class App extends React.Component<PropsType> {
             <Redirect to='/profile' />
           </Route> */}
           <Route exact path='/'>
-            {this.props.initialized ? <Redirect to='/profile' /> : <Login />}
+            {this.props.initialized ? <Redirect to='/profile' /> : <LoginPage />}
           </Route>
         </div>
       </div>
