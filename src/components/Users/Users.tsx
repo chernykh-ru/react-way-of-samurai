@@ -13,9 +13,19 @@ import {
   getUsers,
   getUsersFilter,
 } from '../../redux/users-selectors';
+import { useHistory, useLocation } from 'react-router-dom';
+// import * as queryString from 'querystring'//deprecated — Legacy
+
+// type QueryParamsType = {
+//   term?: string;
+//   page?: string;
+//   friend?: string;
+// };//querystring deprecated — Legacy
 
 export const Users: React.FC = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
   const totalUsersCount = useSelector((state: AppStateType) => state.usersPage.totalUsersCount); //example
   const pageSize = useSelector(getPageSize); //from users-selectors
   const currentPage = useSelector(getCurrentPage);
@@ -24,8 +34,36 @@ export const Users: React.FC = () => {
   const followingInProgress = useSelector(getFollowingInProgress);
 
   useEffect(() => {
-    dispatch(requestUsers(currentPage, pageSize, filter));
-  }, []);
+    // const query: QueryParamsType = {};
+    // if (filter.term) query.term = filter.term;
+    // if (filter.friend !== null) query.friend = String(filter.friend);
+    // if (currentPage !== 1) query.page = String(currentPage);
+    //querystring deprecated — Legacy
+
+    history.push({
+      pathname: '/users',
+      search: `?term=${filter.term}&friend=${filter.friend}&page=${currentPage}`,
+    });
+  }, [filter, currentPage]); //следим за изменением фильтра и текущей страницы в стейте и пушим в урл квери строку параметры
+
+  useEffect(() => {
+    const { search } = location;
+    const parsed = new URLSearchParams(search);
+    const parsedPage = parsed.get('page');
+    const parsedTerm = parsed.get('term');
+    const parsedFriend = parsed.get('friend');
+
+    let actualPage = currentPage;
+    let actualFilter = filter;
+    if (!!parsedPage) actualPage = Number(parsedPage);
+    if (!!parsedTerm) actualFilter = { ...actualFilter, term: parsedTerm };
+    if (parsedFriend)
+      actualFilter = {
+        ...actualFilter,
+        friend: parsedFriend === 'null' ? null : parsedFriend === 'true' ? true : false,
+      }; //..иммутабельно
+    dispatch(requestUsers(actualPage, pageSize, actualFilter));
+  }, []); //парсим url строку, извлекаем query params, и если они есть иммутабельно меняем данные и диспачим уже параметры из урла, а не из стейта при первой загрузке страницы
 
   const onPageChanged = (currentPage: number) => {
     dispatch(requestUsers(currentPage, pageSize, filter));
