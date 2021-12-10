@@ -1,15 +1,18 @@
 import { Link } from 'react-router-dom';
 import { logout } from '../../redux/auth-reducer';
 
-import { Layout, Menu, Avatar, Row, Col, Button } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Layout, Menu, Avatar, Image, Row, Col, Button } from 'antd';
+// import { UserOutlined } from '@ant-design/icons';
 import { AppStateType } from '../../redux/redux-store';
 import { useDispatch, useSelector } from 'react-redux';
+import avataaars from '../../assets/images/avataaars.png';
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
   const { login, isAuth } = useSelector(({ auth }: AppStateType) => auth);
+  const { profile } = useSelector(({ profilePage }: AppStateType) => profilePage);
   const { Header } = Layout;
+
   const _logout = () => {
     dispatch(logout());
   };
@@ -25,13 +28,21 @@ export const Header: React.FC = () => {
             </Menu.Item>
           </Menu>
         </Col>
-        {isAuth ? (
+        {isAuth && profile ? (
           <>
             <Col span={2}>
-              <Avatar
+              {/* <Avatar
                 alt={login || ''}
                 style={{ backgroundColor: '#87d068' }}
                 icon={<UserOutlined />}
+              /> */}
+              <Avatar
+                icon={
+                  <Image
+                    src={profile.photos.small !== null ? profile.photos.small : avataaars}
+                    style={{ width: 32 }}
+                  />
+                }
               />
             </Col>
             <Col span={4}>
