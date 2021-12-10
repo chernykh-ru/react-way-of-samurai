@@ -4,18 +4,26 @@ import avataaars from '../../../assets/images/avataaars.png';
 import ProfileStatusWithHooks from './ProfileStatusWithHooks'; //следить за переименованием из FC в CC
 import React, { useState, ChangeEvent } from 'react';
 import ProfileDataReduxForm from './ProfileDataForm';
-import { ProfileType, ContactsType } from '../../../types/types'
+import { ProfileType, ContactsType } from '../../../types/types';
+// import { Input } from 'antd';
 
 type PropsType = {
-  profile: ProfileType,
-  status: string,
-  updateStatus: (status: string) => void,
-  isOwner: boolean,
-  savePhoto: (photoFile: File) => void,
-  saveProfile: (profile: ProfileType) => Promise<any>,
-}
+  profile: ProfileType;
+  status: string;
+  updateStatus: (status: string) => void;
+  isOwner: boolean;
+  savePhoto: (photoFile: File) => void;
+  saveProfile: (profile: ProfileType) => Promise<any>;
+};
 
-const ProfileInfo: React.FC<PropsType> = ({ profile, status, updateStatus, isOwner, savePhoto, saveProfile }) => {
+const ProfileInfo: React.FC<PropsType> = ({
+  profile,
+  status,
+  updateStatus,
+  isOwner,
+  savePhoto,
+  saveProfile,
+}) => {
   const [editMode, setEditMode] = useState(false);
   // if (props.profile === null || props.profile === undefined)
   if (!profile) {
@@ -32,7 +40,8 @@ const ProfileInfo: React.FC<PropsType> = ({ profile, status, updateStatus, isOwn
 
   const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
     // debugger;
-    if (e.target.files?.length) {//?необязательный(в данном случае если он есть не null)
+    if (e.target.files?.length) {
+      //?необязательный(в данном случае если он есть не null)
       savePhoto(e.target.files[0]);
     } //проверяем что файлы прицепились и повесили на обработчик инпута колбэк TC
   };
@@ -50,6 +59,14 @@ const ProfileInfo: React.FC<PropsType> = ({ profile, status, updateStatus, isOwn
         <div className={styles.inputWrapper}>
           {isOwner ? (
             <div>
+              {/* <Input
+                type={'file'}
+                size='small'
+                onChange={onMainPhotoSelected}
+                name='file'
+                allowClear
+                placeholder='input with clear icon'
+              /> */}
               <input
                 type={'file'}
                 onChange={onMainPhotoSelected}
@@ -58,7 +75,7 @@ const ProfileInfo: React.FC<PropsType> = ({ profile, status, updateStatus, isOwn
                 className={styles.inputFile}
               />
               <label htmlFor='input__file' className={styles.inputFileButton}>
-                <span className={styles.inputFileButtonText}>Выберите файл</span>
+                <span className={styles.inputFileButtonText}>Обновите аватар</span>
               </label>
             </div> //инпут спрятан за лейбл и стилизован под кнопку
           ) : (
@@ -81,10 +98,10 @@ const ProfileInfo: React.FC<PropsType> = ({ profile, status, updateStatus, isOwn
 };
 
 type ProfileDataOwnPropsType = {
-  profile: ProfileType,
-  isOwner: boolean,
-  setEditMode: (arg: boolean) => void,
-}
+  profile: ProfileType;
+  isOwner: boolean;
+  setEditMode: (arg: boolean) => void;
+};
 
 const ProfileData: React.FC<ProfileDataOwnPropsType> = ({ profile, isOwner, setEditMode }) => {
   return (
@@ -110,7 +127,13 @@ const ProfileData: React.FC<ProfileDataOwnPropsType> = ({ profile, isOwner, setE
         <b>Contacts: </b>
         {Object.keys(profile.contacts).map((key) => {
           //Метод Object.keys возвращает массив строковых элементов, соответствующих именам перечисляемых свойств, после мапим массив передавая в компонент ключ-значение
-          return <Contact key={key} contactTitle={key} contactValue={profile.contacts[key as keyof ContactsType]} />; //обратимся к profile.contacts и прочитаем свойство по ключу[key](наподобие точечной нотации)
+          return (
+            <Contact
+              key={key}
+              contactTitle={key}
+              contactValue={profile.contacts[key as keyof ContactsType]}
+            />
+          ); //обратимся к profile.contacts и прочитаем свойство по ключу[key](наподобие точечной нотации)
         })}
       </div>
       <div>
@@ -121,9 +144,9 @@ const ProfileData: React.FC<ProfileDataOwnPropsType> = ({ profile, isOwner, setE
 };
 
 type ContactPropsType = {
-  contactTitle: string | null, 
-  contactValue: string | null,
-}
+  contactTitle: string | null;
+  contactValue: string | null;
+};
 
 const Contact: React.FC<ContactPropsType> = ({ contactTitle, contactValue }) => {
   return (
