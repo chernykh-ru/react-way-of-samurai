@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import './App.css';
 import 'antd/dist/antd.css';
-import Navbar from './components/Navbar/Navbar';
+// import Navbar from './components/Navbar/Navbar';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Setings from './components/Setings/Setings';
@@ -23,15 +23,17 @@ import { withSuspense } from './hoc/withSuspense';
 // import { HashRouter as Router } from 'react-router-dom'; //HashRouter применен для деплоя на gh-pages
 // import store from './redux/redux-store';
 // import { Provider } from 'react-redux';
-import { Layout, Menu, Breadcrumb, Avatar, Row, Col } from 'antd';
+import { Layout, Menu } from 'antd';
 import { UserOutlined, MessageOutlined, NotificationOutlined } from '@ant-design/icons';
 import { Footer } from 'antd/lib/layout/layout';
+// import { ChatPage } from './pages/Chat/ChatPage';
 
 const { SubMenu } = Menu;
 const { Content, Sider } = Layout;
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer')); // Ленивая загрузка
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
+const ChatPage = React.lazy(() => import('./pages/Chat/ChatPage'));
 // const Login = React.lazy(() => import('./components/Login/Login'));
 
 type MapStatePropsType = {
@@ -82,8 +84,10 @@ class App extends React.Component<PropsType> {
                 <Menu.Item key='2'>
                   <Link to='/dialogs'>Messages</Link>
                 </Menu.Item>
-                {/* <Menu.Item key='3'>option3</Menu.Item>
-                <Menu.Item key='4'>option4</Menu.Item> */}
+                <Menu.Item key='3'>
+                  <Link to='/chat'>Chat</Link>
+                </Menu.Item>
+                {/* <Menu.Item key='4'>option4</Menu.Item> */}
               </SubMenu>
               <SubMenu key='sub2' icon={<MessageOutlined />} title='Developers'>
                 <Menu.Item key='5'>
@@ -124,6 +128,9 @@ class App extends React.Component<PropsType> {
                   <ProfileContainer
                   //:userId? опциональный параметр ХОКа withRouter
                   />
+                </Route>
+                <Route path='/chat'>
+                  <ChatPage />
                 </Route>
                 {/* <Route path='/dialogs'>
               <DialogsContainer />//ниже с HOC withSuspense
