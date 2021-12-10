@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import './App.css';
+import 'antd/dist/antd.css';
 import Navbar from './components/Navbar/Navbar';
 import News from './components/News/News';
 import Music from './components/Music/Music';
@@ -8,8 +9,9 @@ import { UsersPage as UsersContainer } from './components/Users/UsersContainer';
 // import DialogsContainer from './components/Dialogs/DialogsContainer';
 // import ProfileContainer from './components/Profile/ProfileContainer';
 import { LoginPage } from './components/Login/LoginPage';
-import HeaderContainer from './components/Header/HeaderContainer';
-import { Route } from 'react-router-dom';
+import { Header } from './components/Header/Header';
+// import HeaderContainer from './components/Header/HeaderContainer';
+import { Link, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router';
 import { initializeApp } from './redux/app-reducer';
@@ -21,6 +23,12 @@ import { withSuspense } from './hoc/withSuspense';
 // import { HashRouter as Router } from 'react-router-dom'; //HashRouter применен для деплоя на gh-pages
 // import store from './redux/redux-store';
 // import { Provider } from 'react-redux';
+import { Layout, Menu, Breadcrumb, Avatar, Row, Col } from 'antd';
+import { UserOutlined, MessageOutlined, NotificationOutlined } from '@ant-design/icons';
+import { Footer } from 'antd/lib/layout/layout';
+
+const { SubMenu } = Menu;
+const { Content, Sider } = Layout;
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer')); // Ленивая загрузка
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
@@ -58,46 +66,135 @@ class App extends React.Component<PropsType> {
       return <Preloader />;
     }
     return (
-      <div className='app-wrapper'>
-        <HeaderContainer />
-        <Navbar />
-        <div className='app-wrapper-content'>
-          <Suspense fallback={<Preloader />}>
-            <Route path='/profile/:userId?'>
-              <ProfileContainer
-              //:userId? опциональный параметр ХОКа withRouter
-              />
-            </Route>
-            {/* <Route path='/dialogs'>
+      <Layout>
+        <Header />
+        <Layout>
+          <Sider width={200} className='site-layout-background'>
+            <Menu
+              mode='inline'
+              defaultSelectedKeys={['1']}
+              defaultOpenKeys={['sub1']}
+              style={{ height: '100%', borderRight: 0 }}>
+              <SubMenu key='sub1' icon={<UserOutlined />} title='My profile'>
+                <Menu.Item key='1'>
+                  <Link to='/profile'>Profile</Link>
+                </Menu.Item>
+                <Menu.Item key='2'>
+                  <Link to='/dialogs'>Messages</Link>
+                </Menu.Item>
+                <Menu.Item key='3'>option3</Menu.Item>
+                <Menu.Item key='4'>option4</Menu.Item>
+              </SubMenu>
+              <SubMenu key='sub2' icon={<MessageOutlined />} title='Developers'>
+                <Menu.Item key='5'>
+                  <Link to='/users'>Users</Link>
+                </Menu.Item>
+                <Menu.Item key='6'>option6</Menu.Item>
+                <Menu.Item key='7'>option7</Menu.Item>
+                <Menu.Item key='8'>option8</Menu.Item>
+              </SubMenu>
+              <SubMenu key='sub3' icon={<NotificationOutlined />} title='subnav 3'>
+                <Menu.Item key='9'>option9</Menu.Item>
+                <Menu.Item key='10'>option10</Menu.Item>
+                <Menu.Item key='11'>option11</Menu.Item>
+                <Menu.Item key='12'>option12</Menu.Item>
+              </SubMenu>
+            </Menu>
+          </Sider>
+          <Layout style={{ padding: '0 24px 24px' }}>
+            <Breadcrumb style={{ margin: '16px 0' }}>
+              <Breadcrumb.Item>Home</Breadcrumb.Item>
+              <Breadcrumb.Item>List</Breadcrumb.Item>
+              <Breadcrumb.Item>App</Breadcrumb.Item>
+            </Breadcrumb>
+            <Content
+              className='site-layout-background'
+              style={{
+                padding: 24,
+                margin: 0,
+                minHeight: 280,
+              }}>
+              <Suspense fallback={<Preloader />}>
+                <Route path='/profile/:userId?'>
+                  <ProfileContainer
+                  //:userId? опциональный параметр ХОКа withRouter
+                  />
+                </Route>
+                {/* <Route path='/dialogs'>
               <DialogsContainer />//ниже с HOC withSuspense
             </Route> */}
-          </Suspense>
-          <Route path='/dialogs'>
-            <SuspendedDialogs />
-          </Route>
-          <Route path='/login'>
-            <LoginPage />
-          </Route>
-          <Route path='/users'>
-            <UsersContainer pageTitle={'Самураи'} />
-          </Route>
-          <Route path='/news'>
-            <News />
-          </Route>
-          <Route path='/music'>
-            <Music />
-          </Route>
-          <Route path='/setings'>
-            <Setings />
-          </Route>
-          {/* <Route path='/' exact>
+              </Suspense>
+              <Route path='/dialogs'>
+                <SuspendedDialogs />
+              </Route>
+              <Route path='/login'>
+                <LoginPage />
+              </Route>
+              <Route path='/users'>
+                <UsersContainer pageTitle={'Самураи'} />
+              </Route>
+              <Route path='/news'>
+                <News />
+              </Route>
+              <Route path='/music'>
+                <Music />
+              </Route>
+              <Route path='/setings'>
+                <Setings />
+              </Route>
+              {/* <Route path='/' exact>
             <Redirect to='/profile' />
           </Route> */}
-          <Route exact path='/'>
-            {this.props.initialized ? <Redirect to='/profile' /> : <LoginPage />}
-          </Route>
-        </div>
-      </div>
+              <Route exact path='/'>
+                {this.props.initialized ? <Redirect to='/profile' /> : <LoginPage />}
+              </Route>
+            </Content>
+            <Footer style={{ textAlign: 'center' }}>
+              developers social network © 2021 Created by chernykh.ru
+            </Footer>
+          </Layout>
+        </Layout>
+      </Layout>
+      // <div className='app-wrapper'>
+      //   <HeaderContainer />
+      //   <Navbar />
+      //   <div className='app-wrapper-content'>
+      //     <Suspense fallback={<Preloader />}>
+      //       <Route path='/profile/:userId?'>
+      //         <ProfileContainer
+      //         //:userId? опциональный параметр ХОКа withRouter
+      //         />
+      //       </Route>
+      //       {/* <Route path='/dialogs'>
+      //         <DialogsContainer />//ниже с HOC withSuspense
+      //       </Route> */}
+      //     </Suspense>
+      //     <Route path='/dialogs'>
+      //       <SuspendedDialogs />
+      //     </Route>
+      //     <Route path='/login'>
+      //       <LoginPage />
+      //     </Route>
+      //     <Route path='/users'>
+      //       <UsersContainer pageTitle={'Самураи'} />
+      //     </Route>
+      //     <Route path='/news'>
+      //       <News />
+      //     </Route>
+      //     <Route path='/music'>
+      //       <Music />
+      //     </Route>
+      //     <Route path='/setings'>
+      //       <Setings />
+      //     </Route>
+      //     {/* <Route path='/' exact>
+      //       <Redirect to='/profile' />
+      //     </Route> */}
+      //     <Route exact path='/'>
+      //       {this.props.initialized ? <Redirect to='/profile' /> : <LoginPage />}
+      //     </Route>
+      //   </div>
+      // </div>
     );
   }
 }
