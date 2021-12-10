@@ -82,31 +82,36 @@ class App extends React.Component<PropsType> {
                 <Menu.Item key='2'>
                   <Link to='/dialogs'>Messages</Link>
                 </Menu.Item>
-                <Menu.Item key='3'>option3</Menu.Item>
-                <Menu.Item key='4'>option4</Menu.Item>
+                {/* <Menu.Item key='3'>option3</Menu.Item>
+                <Menu.Item key='4'>option4</Menu.Item> */}
               </SubMenu>
               <SubMenu key='sub2' icon={<MessageOutlined />} title='Developers'>
                 <Menu.Item key='5'>
                   <Link to='/users'>Users</Link>
                 </Menu.Item>
-                <Menu.Item key='6'>option6</Menu.Item>
+                {/* <Menu.Item key='6'>option6</Menu.Item>
                 <Menu.Item key='7'>option7</Menu.Item>
-                <Menu.Item key='8'>option8</Menu.Item>
+                <Menu.Item key='8'>option8</Menu.Item> */}
               </SubMenu>
-              <SubMenu key='sub3' icon={<NotificationOutlined />} title='subnav 3'>
-                <Menu.Item key='9'>option9</Menu.Item>
-                <Menu.Item key='10'>option10</Menu.Item>
-                <Menu.Item key='11'>option11</Menu.Item>
-                <Menu.Item key='12'>option12</Menu.Item>
+              <SubMenu key='sub3' icon={<NotificationOutlined />} title='Media'>
+                <Menu.Item key='9'>
+                  <Link to='/news'>News</Link>
+                </Menu.Item>
+                <Menu.Item key='10'>
+                  <Link to='/music'>Music</Link>
+                </Menu.Item>
+                <Menu.Item key='11'>
+                  <Link to='/setings'>Setings</Link>
+                </Menu.Item>
               </SubMenu>
             </Menu>
           </Sider>
           <Layout style={{ padding: '0 24px 24px' }}>
-            <Breadcrumb style={{ margin: '16px 0' }}>
+            {/* <Breadcrumb style={{ margin: '16px 0' }}>
               <Breadcrumb.Item>Home</Breadcrumb.Item>
               <Breadcrumb.Item>List</Breadcrumb.Item>
               <Breadcrumb.Item>App</Breadcrumb.Item>
-            </Breadcrumb>
+            </Breadcrumb> */}
             <Content
               className='site-layout-background'
               style={{
@@ -155,46 +160,6 @@ class App extends React.Component<PropsType> {
           </Layout>
         </Layout>
       </Layout>
-      // <div className='app-wrapper'>
-      //   <HeaderContainer />
-      //   <Navbar />
-      //   <div className='app-wrapper-content'>
-      //     <Suspense fallback={<Preloader />}>
-      //       <Route path='/profile/:userId?'>
-      //         <ProfileContainer
-      //         //:userId? опциональный параметр ХОКа withRouter
-      //         />
-      //       </Route>
-      //       {/* <Route path='/dialogs'>
-      //         <DialogsContainer />//ниже с HOC withSuspense
-      //       </Route> */}
-      //     </Suspense>
-      //     <Route path='/dialogs'>
-      //       <SuspendedDialogs />
-      //     </Route>
-      //     <Route path='/login'>
-      //       <LoginPage />
-      //     </Route>
-      //     <Route path='/users'>
-      //       <UsersContainer pageTitle={'Самураи'} />
-      //     </Route>
-      //     <Route path='/news'>
-      //       <News />
-      //     </Route>
-      //     <Route path='/music'>
-      //       <Music />
-      //     </Route>
-      //     <Route path='/setings'>
-      //       <Setings />
-      //     </Route>
-      //     {/* <Route path='/' exact>
-      //       <Redirect to='/profile' />
-      //     </Route> */}
-      //     <Route exact path='/'>
-      //       {this.props.initialized ? <Redirect to='/profile' /> : <LoginPage />}
-      //     </Route>
-      //   </div>
-      // </div>
     );
   }
 }

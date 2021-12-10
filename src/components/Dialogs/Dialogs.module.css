@@ -6,8 +6,7 @@
 .dialogs {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  background-color: rosybrown;
-
+  /* background-color: rosybrown; */
   gap: 40px;
 }
 
@@ -21,15 +20,15 @@
   /* border: 2px solid red; */
 }
 
-.dialog a {
+/* .dialog a {
   color: #fff;
   text-decoration: none;
   cursor: pointer;
-}
+} */
 
-.dialog a.activeLink {
+/* .dialog a.activeLink {
   color: gold;
-}
+} */
 
 .messages {
   /* border: 2px solid red; */
@@ -49,7 +48,9 @@
 .messages {
   display: flex;
   flex-direction: column;
-  background-color: rosybrown;
+  padding-left: 20px;
+  border-left: 2px solid white;
+  /* background-color: rosybrown; */
 
   gap: 40px;
 }

@@ -1,4 +1,3 @@
-import styles from './Header.module.css';
 import { Link } from 'react-router-dom';
 import { logout } from '../../redux/auth-reducer';
 
@@ -6,12 +5,6 @@ import { Layout, Menu, Avatar, Row, Col, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { AppStateType } from '../../redux/redux-store';
 import { useDispatch, useSelector } from 'react-redux';
-
-// type PropsType = {
-//   isAuth: boolean;
-//   login: string | null;
-//   logout: () => void;
-// };
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
@@ -34,14 +27,14 @@ export const Header: React.FC = () => {
         </Col>
         {isAuth ? (
           <>
-            <Col span={1}>
+            <Col span={2}>
               <Avatar
                 alt={login || ''}
                 style={{ backgroundColor: '#87d068' }}
                 icon={<UserOutlined />}
               />
             </Col>
-            <Col span={5}>
+            <Col span={4}>
               <Button onClick={_logout}>Log out</Button>
             </Col>
           </>
@@ -56,5 +49,3 @@ export const Header: React.FC = () => {
     </Header>
   );
 };
-
-// export default Header;
