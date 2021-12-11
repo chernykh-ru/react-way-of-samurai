@@ -6,6 +6,7 @@ import sidebarReducer from './sidebar-reducer';
 import usersReducer from './users-reducer';
 import authReducer from './auth-reducer';
 import appReducer from './app-reducer';
+import chatReducer from './chat-reducer';
 import thunk, { ThunkAction } from 'redux-thunk';
 import { reducer as formReducer } from 'redux-form';
 
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   form: formReducer,
   app: appReducer,
+  chat: chatReducer,
 });
 
 type RootReducerType = typeof rootReducer;//(globalstate: AppStateType) => AppStateType
