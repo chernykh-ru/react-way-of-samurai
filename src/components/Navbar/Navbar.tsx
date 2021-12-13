@@ -34,6 +34,11 @@ const Navbar: React.FC = () => {
           Settings
         </NavLink>
       </div>
+      <div className={styles.item}>
+        <NavLink to='/games' activeClassName={styles.activeLink}>
+          Games
+        </NavLink>
+      </div>
     </nav>
   );
 };

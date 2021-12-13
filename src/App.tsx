@@ -5,6 +5,7 @@ import 'antd/dist/antd.css';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Setings from './components/Setings/Setings';
+import { Judge } from './pages/Games/Judge';
 import { UsersPage as UsersContainer } from './components/Users/UsersContainer';
 // import DialogsContainer from './components/Dialogs/DialogsContainer';
 // import ProfileContainer from './components/Profile/ProfileContainer';
@@ -105,6 +106,9 @@ class App extends React.Component<PropsType> {
                   <Link to='/music'>Music</Link>
                 </Menu.Item>
                 <Menu.Item key='11'>
+                  <Link to='/games'>Games</Link>
+                </Menu.Item>
+                <Menu.Item key='12'>
                   <Link to='/setings'>Setings</Link>
                 </Menu.Item>
               </SubMenu>
@@ -150,6 +154,9 @@ class App extends React.Component<PropsType> {
               </Route>
               <Route path='/music'>
                 <Music />
+              </Route>
+              <Route path='/games'>
+                <Judge />
               </Route>
               <Route path='/setings'>
                 <Setings />

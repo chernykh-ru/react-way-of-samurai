@@ -28,7 +28,7 @@ export const Header: React.FC = () => {
             </Menu.Item>
           </Menu>
         </Col>
-        {isAuth && profile ? (
+        {isAuth ? (
           <>
             <Col span={2}>
               {/* <Avatar
@@ -36,14 +36,16 @@ export const Header: React.FC = () => {
                 style={{ backgroundColor: '#87d068' }}
                 icon={<UserOutlined />}
               /> */}
-              <Avatar
-                icon={
-                  <Image
-                    src={profile.photos.small !== null ? profile.photos.small : avataaars}
-                    style={{ width: 32 }}
-                  />
-                }
-              />
+              {profile && (
+                <Avatar
+                  icon={
+                    <Image
+                      src={profile.photos.small !== null ? profile.photos.small : avataaars}
+                      style={{ width: 32 }}
+                    />
+                  }
+                />
+              )}
             </Col>
             <Col span={4}>
               <Button onClick={_logout}>Log out</Button>
