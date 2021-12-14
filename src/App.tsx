@@ -5,7 +5,8 @@ import 'antd/dist/antd.css';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Setings from './components/Setings/Setings';
-import { Judge } from './pages/Games/Judge';
+import { Judge } from './pages/Sandbox/Judge';
+import { Github } from './pages/Sandbox/Github';
 import { UsersPage as UsersContainer } from './components/Users/UsersContainer';
 // import DialogsContainer from './components/Dialogs/DialogsContainer';
 // import ProfileContainer from './components/Profile/ProfileContainer';
@@ -25,7 +26,12 @@ import { withSuspense } from './hoc/withSuspense';
 // import store from './redux/redux-store';
 // import { Provider } from 'react-redux';
 import { Layout, Menu } from 'antd';
-import { UserOutlined, MessageOutlined, NotificationOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  MessageOutlined,
+  NotificationOutlined,
+  CodeSandboxOutlined,
+} from '@ant-design/icons';
 import { Footer } from 'antd/lib/layout/layout';
 // import { ChatPage } from './pages/Chat/ChatPage';
 
@@ -106,10 +112,15 @@ class App extends React.Component<PropsType> {
                   <Link to='/music'>Music</Link>
                 </Menu.Item>
                 <Menu.Item key='11'>
-                  <Link to='/games'>Games</Link>
-                </Menu.Item>
-                <Menu.Item key='12'>
                   <Link to='/setings'>Setings</Link>
+                </Menu.Item>
+              </SubMenu>
+              <SubMenu key='sub4' icon={<CodeSandboxOutlined />} title='SandBox'>
+                <Menu.Item key='12'>
+                  <Link to='/github'>GitHub</Link>
+                </Menu.Item>
+                <Menu.Item key='13'>
+                  <Link to='/calc'>Сalc</Link>
                 </Menu.Item>
               </SubMenu>
             </Menu>
@@ -154,12 +165,15 @@ class App extends React.Component<PropsType> {
               </Route>
               <Route path='/music'>
                 <Music />
+                <Route path='/setings'>
+                  <Setings />
+                </Route>
               </Route>
-              <Route path='/games'>
+              <Route path='/github'>
+                <Github />
+              </Route>
+              <Route path='/calc'>
                 <Judge />
-              </Route>
-              <Route path='/setings'>
-                <Setings />
               </Route>
               {/* <Route path='/' exact>
             <Redirect to='/profile' />
