@@ -5,5 +5,10 @@
 } */
 
 .selected {
-  background-color: gray;
+  /* background-color: gray; */
+  color: #1890ff;
+}
+
+li {
+  cursor: pointer;
 }

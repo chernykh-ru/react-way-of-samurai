@@ -1,6 +1,6 @@
 import styles from './Sandbox.module.css';
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Divider, Button, Input, Typography } from 'antd';
+import { Row, Col, Divider, Button, Input, Typography, List, Avatar } from 'antd';
 import axios from 'axios';
 import { GithubProfile } from './GithubProfile';
 
@@ -73,7 +73,7 @@ export const GithubUsersList: React.FC<GithubUsersListPropsType> = ({
 
   return (
     <>
-      <ul>
+      {/* <ul>
         {users.map((u) => (
           <li
             key={u.id}
@@ -84,7 +84,22 @@ export const GithubUsersList: React.FC<GithubUsersListPropsType> = ({
             {u.login}
           </li>
         ))}
-      </ul>
+      </ul> */}
+      <List
+        size='default'
+        header={<div>Users list:</div>}
+        dataSource={users}
+        renderItem={(item) => (
+          <List.Item
+            key={item.id}
+            className={selectedUser === item ? styles.selected : ''}
+            onClick={() => {
+              onUserSelect(item); //отдаем родителю в колбэк выбранного юзера(которого затем он нам вернет пропсами и мы его подсветим)
+            }}>
+            {item.login}
+          </List.Item>
+        )}
+      />
     </>
   );
 };
