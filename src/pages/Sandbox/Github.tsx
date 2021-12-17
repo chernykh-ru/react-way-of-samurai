@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, Divider, Button, Input, Typography, List, Avatar } from 'antd';
 import axios from 'axios';
 import { GithubProfile } from './GithubProfile';
+import Preloader from '../../components/common/preloader/Preloader';
 
 export type SearchUserType = {
   login: string;
@@ -64,12 +65,19 @@ export const GithubUsersList: React.FC<GithubUsersListPropsType> = ({
   onUserSelect,
 }) => {
   const [users, setUsers] = useState<SearchUserType[]>([]); //локальное хранилище юзеров
+  const [isloading, setIsloading] = useState(false);
 
   useEffect(() => {
+    setIsloading(true);
     axios.get<SearchResult>(`https://api.github.com/search/users?q=${termSearch}`).then((res) => {
+      setIsloading(false);
       setUsers(res.data.items); //сетаем полученных юзеров в локальный стейт
     });
   }, [termSearch]); //засисимость от синхронизированого стейта с полем ввода(по кнопке)
+
+  if (isloading) {
+    return <Preloader />;
+  }
 
   return (
     <>
@@ -168,7 +176,7 @@ export const Github: React.FC = () => {
           />
         </Col>
         {selectedUser && <GithubProfile selectedUser={selectedUser} />}
-        <Divider />
+        {/* <Divider /> */}
       </Row>
     </div>
   );
